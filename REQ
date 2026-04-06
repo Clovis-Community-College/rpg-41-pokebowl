@@ -1,0 +1,217 @@
+===================================
+ ____  ____   ____       _  _   _ 
+|  _ \|  _ \ / ___|     | || | / |
+| |_) | |_) | |  _ _____| || |_| |
+|  _ <|  __/| |_| |_____|__   _| |
+|_| \_\_|    \____|        |_| |_|
+                                  
+===================================
+
+
+ _______________________________________
+/ All that the light touches belongs to \
+\ Github                                /
+ ---------------------------------------
+       \    ____
+        \  /    \
+          | ^__^ |
+          | (oo) |______
+          | (__) |      )\/\
+           \____/|----w |
+                ||     ||
+
+                 Moofasa
+
+This assignment will teach you how to work together to build a text-based
+roleplaying game (RPG).
+
+If you like making video games (it's one of the most common reasons why people
+go into computer science, after all), then you will have fun with this. If you
+hate video games, well, you can make something else I guess with permission.
+
+Your game here should be fairly detailed, with the details required to get
+100% found in the grading criteria listed below, so make sure you read over
+both the group grading criteria and the invidual grading criteria before you
+design your game with your group so that you hit all the mandatory
+7requirements. Also make sure you're all joined up on Github Classroom!
+
+2026 Classroom Invite Code:
+https://classroom.github.com/classrooms/66927085-ccccsci-41-spring-2026
+
+2026 Github Invite Code: https://classroom.github.com/a/TT69CK9u
+
+(You should let the project leader make the project first and then have
+everyone else join in on it.)
+
+Purpose:
+1) To teach you about collaborative design and implementation using Github
+2) To have you get hands-on experience with inheritance in a big project
+3) Visualizing circular linked lists
+4) Using a BST to work as an inventory system
+
+You MUST be in a group of 3 to 4 for this, and have it on our Github Classroom
+where we can watch your development efforts.
+
+Grading:
+10 points will be for group effort
+10 points will be for individual effort
+
+Group Effort:
+5 points - Quality of the game - each bullet point is one point
+	A) Is it a fun game?
+	B) Does it have a decent amount of content in it / take at least a little
+	while to win?
+	C) Does it have an interesting world map in color?
+	D) Can you win and lose?
+	E) Is there combat?
+
+3 points - Documentation. Write a README.md that:
+	A) describes your game including directions on how to win, key commands,
+	command line parameters, etc.
+	B) Uses Markdown to make it more interesting than just a boring text file.
+	You should at a minimum have some bullet points, some colors, and at least
+	one image embedded in it that is the logo of your game
+	C) List all of the people who contributed to the project (if they didn't
+	contribute, don't list them), and note which person or people did each of
+	the bullet points in this project, including the group and individual
+	bullet points (i.e. who wrote the documentation, who did the BRIDGES
+	circular linked list, who designed it to be sure it was a fun game, who
+	made the world map, etc.) If any bullet points are not done, NOTE THEM, do
+	not make me hunt around for it or you will get a negative point. It's best
+	to just list all the bullet points here in the README in order and note
+	which are done and by who.
+
+2 points - Consistency of work:
+	A) Screenshot the state of your game as of one week in
+	B) Screenshot the github commit log for your game showing a consistent set
+	of commits over time rather than waiting to the last minute (include both
+	of these in your README.md above)
+	Note: Fake commits, like adding and removing comments to make it look like
+	you're being active (which a student tried in the past) will result in
+	negative points. Don't try to inflate your commit record.
+
+==========================
+
+INDIVIDUAL WORK - 10 points
+
+==========================
+
+Person A - "The Inheritor of Suffering": This person is responsible for
+building a class hierarchy consisting of a pure virtual / abstract class
+called Actor (which is anything with an x,y location in the world) from which
+you have classes inheriting off of it, including stationary objects, Heroes,
+and Monsters. The Hero class should have at least four classes inheriting off
+of it (such as Wizard, Fighter, Thief, and Cleric, but you can pick whatever
+you want) that have to all be different in some meaningful way, and you should
+inherit off the Monster class for at least five types of monsters, including a
+Boss monster that you have to kill to win the game. Write in the README.md
+file a description of your class hierarchy and include all the relevant code
+at the end of it. Make a diagram showing the relationship of the different
+classes.
+
+In the game itself, the player should be playing a party of 4 to 6
+heroes and walking around killing monsters and doing quests.
+
+All these classes need to actually work, do interesting different stuff, and
+be reasonably detailed to get a 10/10.
+
+==========================
+
+Person B - "The BRIDGEngineer". This person is responsible for creating a
+circular linked list in BRIDGES that represents the initiative turn order for
+the heroes and enemies in the current combat. Combat in the game should
+involve fights of at least four people on each side most of the time (a boss
+fight or whatever could be 6 vs 1). Each Hero and Monster should inherit from
+a class called HasInitiative that gives them a speed member variable that can
+be from 1 to 40. When combat begins, roll a d20 and add it to their speed
+variable, and then sort them so that the fastest goes first. When they are
+finished with their turn, go to the next in the list. When you get to the end
+of the list, go back to the top of the list. When a hero or monster dies,
+remove them from the list.
+
+At any point in the combat, the user should be able to hit a Snapshot command
+that sends a visualization of the current turn order to BRIDGES. Each node in
+the circular linked list should have a label on it with the name of the actor
+as well as their initiative. 
+
+Helpful help file: https://bridgesuncc.github.io/tutorials/CircularDoublyLinkedList.html
+
+Attach a screenshot visualizing your combat turn order in the README.md
+
+You shouldn't just hard code a single combat visualization, but have the
+ability to visualize the turn order for any combat you are in to get a 10/10. 
+
+==========================
+
+Person C - "JJK Curse Lord": Your job will be to learn the NCURSES library and
+use it to create both a UI for your game (with or without using NCURSES
+windows) and also a scrollable world map with interesting features on it like
+towns and lakes and so forth. You have to use color, have it work in raw mode
+(non-cooked) and have it work with arrow keys. You should also display the
+combat on screen, as well as inventory and anything else crucial in addition
+to the world map.
+
+Curses was used to make Vi/Vim/Nvim work in full screen character mode, rather
+than the line-by-line "cooked" mode you are used to using with Cin and Cout
+where you output one line at a time and everything scrolls off the top of the
+screen. In Vim, you can actually move the character up a line, and you don't
+have to hit return to enter a string, it will read each character one at a
+time immediately after being typed.
+
+Documentation: https://invisible-island.net/ncurses/ncurses-intro.html
+
+Easier Intro: https://www.linuxjournal.com/content/getting-started-ncurses
+
+More Documentation: https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
+
+I also have lots of demo code for you. You could also use my Colors library if
+you want (/public/colors.h) which is like a stripped down version of NCurses
+
+To get a 10/10 you must demonstrate reasonable proficiency with NCURSES. Fire
+up 'nethack' on the server and see what a reasonable NCURSES application
+should roughly look like. It should be full screen, have different areas of
+interest in them, have colors, should scroll around as you move, have the
+party move around on the map when you hit arrow gets, show inventory, etc.
+
+==========================
+
+Person D - "Sephiroth, Master of the Tree": Your job is to implement an
+inventory system using a BST. You can make your own BST or use the
+multimap<string,Item> class in the standard library to do so. Your inventory
+system needs to support the following commands at a minimum: A) Print all
+items you have in your inventory in alphabetical order B) Be able to have
+multiple copies of the same item in your inventory (such as having 100 arrows
+and 2 healing potions).  C) Be able to pick up and drop items, and buy items
+using gold (which you track in your inventory) from a merchant in the world.
+You should be able to sell non-Key Items to the merchant as well.  D) Have
+special Key Items for solving the main quest in your game that cannot be
+dropped (if the player tries dropping it, disallow it); they can only be
+removed by solving the quest they are part of.  E) Monsters should have
+randomly generated inventories that will drop to the ground when they are
+defeated.  F) Items should have interesting and different statistics, for
+example you could have a minor healing potion and a major healing potion that
+heal for different amounts of damage, or weapons with different speeds (they
+add or subtract to your initiative), damage values, and costs at the merchant.
+
+You will probably need some sort of Item class that has a name that is used to
+sort the items in the Multimap (or you can write an operator< so that your Items
+can be sorted alphabetically in a Multiset instead) as well as finding it.
+Each string used to name an item in a Multimap needs to be unique to that
+item, as that is what is used to insert, search, and delete the item.
+
+To get 10/10 you need to write your own BST class that can support all of the
+above operations. If you use the Multimap or other STD options, you will get
+an 9/10 instead, and note that in the README.md file.
+
+You need to work with the Curse Lord to make sure the inventory is properly
+displayed, with the Inheritor of Suffering to make sure that each hero and
+monster has an inventory, and make sure the items can be dropped on the ground
+and picked up (and bought and sold at a merchant) for 10/10.
+
+頑張って!
+
+If you have a 5th person (by professor permission only) they are the "Scared
+Balloon" role, and they have to implement a dynamic weather system and a
+quest system. You must implement and use a hash table as part of your system.
+
+Example Project: https://www.youtube.com/watch?v=qN6M9rPlOzI

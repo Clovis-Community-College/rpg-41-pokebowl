@@ -26,7 +26,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
   
 #### Documentation
 - **A)** README describes game: directions to win, key commands, CLI params — `[IN PROGRESS]` — *Tony*
-- **B)** README uses Markdown: bullet points, colors, embedded logo image — `[✅]` — *Tony*
+- **B)** README uses Markdown: bullet points, colors, embedded logo image — `[IN PROGRESS]` — *Tony*
 - **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — `[IN PROGRESS]` — *Tony*
 
 #### Consistency of work

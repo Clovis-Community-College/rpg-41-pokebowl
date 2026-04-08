@@ -2,10 +2,8 @@
 
 > *slogan or short mythical text here. never gonna give u up, never gonna let u down, never gonna run around and desert u*
 
-## What is it?
+## What's this game about?
 blablabla. balbalbalbalajsjdhrgeuehehegeheb.
-
----
 
 ## Key commands
 
@@ -15,8 +13,6 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 | `i` | Open inventory |
 | `q` | Quit game |
 | **[any key]** | **[unimplemented]** |
-
----
 
 ## Checklist
  
@@ -82,8 +78,6 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 - Dynamic weather system — `[unimplemented]`
 - Quest system — `[unimplemented]`
 - Hash table implemented and used as part of the system — `[unimplemented]`
- 
----
 
 ## Screenshots
 

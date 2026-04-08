@@ -1,5 +1,4 @@
-#ifndef LLBRIDGES_H
-#define LLBRIDGES_H
+#pragma once
 
 #include <cstdint>
 
@@ -16,5 +15,3 @@ public:
 	decltype(_speed) speed();
 	// delclare here & impl in cc sth like: void speed(Actor* actor);
 };
-
-#endif

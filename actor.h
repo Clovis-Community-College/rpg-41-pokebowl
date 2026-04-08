@@ -1,7 +1,12 @@
+#ifndef ACTOR_H
+#define ACTOR_H
+
+#include <functional>
 #include <string>
 #include <iostream>
+#include "llbridges.h"
 
-using std::string, std::cout, std::cin;
+using std::string, std::cout, std::cin, std::function;
 using HP = int32_t;
 
 // Map could have positive coords or negative-positive coords
@@ -16,20 +21,31 @@ enum Direction {
 	// TBD: combination, varying steps per press
 };
 
+class HasInitiative;
+
 class Actor {
 	// Name of actor
-	string name;
+	string _name;
 
 	// Position of actor
-	XY pos;
+	XY _pos;
 
 	// HP of actor. Should default to HP_MAX.
-	HP hp;
+	HP _hp;
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 
 public:
+	// Cstor
+	Actor(string init_name, XY init_xy, HP init_hp);
+//		: _name(init_name), _pos(init_xy), _hp(init_hp);
+	
+	// Get (no set)
+	string name() const;
+	XY pos() const;
+	HP hp() const; 
+
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).
@@ -40,10 +56,16 @@ public:
 	virtual void take_damage(HP delta);
 };
 
-class Wall {};
+class Wall : public Actor {};
 
-class Hero {};
+class Hero : public Actor {
+	HasInitiative hi;
+};
 
-class Monster {};
+class Monster : public Actor {
+	HasInitiative hi;
+};
 
 // TODO: diagram with links to code snippets
+
+#endif

@@ -31,6 +31,8 @@ class Actor {
 	XY _pos;
 
 	// HP of actor. Should default to HP_MAX.
+	// Invariant: 0 <= hp <= HP_MAX, no negative hp
+	// unless processing the score itself
 	HP _hp;
 
 protected:
@@ -39,8 +41,7 @@ protected:
 public:
 	// Cstor
 	Actor(string init_name, XY init_xy, HP init_hp);
-//		: _name(init_name), _pos(init_xy), _hp(init_hp);
-	
+
 	// Get (no set)
 	string name() const;
 	XY pos() const;

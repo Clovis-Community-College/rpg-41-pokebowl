@@ -13,15 +13,12 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 |-----|--------|
 | Arrow keys | Move actors |
 | `i` | Open inventory |
-| `c` | View combat order |
 | `q` | Quit game |
 | **[any key]** | **[unimplemented]** |
 
 ---
 
 ## Checklist
-
----
  
 ### Group
 
@@ -34,14 +31,12 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
   
 #### Documentation
 - **A)** README describes game: directions to win, key commands, CLI params — `[IN PROGRESS]` — *Tony*
-- **B)** README uses Markdown: bullet points, colors, embedded logo image — `[IN PROGRESS]` — *Tony*
+- **B)** README uses Markdown: bullet points, colors, embedded logo image — `[✅]` — *Tony*
 - **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — `[IN PROGRESS]` — *Tony*
 
 #### Consistency of work
 - **A)** Screenshot of game state as of one week in (embedded below) — `[unimplemented]` — *name*
 - **B)** Screenshot of GitHub commit log showing consistent commits over time (embedded below) — `[unimplemented]` — *name*
- 
----
  
 ### Individual
  

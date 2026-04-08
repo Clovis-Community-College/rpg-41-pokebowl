@@ -15,3 +15,9 @@ HP Actor::hp() const { return _hp; }
 // Default behaviour: no HP damage
 // its for the walls
 void Actor::take_damage(HP delta) {}
+
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX) {}
+
+//Hero::Hero(string init_name, XY init_xy, HP init_hp) : Actor(init_name, init_xy, init_hp) {}
+
+//Monster::Monster(string init_name, XY init_xy, HP init_hp) : Actor(init_name, init_xy, init_hp) {}

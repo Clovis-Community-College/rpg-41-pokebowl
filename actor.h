@@ -57,14 +57,22 @@ public:
 	virtual void take_damage(HP delta);
 };
 
-class Wall : public Actor {};
+class Wall : public Actor {
+public:
+	Wall(XY xy);
+	void move(Direction d) override final;
+};
 
 class Hero : public Actor, public HasInitiative {
-
+public:
+	using Actor::Actor;
+	void move(Direction d) override final; // !!!!!!!! each hero is unique, so cannot final here
 };
 
 class Monster : public Actor, public HasInitiative {
-
+public:
+	using Actor::Actor;
+	void move(Direction d) override final; // !!!!!!!! each hero is unique, so cannot final here
 };
 
 // TODO: diagram with links to code snippets

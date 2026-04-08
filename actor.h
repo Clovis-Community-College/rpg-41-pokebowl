@@ -58,12 +58,12 @@ public:
 
 class Wall : public Actor {};
 
-class Hero : public Actor {
-	HasInitiative hi;
+class Hero : public Actor, public HasInitiative {
+
 };
 
-class Monster : public Actor {
-	HasInitiative hi;
+class Monster : public Actor, public HasInitiative {
+
 };
 
 // TODO: diagram with links to code snippets

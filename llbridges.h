@@ -8,13 +8,13 @@ class Actor;
 class HasInitiative {
 	/*
 	Stub interface for Hero and Monster inheritance only
-	Feel free to add-edit-delete as needed, just don't touch the
+	Feel free to add-edit-delete to manage speed as needed, just don't touch the
 	speed() interface
 	*/
-	Actor* actor;
-
+	int8_t _speed;
 public:
-	int8_t speed();
+	decltype(_speed) speed();
+	// delclare here & impl in cc sth like: void speed(Actor* actor);
 };
 
 #endif

@@ -24,6 +24,7 @@ enum Direction {
 class HasInitiative;
 
 class Actor {
+private:
 	// Name of actor
 	string _name;
 
@@ -37,6 +38,11 @@ class Actor {
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
+
+	// setter with validation
+	void name(string _name_);
+	void pos(XY _pos_);
+	void hp(HP _hp_);
 
 public:
 	// Cstor
@@ -61,6 +67,7 @@ class Wall : public Actor {
 public:
 	Wall(XY xy);
 	void move(Direction d) override final;
+	void take_damage(HP delta) override;
 };
 
 class Hero : public Actor, public HasInitiative {
@@ -68,6 +75,26 @@ public:
 	using Actor::Actor;
 	void move(Direction d) override final; // !!!!!!!! each hero is unique, so cannot final here
 };
+
+// Hero - Hebrew
+class Aleph : public Hero {}
+class Bet : public Hero {}
+class Gimel : public Hero {}
+class Dalet : public Hero {}
+class He : public Hero {}
+class Vav : public Hero {}
+class Zayin : public Hero {}
+class Chet : public Hero {}
+
+// Monster - Military
+class Alpha : public Monster {}
+class Bravo : public Monster {}
+class Charlie : public Monster {}
+class Delta : public Monster {}
+class Echo : public Monster {}
+class Foxtrot : public Monster {}
+class Golf : public Monster {}
+class Hotel : public Monster {}
 
 class Monster : public Actor, public HasInitiative {
 public:

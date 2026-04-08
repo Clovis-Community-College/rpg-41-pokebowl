@@ -13,7 +13,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 | `q` | Quit game |
 | [any key] | [unimplemented] |
 
-## Checklist
+## Checklist, 1 2 3
  
 ### Group
 

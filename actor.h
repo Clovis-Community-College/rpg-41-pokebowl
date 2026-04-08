@@ -1,12 +1,13 @@
 #include <string>
+#include <iostream>
 
 using std::string, std::cout, std::cin;
-using HP = int;
+using HP = int32_t;
 
 // Map could have positive coords or negative-positive coords
-// int for flexibility
+// int32_t for flexibility
 struct XY {
-	int x, y;
+	int32_t x, y;
 };
 
 enum Direction {
@@ -26,20 +27,23 @@ class Actor {
 	HP hp;
 
 protected:
-	constexpr int MAX_HP = INT_MAX;
+	constexpr static int32_t HP_MAX = INT32_MAX;
 
 public:
 	// Move behaviour. TBI by subclasses.
-	// Actor should only move on integer-based steps
+	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).
-	virtual move(Direction d) = 0;
+	virtual void move(Direction d) = 0;
 
 	// Do damage to another Actor.
 	// Defaults to no damage.
-	virtual take_damage(HP delta);
+	virtual void take_damage(HP delta);
 };
 
-class Monster {};
+class Wall {};
 
 class Hero {};
 
+class Monster {};
+
+// TODO: diagram with links to code snippets

@@ -58,7 +58,7 @@ protected:
 
 public:
 	// Cstor
-	Actor(string init_name, XY init_xy, HP init_hp, float ids);
+	Actor(string init_name, XY init_xy, HP init_hp, float ids = 1);
 
 	// Get (no set)
 	string name() const;
@@ -84,9 +84,8 @@ public:
 };
 
 class Hero : public Actor, public HasInitiative {
-	using Actor::Actor;
-
 public:
+	using Actor::Actor;
 	void move(Direction d)
 		override; // !!!!!!!! each hero is unique, so cannot final here
 };
@@ -134,17 +133,17 @@ public:
 	Chet(string _name_, XY _pos_);
 };
 
-class Monster : public Actor, public HasInitiative {
-	using Actor::Actor;
 
+// Monster - Military
+// internal names only
+class Monster : public Actor, public HasInitiative {
 public:
+	using Actor::Actor;
 	virtual bool is_boss() const; // default to false
 	void move(Direction d)
 		override; // !!!!!!!! each hero is unique, so cannot final here
 };
 
-// Monster - Military
-// internal names only
 class Alpha : public Monster {
 public:
 	Alpha(string _name_, XY _pos_);

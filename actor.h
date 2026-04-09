@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 using std::string, std::cout, std::cin, std::function;
 using HP = int32_t;

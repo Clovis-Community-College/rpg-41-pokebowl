@@ -13,7 +13,7 @@ HP Actor::hp() const { return _hp; }
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
 void Actor::hp(HP _hp_) {
-	if (_hp_ > HP_MAX)
+	if (_hp_ > _hp_max)
 		_hp = _hp_max; // cap HP
 
 	// -1 acts as a DEAD status code. potentially buggy.
@@ -54,7 +54,7 @@ Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 
 void Aleph::take_damage(HP delta) {
-	decltype(hp()) new_hp = hp() - delta/2; // half dam
+	decltype(hp()) new_hp = hp() - std::ceil(delta/2.0); // half dam
 	hp(new_hp);
 }
 

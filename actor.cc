@@ -36,3 +36,6 @@ void Wall::take_damage(HP delta) {
 	hp(new_hp);
 }
 
+bool Monster::is_boss() const { return false; }
+
+bool Foxtrot::is_boss() const { return true; }

@@ -21,8 +21,6 @@ enum Direction {
 	// TBD: combination, varying steps per press
 };
 
-class HasInitiative;
-
 class Actor {
 private:
 	// Name of actor
@@ -114,6 +112,7 @@ class Chet : public Hero {
 class Monster : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
+	virtual bool is_boss() const; // default to false
 	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
 };
 
@@ -124,7 +123,10 @@ class Bravo : public Monster { using Monster::Monster; };
 class Charlie : public Monster { using Monster::Monster; };
 class Delta : public Monster { using Monster::Monster; };
 class Echo : public Monster { using Monster::Monster; };
-class Foxtrot : public Monster { using Monster::Monster; };
+class Foxtrot : public Monster {
+	using Monster::Monster;
+	bool is_boss() const override; 
+};
 class Golf : public Monster { using Monster::Monster; };
 class Hotel : public Monster { using Monster::Monster; };
 

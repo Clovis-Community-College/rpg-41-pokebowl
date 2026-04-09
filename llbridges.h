@@ -14,8 +14,10 @@ class HasInitiative {
 	*/
 	int8_t _speed;
 public:
-	decltype(_speed) speed();
-	// declare skeleton here & impl func in cc sth like: return-type-here speed(Actor* actor);
+	// Initial speed:
+	// actor->start_speed holds the initial speed valur for each actor
+	// use that then add on the dice
+	decltype(_speed) speed(Actor* actor);
 };
 
 #endif

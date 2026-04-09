@@ -1,10 +1,11 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#include <functional>
-#include <string>
-#include <iostream>
 #include "llbridges.h"
+#include <functional>
+#include <iostream>
+#include <string>
+#include <cmath>
 
 using std::string, std::cout, std::cin, std::function;
 using HP = int32_t;
@@ -16,12 +17,16 @@ struct XY {
 };
 
 enum Direction {
-	LEFT, RIGHT, UP, DOWN,
-	LEFT_UP, RIGHT_UP, LEFT_DOWN, RIGHT_DOWN
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
+	LEFT_UP,
+	RIGHT_UP,
+	LEFT_DOWN,
+	RIGHT_DOWN
 	// TBD: combination, varying steps per press
 };
-
-class HasInitiative;
 
 class Actor {
 private:
@@ -32,9 +37,16 @@ private:
 	XY _pos;
 
 	// HP of actor. Should default to HP_MAX.
-	// Invariant: 0 <= hp <= HP_MAX, no negative hp
-	// unless processing the score itself
+	// Invariant: 0 <= hp <= HP_MAX, no negative hp (except for -1, DEAD actor)
 	HP _hp;
+
+	// Damage modulator.
+	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
+	// Defaults to 1
+	float _internal_damage_scale;
+
+	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned
+					  // at cstor so its okay
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
@@ -46,13 +58,12 @@ protected:
 
 public:
 	// Cstor
-	Actor(string init_name);
-	Actor(string init_name, XY init_xy, HP init_hp);
+	Actor(string init_name, XY init_xy, HP init_hp, float ids = 1);
 
 	// Get (no set)
 	string name() const;
 	XY pos() const;
-	HP hp() const; 
+	HP hp() const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
@@ -61,72 +72,118 @@ public:
 
 	// Do damage to another Actor.
 	// Defaults to 'delta' damage, impl by subclass
-	virtual void take_damage(HP delta);
+	virtual void take_damage(HP hp_delta, float external_damage_scale);
 };
+
+// tbd: add overlayable (like sand or water, that has effect)
 
 class Wall : public Actor {
 public:
 	Wall(XY xy);
 	void move(Direction d) override final;
-	void take_damage(HP delta) override;
 };
 
 class Hero : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
-	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
+	void move(Direction d)
+		override; // !!!!!!!! each hero is unique, so cannot final here
 };
 
 // Hero - Hebrew
 // internal names only
 class Aleph : public Hero {
-	using Hero::Hero;
+// Fighter 1, half damage instead of full
+public:
+	Aleph(string _name_, XY _pos_);
 };
 
 class Bet : public Hero {
-	using Hero::Hero;
+public:
+	Bet(string _name_, XY _pos_);
 };
 
 class Gimel : public Hero {
-	using Hero::Hero;
+public:
+	Gimel(string _name_, XY _pos_);
 };
 
 class Dalet : public Hero {
-	using Hero::Hero;
+public:
+	Dalet(string _name_, XY _pos_);
 };
 
 class He : public Hero {
-	using Hero::Hero;
+public:
+	He(string _name_, XY _pos_);
 };
 
 class Vav : public Hero {
-	using Hero::Hero;
+public:
+	Vav(string _name_, XY _pos_);
 };
 
 class Zayin : public Hero {
-	using Hero::Hero;
+public:
+	Zayin(string _name_, XY _pos_);
 };
 
 class Chet : public Hero {
-	using Hero::Hero;
+public:
+	Chet(string _name_, XY _pos_);
 };
 
-class Monster : public Actor, public HasInitiative {
-public:
-	using Actor::Actor;
-	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
-};
 
 // Monster - Military
 // internal names only
-class Alpha : public Monster { using Monster::Monster; };
-class Bravo : public Monster { using Monster::Monster; };
-class Charlie : public Monster { using Monster::Monster; };
-class Delta : public Monster { using Monster::Monster; };
-class Echo : public Monster { using Monster::Monster; };
-class Foxtrot : public Monster { using Monster::Monster; };
-class Golf : public Monster { using Monster::Monster; };
-class Hotel : public Monster { using Monster::Monster; };
+class Monster : public Actor, public HasInitiative {
+public:
+	using Actor::Actor;
+	virtual bool is_boss() const; // default to false
+	void move(Direction d)
+		override; // !!!!!!!! each hero is unique, so cannot final here
+};
+
+class Alpha : public Monster {
+public:
+	Alpha(string _name_, XY _pos_);
+};
+
+class Bravo : public Monster {
+public:
+	Bravo(string _name_, XY _pos_);
+};
+
+class Charlie : public Monster {
+public:
+	Charlie(string _name_, XY _pos_);
+};
+
+class Delta : public Monster {
+public:
+	Delta(string _name_, XY _pos_);
+};
+
+class Echo : public Monster {
+public:
+	Echo(string _name_, XY _pos_);
+};
+
+class Foxtrot : public Monster {
+public:
+	Foxtrot(string _name_, XY _pos_);
+	bool is_boss() const override;
+};
+
+class Golf : public Monster {
+public:
+	Golf(string _name_, XY _pos_);
+};
+
+class Hotel : public Monster {
+public:
+	Hotel(string _name_, XY _pos_);
+};
 
 // TODO: diagram with links to code snippets
 

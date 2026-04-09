@@ -24,6 +24,7 @@ enum Direction {
 class HasInitiative;
 
 class Actor {
+private:
 	// Name of actor
 	string _name;
 
@@ -38,8 +39,14 @@ class Actor {
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 
+	// setter with validation
+	void name(string _name_);
+	void pos(XY _pos_);
+	void hp(HP _hp_);
+
 public:
 	// Cstor
+	Actor(string init_name);
 	Actor(string init_name, XY init_xy, HP init_hp);
 
 	// Get (no set)
@@ -53,19 +60,73 @@ public:
 	virtual void move(Direction d) = 0;
 
 	// Do damage to another Actor.
-	// Defaults to no damage.
+	// Defaults to 'delta' damage, impl by subclass
 	virtual void take_damage(HP delta);
 };
 
-class Wall : public Actor {};
+class Wall : public Actor {
+public:
+	Wall(XY xy);
+	void move(Direction d) override final;
+	void take_damage(HP delta) override;
+};
 
 class Hero : public Actor, public HasInitiative {
+public:
+	using Actor::Actor;
+	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
+};
 
+// Hero - Hebrew
+// internal names only
+class Aleph : public Hero {
+	using Hero::Hero;
+};
+
+class Bet : public Hero {
+	using Hero::Hero;
+};
+
+class Gimel : public Hero {
+	using Hero::Hero;
+};
+
+class Dalet : public Hero {
+	using Hero::Hero;
+};
+
+class He : public Hero {
+	using Hero::Hero;
+};
+
+class Vav : public Hero {
+	using Hero::Hero;
+};
+
+class Zayin : public Hero {
+	using Hero::Hero;
+};
+
+class Chet : public Hero {
+	using Hero::Hero;
 };
 
 class Monster : public Actor, public HasInitiative {
-
+public:
+	using Actor::Actor;
+	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
 };
+
+// Monster - Military
+// internal names only
+class Alpha : public Monster { using Monster::Monster; };
+class Bravo : public Monster { using Monster::Monster; };
+class Charlie : public Monster { using Monster::Monster; };
+class Delta : public Monster { using Monster::Monster; };
+class Echo : public Monster { using Monster::Monster; };
+class Foxtrot : public Monster { using Monster::Monster; };
+class Golf : public Monster { using Monster::Monster; };
+class Hotel : public Monster { using Monster::Monster; };
 
 // TODO: diagram with links to code snippets
 

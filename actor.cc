@@ -10,8 +10,29 @@ XY Actor::pos() const { return _pos; }
 
 HP Actor::hp() const { return _hp; }
 
-// move() TBI by subclass
+void Actor::name(string _name_) { _name = _name_; }
+void Actor::pos(XY _pos_) { _pos = _pos_; }
+void Actor::hp(HP _hp_) { _hp = _hp_; }
 
-// Default behaviour: no HP damage
-// its for the walls
-void Actor::take_damage(HP delta) {}
+// move() TBI by subclass
+// defauly: 1 step by direction for hero, 2 steps for monster?????
+// so it has a "cause" for pure virtual
+void Wall::move(Direction d) {}
+
+void Hero::move(Direction d) {}
+
+void Monster::move(Direction d) {}
+
+// Default behaviour: HP damage
+void Actor::take_damage(HP delta) { 
+	decltype(hp()) new_hp = hp() - delta;
+	hp(new_hp);
+}
+
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX) {}
+
+void Wall::take_damage(HP delta) {
+	decltype(hp()) new_hp = hp() - 0; // 0 means no mod
+	hp(new_hp);
+}
+

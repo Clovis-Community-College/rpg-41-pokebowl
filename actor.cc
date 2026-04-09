@@ -2,13 +2,14 @@
 #include "llbridges.h"
 
 // Actor
-Actor::Actor(string init_name, XY init_xy, HP init_hp, float ids)
-	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _internal_damage_scale(ids) {}
+Actor::Actor(string init_name, XY init_xy, HP init_hp, decltype(_internal_damage_scale) ids, decltype (_start_speed) ss)
+	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _internal_damage_scale(ids), _start_speed(ss) {}
 // HP max is init to current HP (aka all actors has 100% health)
 
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
+decltype(Actor::_start_speed) Actor::start_speed() const { return _start_speed; }
 
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }

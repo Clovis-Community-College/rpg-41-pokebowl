@@ -14,7 +14,7 @@ class HasInitiative {
 	int8_t _speed;
 public:
 	decltype(_speed) speed();
-	// delclare here & impl in cc sth like: void speed(Actor* actor);
+	// declare skeleton here & impl func in cc sth like: return-type-here speed(Actor* actor);
 };
 
 #endif

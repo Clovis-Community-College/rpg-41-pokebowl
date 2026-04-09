@@ -14,7 +14,7 @@ class HasInitiative {
 	int8_t _speed;
 public:
 	// Initial speed:
-	// actor->start_speed holds the initial speed valur for each actor
+	// actor->start_speed() holds the initial speed valur for each actor
 	// use that then add on the dice
 	decltype(_speed) speed(Actor* actor);
 };

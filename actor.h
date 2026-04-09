@@ -40,10 +40,13 @@ private:
 	// Invariant: 0 <= hp <= HP_MAX, no negative hp (except for -1, DEAD actor)
 	HP _hp;
 
+	// Turn order.
+	const int8_t _start_speed;
+
 	// Damage modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
-	float _internal_damage_scale;
+	const float _internal_damage_scale;
 
 	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned
 					  // at cstor so its okay
@@ -58,12 +61,13 @@ protected:
 
 public:
 	// Cstor
-	Actor(string init_name, XY init_xy, HP init_hp, float ids = 1);
+	Actor(string init_name, XY init_xy, HP init_hp, decltype(_internal_damage_scale) ids = 1, decltype(_start_speed) ss = 1);
 
 	// Get (no set)
 	string name() const;
 	XY pos() const;
 	HP hp() const;
+	decltype(_start_speed) start_speed() const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps

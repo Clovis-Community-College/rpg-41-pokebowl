@@ -2,6 +2,6 @@
 
 int main() { 
 	Wall w({0,0});
-	Hero h("hero", {0,1}, 3);
-	Monster m("monster", {0,2}, 3);
+	Aleph h("hero", {0,1}, 3);
+	Alpha m("monster", {0,2}, 3);
 }

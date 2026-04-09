@@ -46,6 +46,7 @@ protected:
 
 public:
 	// Cstor
+	Actor(string init_name);
 	Actor(string init_name, XY init_xy, HP init_hp);
 
 	// Get (no set)
@@ -59,7 +60,7 @@ public:
 	virtual void move(Direction d) = 0;
 
 	// Do damage to another Actor.
-	// Defaults to no damage.
+	// Defaults to 'delta' damage, impl by subclass
 	virtual void take_damage(HP delta);
 };
 
@@ -73,34 +74,59 @@ public:
 class Hero : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
-	void move(Direction d) override final; // !!!!!!!! each hero is unique, so cannot final here
+	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
 };
 
 // Hero - Hebrew
-class Aleph : public Hero {}
-class Bet : public Hero {}
-class Gimel : public Hero {}
-class Dalet : public Hero {}
-class He : public Hero {}
-class Vav : public Hero {}
-class Zayin : public Hero {}
-class Chet : public Hero {}
+// internal names only
+class Aleph : public Hero {
+	using Hero::Hero;
+};
 
-// Monster - Military
-class Alpha : public Monster {}
-class Bravo : public Monster {}
-class Charlie : public Monster {}
-class Delta : public Monster {}
-class Echo : public Monster {}
-class Foxtrot : public Monster {}
-class Golf : public Monster {}
-class Hotel : public Monster {}
+class Bet : public Hero {
+	using Hero::Hero;
+};
+
+class Gimel : public Hero {
+	using Hero::Hero;
+};
+
+class Dalet : public Hero {
+	using Hero::Hero;
+};
+
+class He : public Hero {
+	using Hero::Hero;
+};
+
+class Vav : public Hero {
+	using Hero::Hero;
+};
+
+class Zayin : public Hero {
+	using Hero::Hero;
+};
+
+class Chet : public Hero {
+	using Hero::Hero;
+};
 
 class Monster : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
-	void move(Direction d) override final; // !!!!!!!! each hero is unique, so cannot final here
+	void move(Direction d) override; // !!!!!!!! each hero is unique, so cannot final here
 };
+
+// Monster - Military
+// internal names only
+class Alpha : public Monster { using Monster::Monster; };
+class Bravo : public Monster { using Monster::Monster; };
+class Charlie : public Monster { using Monster::Monster; };
+class Delta : public Monster { using Monster::Monster; };
+class Echo : public Monster { using Monster::Monster; };
+class Foxtrot : public Monster { using Monster::Monster; };
+class Golf : public Monster { using Monster::Monster; };
+class Hotel : public Monster { using Monster::Monster; };
 
 // TODO: diagram with links to code snippets
 

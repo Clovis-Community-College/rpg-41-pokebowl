@@ -8,8 +8,9 @@ class Actor;
 class HasInitiative {
 	/*
 	Stub interface for Hero and Monster inheritance only
-	Feel free to add-edit-delete to manage speed as needed, just don't touch the
-	speed() interface
+	Feel free to add-edit-delete to manage speed as needed.
+	(and that includes, but not limited to, return type + param type, amt....)
+	just don't rename the speed() interface pls
 	*/
 	int8_t _speed;
 public:

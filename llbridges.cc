@@ -5,8 +5,10 @@
 using namespace std;
 
 void HasInitiative::check_speed() {
-	cerr << "_speed value error\n";
-	exit(EXIT_FAILURE);
+	if (_speed < 1 || _speed > 40) {
+		cerr << "_speed value error\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
 void HasInitiative::add_speed() {

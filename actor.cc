@@ -2,8 +2,8 @@
 #include "llbridges.h"
 
 // Actor
-Actor::Actor(string init_name, XY init_xy, HP init_hp)
-	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp) {}
+Actor::Actor(string init_name, XY init_xy, HP init_hp, float ids = 1)
+	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _internal_damage_scale(ids) {}
 // HP max is init to current HP (aka all actors has 100% health)
 
 string Actor::name() const { return _name; }
@@ -25,26 +25,22 @@ void Actor::hp(HP _hp_) {
 		_hp = _hp_;
 }
 
-void Actor::take_damage(HP delta) {
-	decltype(hp()) new_hp = hp() - delta;
+void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
+	float combined_hp_delta = hp_delta * external_damage_scale * _internal_damage_scale;
+	HP new_hp = std::floor((float)hp() - combined_hp_delta);
 	hp(new_hp);
 }
 
 // Wall
-Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX) {}
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, 0) {}
 
 void Wall::move(Direction d) {}
-
-void Wall::take_damage(HP delta) {
-	decltype(hp()) new_hp = hp() - 0;
-	hp(new_hp);
-}
 
 // Hero
 void Hero::move(Direction d) {}
 
 // H subs
-Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 500) {} // high HP
+Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 500, 0.5) {} // high HP, half dam
 Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
@@ -52,11 +48,6 @@ He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-
-void Aleph::take_damage(HP delta) {
-	decltype(hp()) new_hp = hp() - std::ceil(delta/2.0); // half dam
-	hp(new_hp);
-}
 
 // Monster
 void Monster::move(Direction d) {}

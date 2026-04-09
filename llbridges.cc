@@ -11,10 +11,12 @@ void HasInitiative::check_speed() {
 
 void HasInitiative::add_speed() {
 	_speed += ((rand() % 20) + 1);	
+	check_speed();
 } 
 
 void HasInitiative::edit_speed(int8_t val) {
 	_speed = val;
+	check_speed();
 }
 
 void HasInitiative::delete_speed() {

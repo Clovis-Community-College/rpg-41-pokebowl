@@ -2,6 +2,13 @@
 #include <cstdint>
 #include "llbridges.h"
 
+using namespace std;
+
+void HasInitiative::check_speed() {
+	cerr << "_speed value error\n";
+	exit(EXIT_FAILURE);
+}
+
 void HasInitiative::add_speed() {
 	_speed += ((rand() % 20) + 1);	
 } 

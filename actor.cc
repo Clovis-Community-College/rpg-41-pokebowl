@@ -41,7 +41,11 @@ void Wall::move(Direction d) {}
 void Hero::move(Direction d) {}
 
 // H subs
-Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 500, 0.5) {} // high HP, half dam
+Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, 0.75) {
+	// Snorlax-like
+	// very high HP, mid attk, slightly worse defense BUT very slow speed, go last
+}
+
 Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}

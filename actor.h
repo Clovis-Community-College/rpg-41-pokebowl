@@ -46,6 +46,7 @@ private:
 	// Damage modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
+	// In "defense" terms: 1/ids = defense pts.
 	const float _internal_damage_scale;
 
 	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned

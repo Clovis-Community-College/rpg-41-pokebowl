@@ -9,6 +9,9 @@
 
 using std::string, std::cout, std::cin, std::function;
 using HP = int32_t;
+using Speed = int8_t;
+using AttackHP = HP;
+using InversedDefensePoint = float;
 
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
@@ -40,17 +43,23 @@ private:
 	// Invariant: 0 <= hp <= HP_MAX, no negative hp (except for -1, DEAD actor)
 	HP _hp;
 
+	// Maximum HP an Actor has
+	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned
+					  // at cstor so its okay
+
+	// Attack power. 1 signifies no special, 1.x signifies BOOSTED, 0.5 is meh
+	// To be used by combat files to give out damage approriately
+	// Defaults to 1.
+	const AttackHP _damage_output;
+
 	// Turn order.
-	const int8_t _start_speed;
+	const Speed _starting_speed;
 
 	// Damage modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
 	// In "defense" terms: 1/ids = defense pts.
-	const float _internal_damage_scale;
-
-	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned
-					  // at cstor so its okay
+	const InversedDefensePoint _damage_scale;
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
@@ -58,17 +67,18 @@ protected:
 	// setter with validation
 	void name(string _name_);
 	void pos(XY _pos_);
-	void hp(HP _hp_);
+	void hp(HP _hp_); // only for internal HP modification.
 
 public:
 	// Cstor
-	Actor(string init_name, XY init_xy, HP init_hp, decltype(_internal_damage_scale) ids = 1, decltype(_start_speed) ss = 1);
+	Actor(string init_name, XY init_xy, HP init_hp, decltype(_damage_output) init_attack = 60, decltype(_damage_scale) ids = 1, decltype(_starting_speed) ss = 1);
 
 	// Get (no set)
 	string name() const;
 	XY pos() const;
 	HP hp() const;
-	decltype(_start_speed) start_speed() const;
+	decltype(_starting_speed) starting_speed() const;
+	decltype(_damage_output) damage_output() const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
@@ -80,8 +90,9 @@ public:
 	virtual void take_damage(HP hp_delta, float external_damage_scale);
 };
 
-// tbd: add overlayable (like sand or water, that has effect)
+// tbd: add overlayable (like sand or water that brings about effect)
 
+// Inyernal code for n9n-stationary obj
 class Wall : public Actor {
 public:
 	Wall(XY xy);
@@ -97,8 +108,9 @@ public:
 
 // Hero - Hebrew
 // internal names only
+
+// Snorlax-like
 class Aleph : public Hero {
-// Fighter 1, half damage instead of full
 public:
 	Aleph(string _name_, XY _pos_);
 };

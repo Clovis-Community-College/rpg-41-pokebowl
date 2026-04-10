@@ -20,6 +20,7 @@ public:
 	// Initial speed:
 	// actor->start_speed() holds the initial speed valur for each actor
 	// use it, then add on the dice onto '_speed'
+	
 	decltype(_speed) speed(Actor* actor);
 };
 

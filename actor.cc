@@ -2,14 +2,15 @@
 #include "llbridges.h"
 
 // Actor
-Actor::Actor(string init_name, XY init_xy, HP init_hp, decltype(_internal_damage_scale) ids, decltype (_start_speed) ss)
-	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _internal_damage_scale(ids), _start_speed(ss) {}
+Actor::Actor(string init_name, XY init_xy, HP init_hp, decltype(_damage_output) init_attack, decltype(_damage_scale) ids, decltype (_starting_speed) ss)
+	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _damage_output(init_attack), _damage_scale(ids), _starting_speed(ss) {}
 // HP max is init to current HP (aka all actors has 100% health)
 
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
-decltype(Actor::_start_speed) Actor::start_speed() const { return _start_speed; }
+decltype(Actor::_starting_speed) Actor::starting_speed() const { return _starting_speed; }
+decltype(Actor::_damage_output) Actor::damage_output() const { return _damage_output; }
 
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
@@ -27,7 +28,7 @@ void Actor::hp(HP _hp_) {
 }
 
 void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
-	float combined_hp_delta = hp_delta * external_damage_scale * _internal_damage_scale;
+	float combined_hp_delta = hp_delta * external_damage_scale * _damage_scale;
 	HP new_hp = std::floor((float)hp() - combined_hp_delta);
 	hp(new_hp);
 }
@@ -41,7 +42,11 @@ void Wall::move(Direction d) {}
 void Hero::move(Direction d) {}
 
 // H subs
-Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 500, 0.5) {} // high HP, half dam
+Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, 80, 0.75) {
+	// Snorlax-like
+	// very high HP, mid attk, slightly worse defense BUT very slow speed, go last
+}
+
 Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
 Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}

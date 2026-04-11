@@ -42,6 +42,11 @@ decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _tr
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
+void heal(HP delta) {
+	std::cerr << "pls use take_damage() with negative delta pls";
+	exit(0);
+}
+
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
 void Actor::hp(HP _hp_) {

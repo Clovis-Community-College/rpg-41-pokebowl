@@ -106,6 +106,8 @@ public:
 
 	bool is_dead() const;
 
+	void heal(HP delta);
+
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).

@@ -92,8 +92,13 @@ Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75
 	// very high HP, mid attk, slightly worse defense BUT very slow speed, go last
 }
 
-Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 100, Traits(200, 1.5, 8, 100)) {
+	// glass cannon
+}
+
+Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 200, Traits(60, 1, 50, 200)) {
+	// speedster - but "speed"-first not speed-first
+}
 Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}

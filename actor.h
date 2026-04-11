@@ -67,7 +67,7 @@ private:
 	HP _hp;
 
 	// Trait points.
-	const Traits _traits;
+	Traits _traits;
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
@@ -79,6 +79,7 @@ protected:
 
 public:
 	// Cstor
+	Actor() = delete;
 	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
 
 	// Virtual dstor for the virtual dstor god
@@ -86,6 +87,11 @@ public:
 
 	// Copy cstor for Party system
 	Actor(const Actor& actor);
+
+	// rule of 5 guys, gg
+	Actor& operator=(Actor& actor);
+	Actor(Actor&& actor);
+	Actor& operator=(Actor&& actor);
 
 	// Get (no set)
 	string name() const;

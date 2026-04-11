@@ -21,6 +21,19 @@ Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 
 Actor::~Actor() { }
 
+Actor& Actor::operator=(Actor& actor) {
+	_name = actor._name;
+        _pos = actor._pos;
+        _hp = actor._hp;
+	_traits = actor._traits;
+	return *this;
+}
+
+Actor::Actor(Actor&& actor) = default;
+
+Actor& Actor::operator=(Actor&& actor) = default;
+
+
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
@@ -73,13 +86,13 @@ Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75
 	// very high HP, mid attk, slightly worse defense BUT very slow speed, go last
 }
 
-Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
-Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250) {}
+Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 
 // Monster
 void Monster::move(Direction d) {}
@@ -89,11 +102,11 @@ bool Monster::is_boss() const { return false; }
 // M sub
 bool Foxtrot::is_boss() const { return true; }
 
-Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
-Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 250) {}
+Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}

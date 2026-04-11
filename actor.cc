@@ -63,7 +63,7 @@ void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
 }
 
 // Wall
-Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX) {}
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
 
 void Wall::move(Direction d) {}
 

@@ -19,6 +19,9 @@ struct XY {
 	int32_t x, y;
 };
 
+// for the love of god
+// pls dont brace init this thing
+// use cstor instead
 struct Traits {
 	// Maximum HP an Actor has
 	HP hp_max; // yes it is UNinitialized, oh the horror. but its deifned

@@ -38,6 +38,7 @@ string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
 decltype(Actor::_traits.starting_speed) Actor::starting_speed() const { return _traits.starting_speed; }
+decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _traits.attack_damage; }
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 

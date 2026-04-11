@@ -102,6 +102,7 @@ public:
 	HP hp() const;
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
+	decltype(_traits.attack_damage) attack_damage() const;
 
 	bool is_dead() const;
 

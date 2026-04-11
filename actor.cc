@@ -6,7 +6,7 @@ Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm)
 	: hp_max(_hpm), attack_damage(_do), hurt_scale(_hs), starting_speed(_ss) {}
 
 // Actor
-Actor::Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0})
+Actor::Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits)
 	: _name(init_name), _pos(init_xy), _hp(init_hp), _traits(init_traits) {}
 
 Actor::Actor(const Actor &actor) : _traits(actor._traits) {

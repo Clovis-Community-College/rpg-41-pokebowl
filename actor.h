@@ -79,7 +79,7 @@ protected:
 
 public:
 	// Cstor
-	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits);
+	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
 
 	// Virtual dstor for the virtual dstor god
 	virtual ~Actor();

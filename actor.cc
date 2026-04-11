@@ -6,6 +6,20 @@ Actor::Actor(string init_name, XY init_xy, HP init_hp, decltype(_damage_output) 
 	: _name(init_name), _pos(init_xy), _hp(init_hp), _hp_max(init_hp), _damage_output(init_attack), _damage_scale(ids), _starting_speed(ss) {}
 // HP max is init to current HP (aka all actors has 100% health)
 
+Actor::Actor(const Actor &actor)
+	: _hp_max(actor._hp_max), _damage_output(actor._damage_output),
+	_starting_speed(actor._starting_speed), _damage_scale(actor._damage_scale) {
+	_name = actor._name;
+	_pos = actor._pos;
+	_hp = actor._hp;
+//	_hp_max = actor._hp_max;
+//	_damage_output = actor._damage_output;
+//	_starting_speed = actor._starting_speed;
+//	_damage_scale = actor._damage_scale;
+}
+
+Actor::~Actor() { }
+
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }

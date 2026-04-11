@@ -76,6 +76,9 @@ public:
 	// Virtual dstor for the virtual dstor god
 	virtual ~Actor();
 
+	// Copy cstor for Party system
+	Actor(const Actor& actor);
+
 	// Get (no set)
 	string name() const;
 	XY pos() const;

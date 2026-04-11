@@ -1,6 +1,6 @@
 # <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> Pokébowl RPG
 
-> *slogan or short mythical text here. never gonna give u up, never gonna let u down, never gonna run around and desert u*
+> *Nintendo, please don't sue us. Sue Kerney for appproving this project instead.*
 
 ## What's this game about?
 blablabla. balbalbalbalajsjdhrgeuehehegeheb.

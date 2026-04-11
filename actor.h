@@ -19,6 +19,9 @@ struct XY {
 	int32_t x, y;
 };
 
+// for the love of god
+// pls dont brace init this thing
+// use cstor instead
 struct Traits {
 	// Maximum HP an Actor has
 	HP hp_max; // yes it is UNinitialized, oh the horror. but its deifned
@@ -99,6 +102,7 @@ public:
 	HP hp() const;
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
+	decltype(_traits.attack_damage) attack_damage() const;
 
 	bool is_dead() const;
 

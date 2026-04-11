@@ -38,6 +38,7 @@ string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
 decltype(Actor::_traits.starting_speed) Actor::starting_speed() const { return _traits.starting_speed; }
+decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _traits.attack_damage; }
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
@@ -63,7 +64,7 @@ void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
 }
 
 // Wall
-Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX) {}
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
 
 void Wall::move(Direction d) {}
 

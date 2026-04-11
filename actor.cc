@@ -39,7 +39,17 @@ Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, 0) {}
 void Wall::move(Direction d) {}
 
 // Hero
-void Hero::move(Direction d) {}
+void Hero::move(Direction d) {
+	XY p = pos();
+	switch (d) {
+		case UP: p.y--; break;
+		case DOWN: p.y++; break;
+		case LEFT: p.x--; break;
+		case RIGHT: p.x++; break;
+		default: break;
+	}
+	pos(p);
+}
 
 // H subs
 Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, 80, 0.75) {

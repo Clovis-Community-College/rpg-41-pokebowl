@@ -1,10 +1,96 @@
 #include "actor.h"
-#include <ctime> //to seed d20 rolls in speed(). see llbridges.cc
+#include "map.h"
+#include <ctime>
+#include <ncurses.h>
 
-int main() { 
-	srand(time({}));
-	Wall w({0,0});
-	Aleph h("hero", {0,1});
-	Alpha m("monster", {0,2});
-	Hero h1("",{0,0},22);
+int main() {
+  srand(time({}));
+  Wall w({0, 0});
+  Aleph h("hero", {0, 1});
+  Alpha m("monster", {98, 98});
+  Hero h1("", {100, 100}, 22);
+
+  Map world;
+  world.generate();
+
+  initscr();
+  raw();
+  keypad(stdscr, TRUE);
+  noecho();
+  curs_set(0);
+
+  if (has_colors()) {
+    start_color();
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(3, COLOR_BLUE, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+  }
+
+  // Force an initial draw by simulating a keypress or doing drawing before loop
+  // othrwise we gotta have them press a key
+  int ch = 0;
+  while (ch != 'q') {
+    switch (ch) {
+    case KEY_UP:
+      h1.move(UP);
+      break;
+    case KEY_DOWN:
+      h1.move(DOWN);
+      break;
+    case KEY_LEFT:
+      h1.move(LEFT);
+      break;
+    case KEY_RIGHT:
+      h1.move(RIGHT);
+      break;
+    }
+
+    int max_y, max_x;
+    getmaxyx(stdscr, max_y, max_x);
+
+    int start_y = h1.pos().y - max_y / 2;
+    int start_x = h1.pos().x - max_x / 2;
+
+    for (int y = 0; y < max_y; ++y) {
+      for (int x = 0; x < max_x; ++x) {
+        int map_x = start_x + x;
+        int map_y = start_y + y;
+        char tile = world.get_tile(map_x, map_y);
+
+        if (tile == '~') {
+          attron(COLOR_PAIR(3));
+          mvaddch(y, x, tile);
+          attroff(COLOR_PAIR(3));
+        } else if (tile == '.') {
+          attron(COLOR_PAIR(1));
+          mvaddch(y, x, tile);
+          attroff(COLOR_PAIR(1));
+        } else {
+          attron(COLOR_PAIR(4));
+          mvaddch(y, x, tile);
+          attroff(COLOR_PAIR(4));
+        }
+      }
+    }
+
+    int mx = m.pos().x - start_x;
+    int my = m.pos().y - start_y;
+    if (mx >= 0 && mx < max_x && my >= 0 && my < max_y) {
+      attron(COLOR_PAIR(2));
+      mvaddch(my, mx, 'M');
+      attroff(COLOR_PAIR(2));
+    }
+
+    int hx = h1.pos().x - start_x;
+    int hy = h1.pos().y - start_y;
+    attron(COLOR_PAIR(1));
+    mvaddch(hy, hx, '@');
+    attroff(COLOR_PAIR(1));
+
+    refresh();
+    ch = getch();
+  }
+
+  endwin();
 }

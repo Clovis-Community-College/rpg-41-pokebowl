@@ -11,12 +11,35 @@ using std::string, std::cout, std::cin, std::function;
 using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
-using InversedDefensePoint = float;
+using InversedDefenseScale = float;
 
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
 struct XY {
 	int32_t x, y;
+};
+
+struct Traits {
+	// Maximum HP an Actor has
+	HP hp_max; // yes it is UNinitialized, oh the horror. but its deifned
+	// at cstor so its okay
+
+	// Turn order.
+	Speed starting_speed;
+
+	// Attack power. 1 signifies no special, 1.x signifies BOOSTED, 0.5 is meh
+	// To be used by combat files to give out damage approriately
+	// Defaults to 1.
+	AttackHP attack_damage;
+
+	// Hurt scale/modulator.
+	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
+	// Defaults to 1
+	// In "defense" terms: 1/ids = defense pts.
+	InversedDefenseScale hurt_scale;
+
+	// cstor for struct lol
+	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm); 
 };
 
 enum Direction {
@@ -43,23 +66,8 @@ private:
 	// Invariant: 0 <= hp <= HP_MAX, no negative hp (except for -1, DEAD actor)
 	HP _hp;
 
-	// Maximum HP an Actor has
-	const HP _hp_max; // yes it is UNinitialized, oh the horror. but its deifned
-					  // at cstor so its okay
-
-	// Attack power. 1 signifies no special, 1.x signifies BOOSTED, 0.5 is meh
-	// To be used by combat files to give out damage approriately
-	// Defaults to 1.
-	const AttackHP _damage_output;
-
-	// Turn order.
-	const Speed _starting_speed;
-
-	// Damage modulator.
-	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
-	// Defaults to 1
-	// In "defense" terms: 1/ids = defense pts.
-	const InversedDefensePoint _damage_scale;
+	// Trait points.
+	Traits _traits;
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
@@ -71,14 +79,26 @@ protected:
 
 public:
 	// Cstor
-	Actor(string init_name, XY init_xy, HP init_hp, decltype(_damage_output) init_attack = 60, decltype(_damage_scale) ids = 1, decltype(_starting_speed) ss = 1);
+	Actor() = delete;
+	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
+
+	// Virtual dstor for the virtual dstor god
+	virtual ~Actor();
+
+	// Copy cstor for Party system
+	Actor(const Actor& actor);
+
+	// rule of 5 guys, gg
+	Actor& operator=(Actor& actor);
+	Actor(Actor&& actor);
+	Actor& operator=(Actor&& actor);
 
 	// Get (no set)
 	string name() const;
 	XY pos() const;
 	HP hp() const;
-	decltype(_starting_speed) starting_speed() const;
-	decltype(_damage_output) damage_output() const;
+	//Get for traits
+	decltype(_traits.starting_speed) starting_speed() const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
@@ -87,6 +107,7 @@ public:
 
 	// Do damage to another Actor.
 	// Defaults to 'delta' damage, impl by subclass
+	// Secret sauce: do a NEGATIVE delta to "heal" actors.
 	virtual void take_damage(HP hp_delta, float external_damage_scale);
 };
 

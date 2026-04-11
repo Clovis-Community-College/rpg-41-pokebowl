@@ -39,6 +39,6 @@ void WeatherSystem::Update(const Map&, const XY& pos){
 	cycle =10;
 }
 
-String WeatherSystem::getWeather() const{
+string WeatherSystem::getWeather() const{
 	return weather;
 }

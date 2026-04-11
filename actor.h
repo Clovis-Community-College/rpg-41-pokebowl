@@ -73,6 +73,9 @@ public:
 	// Cstor
 	Actor(string init_name, XY init_xy, HP init_hp, decltype(_damage_output) init_attack = 60, decltype(_damage_scale) ids = 1, decltype(_starting_speed) ss = 1);
 
+	// Virtual dstor for the virtual dstor god
+	virtual ~Actor();
+
 	// Get (no set)
 	string name() const;
 	XY pos() const;

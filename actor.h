@@ -91,6 +91,8 @@ public:
 	string name() const;
 	XY pos() const;
 	HP hp() const;
+	//Get for traits
+	decltype(_traits.starting_speed) starting_speed() const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps

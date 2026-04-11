@@ -24,6 +24,9 @@ Actor::~Actor() { }
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
+decltype(Actor::_traits.starting_speed) Actor::starting_speed() const { return _traits.starting_speed; }
+
+
 
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }

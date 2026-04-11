@@ -9,7 +9,7 @@ int main() {
   Aleph h("hero", {0, 1});
   Alpha m("monster", {98, 98});
   Hero h1("", {100, 100}, 22);
-
+/*
   Map world;
   world.generate();
 
@@ -93,4 +93,5 @@ int main() {
   }
 
   endwin();
+*/
 }

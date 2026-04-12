@@ -104,7 +104,10 @@ Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 400, Traits(20, 0.75
 	// tbd: healer
 }
 
-He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {
+
+
+}
 Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}

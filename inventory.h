@@ -24,28 +24,27 @@ class Inventory{
 
 	Node* rinsert(Node* temp, const Item& item);
 	Node* rsearch(Node*temp, const string& name) const;
-	Node* rdelete(Node* temp, const string& name, bool& deleted);
-	Node* rmin(Node* temp) const;
 
 	public:
 	Inventory();
 	~Inventory();
-
+	
+	//some funcs will be bools to be used as checkers for other functions, will also perform act within function before returning true/false
 	void insert(const Item& item);
-	bool deletes(const string &name);
-	bool drop(const string& name);
+	bool remove(const string &name);///special key items can be removed for quest reasons only
+	bool drop(const string& name);///note that special key items can not be dropped
 	bool contains(const string& name) const;
-	int getItemCount(const string& name) const;
+	int get_item_count(const string& name) const;
 	void print() const;
 
-	void addpokecoins(int amount);
-	bool spendcoins(int amount);
+	void add_pokecoins(int amount);
+	bool spend_coins(int amount);
 
 	bool buy(const Item& item);
 	bool sell(const string& name);
 
-	int getsize() const;
-	int getcoins() const;
+	int get_size() const;
+	int get_coins() const;
 
 
 };

@@ -38,3 +38,157 @@ Inventory::Node *Inventory::rinsert(Node *temp, const Item &item) {
   }
   return temp;
 }
+	
+Inventory::Node* Inventory::rsearch(Node* temp,const string& name) const{
+	if(temp==nullptr)
+		return nullptr;
+
+	if(name==temp->data.get_name())
+		return temp;
+	if(name<temp->data.get_name())
+		return rsearch(temp->left,name);
+	else
+		return rsearch(temp->right,name);
+}
+
+void Inventory::insert(const Item& item){
+	root= rinsert(root,item);
+}
+
+bool Inventory::contains(const string& name) const{
+	if(rsearch(root,name)==nullptr)
+		return false;
+	else
+		return true;
+}
+
+int Inventory::get_item_count(const string& name) const{
+	Node* exists = rsearch(root,name);
+
+	if(exists==nullptr)
+		return 0;
+	else
+		return exists->count;
+}
+
+void Inventory::print() const{
+	rprint(root);
+}
+
+void Inventory::add_pokecoins(int amount){
+	if(amount>0)
+		pokecoins= pokecoins+amount;
+}
+
+bool Inventory::spend_coins(int amount){
+	if (amount>pokecoins ||  amount<0)
+		return false;
+	
+	pokecoins = pokecoins- amount;
+	return true;
+}
+
+bool Inventory::buy(const Item& item){
+	if (!spend_coins(item.get_cost()))
+		return false;
+
+	insert(item);//size adjusted
+	return true;
+}
+
+bool Inventory::sell(const string& item){
+	Node* exists = rsearch(root, item);
+
+	if(exists==nullptr)
+		return false;
+	if(exists->data.is_special())
+		return false;
+
+	int amount = exists->data.get_cost();
+
+	if(!remove(item))//size adjusted
+		return false;
+
+	add_pokecoins(amount);
+	return true;
+}
+
+
+bool Inventory::drop(const string& item){
+	Node* exists = rsearch(root, item);
+
+	if(exists==nullptr)
+		return false;
+	if(exists->data.is_special())
+		return false;
+
+	return remove(item);//size adjusted
+}
+
+bool Inventory::remove(const string& name){
+	Node* parent=nullptr;
+	Node* currentnode = root;
+
+	while(currentnode!=nullptr && currentnode->data.get_name()!=name){//will stop when reaches nullptr or of the names match to find where the node with the name is
+		parent=currentnode;
+
+		if(name>currentnode->data.get_name())
+			currentnode=currentnode->right;
+		else
+			currentnode= currentnode->left;
+	}
+
+	if(currentnode==nullptr)
+		return false;
+
+	if(currentnode->count >1){
+		currentnode->count--;
+		return true;
+	}
+
+	if (currentnode->left != nullptr && currentnode->right !=nullptr){
+		Node* parent2=currentnode;
+		Node* nextup = currentnode->right;
+
+
+		while(true){
+			if (nextup->left == nullptr)
+				break;
+			parent2=nextup;
+			nextup = nextup->left;
+		}
+		currentnode->data = nextup->data;
+		currentnode->count= nextup->count;
+
+		currentnode=nextup;
+		parent=parent2;
+
+	}
+
+	Node* kid;
+	if(currentnode->left !=nullptr)
+		kid=currentnode->left;
+	else
+		kid=currentnode->right;
+
+	if (parent==nullptr)
+		root=kid;
+	else if(parent->left==currentnode)
+		parent->left=kid;
+	else parent->right= kid;
+
+	delete currentnode;
+	size--;
+	return true;
+}
+
+int Inventory::get_size() const{
+	return size;
+}
+
+int Inventory::get_coins() const{
+	return pokecoins;
+}
+
+
+	

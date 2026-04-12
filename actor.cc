@@ -42,7 +42,7 @@ decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _tr
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
-void heal(HP delta) {
+void Actor::heal(HP delta) {
 	std::cerr << "pls use take_damage() with negative delta pls";
 	exit(0);
 }
@@ -99,7 +99,11 @@ Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 100, Traits(200, 1.5, 8,
 Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 200, Traits(60, 1, 50, 200)) {
 	// speedster - but "speed"-first not speed-first
 }
-Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+
+Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 400, Traits(20, 0.75, 1, 250)) {
+	// tbd: healer
+}
+
 He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
 Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}

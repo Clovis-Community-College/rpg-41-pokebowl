@@ -20,7 +20,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 #### Quality
 - **A)** Fun to play — `[💢]` — *Everyone*
 - **B)** Decent amount of content / take at least a little while to win — `[💢]` — *Everyone*
-- **C)** Has an interesting world map in color — `[🚧]` — *name*
+- **C)** Has an interesting world map in color — `[🚧]` — *McKay*
 - **D)** Win and lose — `[💢]` — *name*
 - **E)** Combat — `[💢]` — *name*
   

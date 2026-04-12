@@ -56,7 +56,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 - ncurses full-screen UI in raw mode, no Cin/Cout line scrolling — `[✅]`
 - Arrow key movement — `[✅]`
 - Color — `[✅]`
-- Scrollable world map with towns, lakes, and other features — `[🚧]`
+- Scrollable world map with towns, lakes, and other features — `[✅]`
 - Combat displayed on screen — `[💢]`
 - Inventory displayed on screen — `[💢]`
 - Party moves on map when arrow keys pressed — `[🚧]`
@@ -80,17 +80,14 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 
 ## Screenshots
 
-### Game state at week 1
-
-```
-[ unimplemented.png ]
-```
-
 ### Commit log
 
-```
-[ unimplemented.png ]
-```
+![w1 log](https://raw.githubusercontent.com/Clovis-Community-College/rpg-41-pokebowl/refs/heads/main/Screenshot_20260411_193922_Termux.png)
+<em>Week 1 commit log</em>
+
+### Game state at week 1
+
+![Game state](https://raw.githubusercontent.com/Clovis-Community-College/rpg-41-pokebowl/refs/heads/main/Screenshot_20260411_192807_Termux.png)
 
 ### BRIDGES combat
 

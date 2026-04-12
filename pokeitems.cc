@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+
 Item::Item():name(""),itemtype(""),cost(0),heal(0),damage(0),special(false){}
 
 Item::Item(const string& newname, const string& newtype,int newcost,int newheal,int newdamage, bool newspecial):name(newname), itemtype(newtype), cost(newcost),heal(newheal),damage(newdamage),special(newspecial){}
@@ -55,10 +56,6 @@ void Item::set_damage(int newdamage){
 void Item::set_special(bool newspecial){
 	special=newspecial;
 }
-
-
-
-
 
 
 

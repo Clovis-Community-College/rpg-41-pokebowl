@@ -7,7 +7,7 @@
 class Party {
 public:
 	// party.bank for the vector
-	vector<Actor*> bank;
+	std::vector<Actor*> bank;
 };
 
 #endif

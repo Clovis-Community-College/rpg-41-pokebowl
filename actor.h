@@ -12,6 +12,7 @@ using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
 using InversedDefenseScale = float;
+using ActorType = string;
 
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
@@ -100,6 +101,10 @@ public:
 	string name() const;
 	XY pos() const;
 	HP hp() const;
+	
+	// type of Wall, Hero, Mob into string	
+	virtual ActorType type() const = 0;
+
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
@@ -125,12 +130,14 @@ public:
 class Wall : public Actor {
 public:
 	Wall(XY xy);
+	ActorType type() const override;
 	void move(Direction d) override final;
 };
 
 class Hero : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
+	ActorType type() const override;
 	void move(Direction d)
 		override; // !!!!!!!! each hero is unique, so cannot final here
 };
@@ -185,6 +192,7 @@ public:
 class Monster : public Actor, public HasInitiative {
 public:
 	using Actor::Actor;
+	ActorType type() const override;
 	virtual bool is_boss() const; // default to false
 	void move(Direction d)
 		override; // !!!!!!!! each hero is unique, so cannot final here

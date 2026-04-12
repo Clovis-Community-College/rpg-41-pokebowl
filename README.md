@@ -82,12 +82,12 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 
 ### Commit log
 
-![w1 log](https://raw.githubusercontent.com/Clovis-Community-College/rpg-41-pokebowl/refs/heads/main/Screenshot_20260411_193922_Termux.png)
+![w1 log](Screenshot_20260412_000553_Termux.png)
 <em>Week 1 commit log</em>
 
 ### Game state at week 1
 
-![Game state](https://raw.githubusercontent.com/Clovis-Community-College/rpg-41-pokebowl/refs/heads/main/Screenshot_20260411_192807_Termux.png)
+![Game state](Screenshot_20260411_192807_Termux.png)
 
 ### BRIDGES combat
 

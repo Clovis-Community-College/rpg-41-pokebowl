@@ -83,7 +83,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 ### Commit log
 
 ![w1 log](https://raw.githubusercontent.com/Clovis-Community-College/rpg-41-pokebowl/refs/heads/main/Screenshot_20260411_193922_Termux.png)
-<em>Week 1 commit log</em>
+<p><em>Week 1 commit log</em></p>
 
 ### Game state at week 1
 

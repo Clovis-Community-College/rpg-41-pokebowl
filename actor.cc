@@ -71,9 +71,13 @@ void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
 // Wall
 Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
 
+ActorType Wall::type() const { return "wall"; }
+
 void Wall::move(Direction d) {}
 
 // Hero
+ActorType Hero::type() const { return "hero"; }
+
 void Hero::move(Direction d) {
 	XY p = pos();
 	switch (d) {
@@ -125,6 +129,8 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 
 // Monster
 void Monster::move(Direction d) {}
+
+ActorType Monster::type() const { return "monster"; }
 
 bool Monster::is_boss() const { return false; }
 

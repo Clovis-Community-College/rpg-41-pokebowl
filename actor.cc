@@ -131,11 +131,36 @@ bool Monster::is_boss() const { return false; }
 // M sub
 bool Foxtrot::is_boss() const { return true; }
 
-Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
-Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(80, 0.75, 1, 250)) {}
+Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 100, Traits(40, 1.25, 5, 100)) {
+	// Rattata
+	// alpha version monster, not alpha monster
+}
+
+Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 60, Traits(15, 1, 15, 60)) {
+	// Zubat
+	// weaker than rattata. but SHOULD BE more numerous?
+}
+
+Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 425, Traits(120, 0.9, 6, 425)) {
+	// Machoke
+}
+
+Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 1.4, 12, 200)) {
+	// Gengar, another glass cannon
+}
+
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(100, 1, 10, 300)) {
+	// Ditto
+}
+
+Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 3000, Traits(200, 0.5, 14, 3000)) {
+	// BOSS - mewtwo
+}
+
+Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 400, Traits(20, 0.7, 8, 400)) {
+	// Blissey, healer for monsters
+}
+
+Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 1.1, 19, 220)) {
+	// Persian
+}

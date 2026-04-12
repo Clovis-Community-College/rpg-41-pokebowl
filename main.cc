@@ -3,13 +3,30 @@
 #include <ctime>
 #include <ncurses.h>
 
+bool is_passable(char tile, Hero &hero) {
+  // Floor tiles are always passable
+  if (tile == '.' || tile == ' ')
+    return true;
+
+  // water
+  if (tile == '~')
+    return false;
+
+  // walls
+  if (tile == '#')
+    return false;
+
+  // default to true for everything else so we dont get stuck or somethin
+  return true;
+}
+
 int main() {
   srand(time({}));
   Wall w({0, 0});
   Aleph h("hero", {0, 1});
   Alpha m("monster", {98, 98});
   Hero h1("", {100, 100}, 22);
-/*
+
   Map world;
   world.generate();
 
@@ -31,19 +48,46 @@ int main() {
   // othrwise we gotta have them press a key
   int ch = 0;
   while (ch != 'q') {
+    int target_x = h1.pos().x;
+    int target_y = h1.pos().y;
+    Direction dir = UP;
+    bool wants_to_move = false;
+
     switch (ch) {
     case KEY_UP:
-      h1.move(UP);
+      target_y--;
+      dir = UP;
+      wants_to_move = true;
       break;
     case KEY_DOWN:
-      h1.move(DOWN);
+      target_y++;
+      dir = DOWN;
+      wants_to_move = true;
       break;
     case KEY_LEFT:
-      h1.move(LEFT);
+      target_x--;
+      dir = LEFT;
+      wants_to_move = true;
       break;
     case KEY_RIGHT:
-      h1.move(RIGHT);
+      target_x++;
+      dir = RIGHT;
+      wants_to_move = true;
       break;
+    }
+
+    if (wants_to_move) {
+      char target_tile = world.get_tile(target_x, target_y);
+
+      // Keep hero inside the map boundaries
+      if (target_x >= 0 && target_y >= 0 && target_x < world.get_width() &&
+          target_y < world.get_height()) {
+        if (is_passable(target_tile, h1)) {
+          h1.move(dir);
+        }
+      } else {
+        // Here you could add logic to load the next map!
+      }
     }
 
     int max_y, max_x;
@@ -93,5 +137,4 @@ int main() {
   }
 
   endwin();
-*/
 }

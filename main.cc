@@ -3,23 +3,6 @@
 #include <ctime>
 #include <ncurses.h>
 
-bool is_passable(char tile, Hero &hero) {
-  // Floor tiles are always passable
-  if (tile == '.' || tile == ' ')
-    return true;
-
-  // water
-  if (tile == '~')
-    return false;
-
-  // walls
-  if (tile == '#')
-    return false;
-
-  // default to true for everything else so we dont get stuck or somethin
-  return true;
-}
-
 int main() {
   srand(time({}));
   Wall w({0, 0});
@@ -82,11 +65,11 @@ int main() {
       // Keep hero inside the map boundaries
       if (target_x >= 0 && target_y >= 0 && target_x < world.get_width() &&
           target_y < world.get_height()) {
-        if (is_passable(target_tile, h1)) {
+        if (world.is_passable(target_x, target_y, h1)) {
           h1.move(dir);
         }
       } else {
-        // Here you could add logic to load the next map or whatever we wanna do
+        // logic to move to another map later on maybe here
       }
     }
 

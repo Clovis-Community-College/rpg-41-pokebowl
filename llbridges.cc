@@ -5,7 +5,7 @@
 using namespace std;
 
 void HasInitiative::check_speed() {
-	if (_speed < 1 || _speed > 40) {
+	if (_speed < 1 || _speed > 60) {
 		cerr << "_speed value error\n";
 		exit(EXIT_FAILURE);
 	}

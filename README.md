@@ -30,8 +30,8 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 - **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — `🚧` — *Tony*
 
 #### Consistency of work
-- **A)** Screenshot of game state, 1 week (embedded below) — `[💢]` — *name*
-- **B)** Screenshot of GitHub commit log showing consistent commits over time (embedded below) — `[💢]` — *name*
+- **A)** Screenshot of game state, 1 week (embedded below) — `[✅]` — *Tony*
+- **B)** Screenshot of GitHub commit log showing consistent commits over time (embedded below) — `[💢]` — *Tony*
  
 ### Individual
  

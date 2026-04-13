@@ -4,6 +4,18 @@
 
 using namespace std;
 
+void HasInitiative::begin_combat(vector<Actor*> involved) {
+	vector<Actor*> heroL;
+	vector<Actor*> enemyL;
+	for (auto x : involved) {
+		if (x->type() == "hero") {
+			heroL.push_back(x);
+		} else if (x->type() == "monster") {
+			enemyL.push_back(x);
+		}
+	}
+};
+
 void HasInitiative::check_speed() {
 	if (_speed < 1 || _speed > 60) {
 		cerr << "_speed value error\n";

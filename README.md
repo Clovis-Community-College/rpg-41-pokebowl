@@ -87,7 +87,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 
 ### Game state at week 1
 
-![Game state](Screenshot_20260411_192807_Termux.png)
+![Game state](Screenshot_20260412_204949_Termux.png)
 
 ### BRIDGES combat
 

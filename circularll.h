@@ -10,6 +10,7 @@ class CLL {
 			Node* next = nullptr;
 		};
 		Node* head = nullptr;
+		bridges::CircSLelement<Actor*> bHead;
 		Node* tail = nullptr;
 		unsigned int size{};
 	public:

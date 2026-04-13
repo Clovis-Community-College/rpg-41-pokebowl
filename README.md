@@ -46,8 +46,8 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 #### B — "BRIDGEngineer" (George)
 - `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it — `[✅]`
 - On combat start: roll d20 + speed, sort fastest-first into circular linked list — `[💢]`
-- Circular linked list for turn order: advance on turn end, wrap at tail, remove on death — `[💢]`
-- Snapshot command sends current turn order visualization to BRIDGES at any point in combat — `[💢]`
+- Circular linked list for turn order: advance on turn end, wrap at tail, remove on death — `[🚧]`
+- Snapshot command sends current turn order visualization to BRIDGES at any point in combat — `[🚧]`
 - Works for any combat — `[💢]`
 - Each BRIDGES node labeled with actor name + initiative value — `[💢]`
 - Screenshot of BRIDGES combat visualization embedded in README — `[💢]`
@@ -74,7 +74,7 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 - Coordinated with McKay (C) for inventory display, Tony (A) for hero/monster inventory ownership — `[💢]`
  
 #### E — "Scared Balloon" (Dillion)
-- Dynamic weather system — `[🚧]`
+- Dynamic weather system — `[✅]`
 - Quest system — `[💢]`
 - Hash table implemented and used as part of the system — `[💢]`
 

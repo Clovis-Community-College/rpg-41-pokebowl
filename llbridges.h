@@ -1,6 +1,5 @@
 #ifndef LLBRIDGES_H
 #define LLBRIDGES_H
-
 #include <cstdint>
 
 class Actor;

@@ -1,5 +1,7 @@
 #include "circularll.h"
 
+using namespace bridges;
+
 void CLL::list_insert(Actor* a) {
 	if (!head) {
 		head = tail = new Node{a};
@@ -15,4 +17,8 @@ void CLL::list_insert(Actor* a) {
 		cerr << "circularll.h: list_insert() error";
 		exit(EXIT_FAILURE);
 	}
+}
+
+void CLL::output_bridges() {
+	bridgesCSLL->visualize();
 }

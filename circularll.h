@@ -15,4 +15,5 @@ class CLL {
 	public:
 		bridges::Bridges* bridgesCSLL = new bridges::Bridges (3, "mediumrare", "132361449630");
 		void list_insert(Actor* a);
+		void output_bridges();
 };

@@ -69,7 +69,7 @@ int main() {
           h1.move(dir);
         }
       } else {
-        // Here you could add logic to load the next map or whatever we wanna do
+        // logic to move to another map later on maybe here
       }
     }
 

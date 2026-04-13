@@ -19,6 +19,9 @@ class WeatherSystem{
 		void Update(const Map& world, const XY& pos);
 
 		string getWeather() const;
+			
+		void printWeather();
+
 
 };
 

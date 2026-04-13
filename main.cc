@@ -1,5 +1,6 @@
 #include "actor.h"
 #include "map.h"
+#include "weather.h"
 #include <ctime>
 #include <ncurses.h>
 
@@ -11,6 +12,7 @@ int main() {
   Hero h1("", {100, 100}, 22);
 
   Map world;
+  WeatherSystem weather;
   world.generate();
 
   initscr();
@@ -114,6 +116,10 @@ int main() {
     attron(COLOR_PAIR(1));
     mvaddch(hy, hx, '@');
     attroff(COLOR_PAIR(1));
+
+	//weather test
+	weather.Update(world, h1.pos());
+	weather.printWeather();
 
     refresh();
     ch = getch();

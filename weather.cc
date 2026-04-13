@@ -2,6 +2,7 @@
 #include "map.h"
 #include "actor.h"
 #include <cstdlib>
+#include <iostream>
 
 using namespace std;
 
@@ -39,6 +40,12 @@ void WeatherSystem::Update(const Map&, const XY& pos){
 	cycle =10;
 }
 
+// return current weather
 string WeatherSystem::getWeather() const{
 	return weather;
+}
+
+//test work
+void WeatherSystem::printWeather(){
+	cout << "Weather: " << weather << endl;
 }

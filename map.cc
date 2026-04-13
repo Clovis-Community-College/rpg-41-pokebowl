@@ -6,8 +6,8 @@ Map::Map() : width(200), height(200) {
 }
 
 void Map::generate() {
-  for (int y = 10; y < 30; ++y) {
-    for (int x = 20; x < 40; ++x) {
+  for (int y = 60; y < 80; ++y) {
+    for (int x = 90; x < 110; ++x) {
       grid[y][x] = '~';
     }
   }

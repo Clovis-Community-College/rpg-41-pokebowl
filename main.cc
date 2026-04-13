@@ -1,5 +1,6 @@
 #include "actor.h"
 #include "map.h"
+#include "weather.h"
 #include <ctime>
 #include <ncurses.h>
 
@@ -11,6 +12,7 @@ int main() {
   Hero h1("", {100, 100}, 22);
 
   Map world;
+  WeatherSystem weather;
   world.generate();
 
   initscr();
@@ -25,6 +27,7 @@ int main() {
     init_pair(2, COLOR_RED, COLOR_BLACK);
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(5, COLOR_WHITE, COLOR_BLACK);
   }
 
   // Force an initial draw by simulating a keypress or doing drawing before loop
@@ -111,6 +114,13 @@ int main() {
 
     int hx = h1.pos().x - start_x;
     int hy = h1.pos().y - start_y;
+
+	// weather testing, temp
+	
+	weather.Update(world, h1.pos());
+	weather.draw(hx, hy, max_x, max_y);
+
+
     attron(COLOR_PAIR(1));
     mvaddch(hy, hx, '@');
     attroff(COLOR_PAIR(1));

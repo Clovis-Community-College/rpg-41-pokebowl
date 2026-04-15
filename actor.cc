@@ -164,7 +164,7 @@ Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 
 	// Gengar, another glass cannon
 }
 
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(100, 1, 10, 300)) {
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1, 10, 300)) {
 	// Ditto
 }
 

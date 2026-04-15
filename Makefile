@@ -24,7 +24,7 @@ a.out: $(OBJS)
 	@read -p "Run a.out too? [y/n]: " ans; \
 	if [ "$$ans" = "y" ]; then ./$@; fi
 	
-%.o: %.cc $(wildcard %.h)
+%.o: %.cc
 	@ # -MMD -MP auto-magically consider all @ #include-s when
 	@ # compiling .o; this way we dont have to do
 	@ # tons of a.cc a.h b.h c.h d.h, etc. manually.
@@ -45,7 +45,7 @@ a.out: $(OBJS)
 
 clean:
 	@ # C++ related files
-	@rm -f *.o *.d a.out
+	@rm -f *.o a.out
 
 	@ # Junk temp files
 	@rm -f .*.swp *.save* *.orig

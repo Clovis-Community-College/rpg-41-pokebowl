@@ -3,10 +3,12 @@
 #include "Bridges.h"
 #include "CircSLelement.h"
 
+
+//What is the function of the boolean that returns true/false for each actor loop in the CLL
 class CLL {
 	private:
 		struct Node {
-			Actor* attacker = nullptr;
+			Actor* actorPointer = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
 		};

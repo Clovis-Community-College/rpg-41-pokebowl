@@ -73,13 +73,15 @@ private:
 	// Trait points.
 	Traits _traits;
 
+	// set hp with bounds
+	void hp(HP _hp_); // only for internal HP modification.
+
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 
 	// setter with validation
 	void name(string _name_);
 	void pos(XY _pos_);
-	void hp(HP _hp_); // only for internal HP modification.
 
 public:
 	// Cstor
@@ -93,7 +95,7 @@ public:
 	Actor(const Actor& actor);
 
 	// rule of 5 guys, gg
-	Actor& operator=(Actor& actor);
+	Actor& operator=(const Actor& actor);
 	Actor(Actor&& actor);
 	Actor& operator=(Actor&& actor);
 
@@ -111,17 +113,21 @@ public:
 
 	bool is_dead() const;
 
-	void heal(HP delta);
-
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).
 	virtual void move(Direction d) = 0;
 
-	// Do damage to another Actor.
+	// Do damage to Actor.
 	// Defaults to 'delta' damage, impl by subclass
 	// Secret sauce: do a NEGATIVE delta to "heal" actors.
 	virtual void take_damage(HP hp_delta, float external_damage_scale);
+
+	// Add HP to Actor.
+	// Defaults to 'delta' damage, impl by subclass
+	virtual void cure_damage(HP hp_delta, float external_damage_scale);
+
+	void heal(HP delta);
 };
 
 // tbd: add overlayable (like sand or water that brings about effect)

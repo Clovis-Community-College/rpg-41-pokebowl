@@ -21,7 +21,7 @@ Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 
 Actor::~Actor() { }
 
-Actor& Actor::operator=(Actor& actor) {
+Actor& Actor::operator=(const Actor& actor) {
 	_name = actor._name;
         _pos = actor._pos;
         _hp = actor._hp;
@@ -43,8 +43,8 @@ decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _tr
 bool Actor::is_dead() const { return (_hp <= 0); }
 
 void Actor::heal(HP delta) {
-	std::cerr << "pls use take_damage() with negative delta pls";
-	exit(0);
+	std::cerr << "pls use take_damage() wpls";
+	exit(EXIT_FAILURE);
 }
 
 void Actor::name(string _name_) { _name = _name_; }
@@ -62,9 +62,18 @@ void Actor::hp(HP _hp_) {
 		_hp = _hp_;
 }
 
+// if have time, refactor into one generalized function
 void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
+	if (hp_delta < 0) { std::cerr << "hp_delta for take_damage is less than 0"; exit(EXIT_FAILURE); }
 	float combined_hp_delta = hp_delta * external_damage_scale * _traits.hurt_scale;
 	HP new_hp = std::floor((float)hp() - combined_hp_delta);
+	hp(new_hp);
+}
+
+void Actor::cure_damage(HP hp_delta, float external_damage_scale = 1) {
+	if (hp_delta < 0) { std::cerr << "hp_delta for cure_damage is less than 0"; exit(EXIT_FAILURE); }
+	float combined_hp_delta = hp_delta * external_damage_scale * _traits.hurt_scale;
+	HP new_hp = std::floor((float)hp() + combined_hp_delta);
 	hp(new_hp);
 }
 
@@ -155,7 +164,7 @@ Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 
 	// Gengar, another glass cannon
 }
 
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(100, 1, 10, 300)) {
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1, 10, 300)) {
 	// Ditto
 }
 

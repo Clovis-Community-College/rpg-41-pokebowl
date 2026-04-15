@@ -8,7 +8,7 @@
 class CLL {
 	private:
 		struct Node {
-			Actor* actorPointer = nullptr;
+			Actor* actorPTR = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
 		};

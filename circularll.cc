@@ -59,6 +59,42 @@ void CLL::list_insert(Actor* a) {
 }
 
 void CLL::list_delete(Actor* a) {
+	if (!size) {//empty
+	cout << "empty. yup\n";
+		return;
+} 
+if (size == 1 && head->actorPTR == a) { //deleting from size 1
+	delete head;
+	head = nullptr;
+	size = 0;
+	return;
+}
+Node* tmp = head;
+if (head->actorPTR == a) {
+	head->prev->next = head->next;
+	head = head->next;
+	size--;
+	delete tmp;
+	return;
+}
+Node* prev = head;
+tmp = tmp->next;
+while (1) {
+	if (tmp->actorPTR == a) {
+		prev->next = tmp->next;
+		if (tmp == head->prev) {
+			head->prev = prev;
+		}
+		size--;
+		delete tmp;
+		return;
+	}
+	if (tmp == head->prev) return;
+	tmp = tmp->next;
+	prev = prev->next;
+}
+
+	/*
 	if (!size) return;
 	if (size == 1 && head->attacker == a) {
 		delete head;
@@ -89,7 +125,7 @@ void CLL::list_delete(Actor* a) {
 		if (tmp == tail) return;
 		tmp = tmp->next;
 		prev = prev->next;
-	}
+	}*/
 }
 
 void CLL::output_bridges() {

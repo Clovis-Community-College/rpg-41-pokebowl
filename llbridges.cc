@@ -17,7 +17,8 @@ void HasInitiative::begin_combat(vector<Actor*> involved) {
 		} else if (x->type() == "monster") {
 			enemyL.push_back(x);
 		}
-		///*
+		//WORK IN PROGRESS
+		/*
 		while (heroL.size() or enemyL.size()) {
 			if (heroL.size()) {
 				Actor* maxSpeed{};
@@ -34,9 +35,9 @@ void HasInitiative::begin_combat(vector<Actor*> involved) {
 				
 			}
 		}
-		//*/
+		*/
 	}
-	CLL linkeddList;
+	//CLL linkeddList;
 };
 
 void HasInitiative::check_speed() {

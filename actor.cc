@@ -21,7 +21,7 @@ Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 
 Actor::~Actor() { }
 
-Actor& Actor::operator=(Actor& actor) {
+Actor& Actor::operator=(const Actor& actor) {
 	_name = actor._name;
         _pos = actor._pos;
         _hp = actor._hp;
@@ -164,7 +164,7 @@ Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 
 	// Gengar, another glass cannon
 }
 
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 250, Traits(100, 1, 10, 300)) {
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1, 10, 300)) {
 	// Ditto
 }
 

@@ -95,7 +95,7 @@ public:
 	Actor(const Actor& actor);
 
 	// rule of 5 guys, gg
-	Actor& operator=(Actor& actor);
+	Actor& operator=(const Actor& actor);
 	Actor(Actor&& actor);
 	Actor& operator=(Actor&& actor);
 

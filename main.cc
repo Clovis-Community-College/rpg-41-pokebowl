@@ -5,7 +5,7 @@
 #include <ncurses.h>
 
 int main() {
-  srand(time({}));
+//  srand(time({}));
   Wall w({0, 0});
   Aleph h("hero", {0, 1});
   Alpha m("monster", {98, 98});

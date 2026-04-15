@@ -5,6 +5,39 @@ using namespace bridges;
 
 void CLL::list_insert(Actor* a) {
 	if (!head) {
+	/*
+	head = head->prev = new Node{a, };
+	size = 1;
+	head->next = head->prev;
+	head->prev->next = head;
+	return;
+	*/
+	
+	head = new Node{ a};
+	head->next = head;
+	head->prev = head;
+	//head = new Node{ a};
+	//head->next = head;
+	//head->prev = head;
+	pointy = head;
+	size = 1;
+	return;
+	}
+	if (head == head->prev) {
+		head->prev = new Node{ a , head, head };
+		head->next = head->prev;
+		size++;
+		return;
+	}
+	if (head != head->prev) {
+		head->prev->next = new Node{ a , head, head->prev};
+		head->prev = head->prev->next;
+		//tail->next = head;
+		size++;
+	}
+
+	/* OLD METHOD
+	if (!head) {
 		head = tail = new Node{a};
 		//CircSLelement<Actor*>* e1 = new CircSLelement<Actor*>(a);	
 		size = 1;
@@ -22,6 +55,7 @@ void CLL::list_insert(Actor* a) {
 		cerr << "circularll.h: list_insert() error";
 		exit(EXIT_FAILURE);
 	}
+	*/
 }
 
 void CLL::list_delete(Actor* a) {

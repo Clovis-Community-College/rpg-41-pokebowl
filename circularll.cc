@@ -10,6 +10,7 @@ void CLL::list_insert(Actor* a) {
 		size = 1;
 		return;
 	}
+	//remove if/ else
 	if (head == tail || head != tail) {
 		tail->next = new Node{a};
 		tail = tail->next;

@@ -21,7 +21,7 @@ Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 
 Actor::~Actor() { }
 
-Actor& Actor::operator=(Actor& actor) {
+Actor& Actor::operator=(const Actor& actor) {
 	_name = actor._name;
         _pos = actor._pos;
         _hp = actor._hp;

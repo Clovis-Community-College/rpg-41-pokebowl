@@ -73,13 +73,15 @@ private:
 	// Trait points.
 	Traits _traits;
 
+	// set hp with bounds
+	void hp(HP _hp_); // only for internal HP modification.
+
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 
 	// setter with validation
 	void name(string _name_);
 	void pos(XY _pos_);
-	void hp(HP _hp_); // only for internal HP modification.
 
 public:
 	// Cstor

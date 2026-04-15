@@ -31,13 +31,29 @@ void CLL::list_delete(Actor* a) {
 		size = 0;
 		return;
 	}
-
 	Node* tmp = head;
-	if (tmp->attacker == a) {
-		Node* linker = tmp;
-		linker = linker->next;
-		tail->next = linker;
+	if (head->attacker == a) {
+		tail->next = head->next;
+		head = head->next;
+		size--;
 		delete tmp;
+		return;
+	}
+	Node* prev = head;
+	tmp = tmp->next;
+	while (1) {
+		if (tmp->attacker == a) {
+			prev->next = tmp->next;
+			if (tmp == tail) {
+				tail = prev;
+			}
+			size--;
+			delete tmp;
+			return;
+		}
+		if (tmp == tail) return;
+		tmp = tmp->next;
+		prev = prev->next;
 	}
 }
 

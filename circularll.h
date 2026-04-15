@@ -6,7 +6,7 @@
 class CLL {
 	private:
 		struct Node {
-			Actor* attacker = nullptr;
+			Actor* actorPTR = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
 		};

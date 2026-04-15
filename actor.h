@@ -111,17 +111,21 @@ public:
 
 	bool is_dead() const;
 
-	void heal(HP delta);
-
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).
 	virtual void move(Direction d) = 0;
 
-	// Do damage to another Actor.
+	// Do damage to Actor.
 	// Defaults to 'delta' damage, impl by subclass
 	// Secret sauce: do a NEGATIVE delta to "heal" actors.
 	virtual void take_damage(HP hp_delta, float external_damage_scale);
+
+	// Add HP to Actor.
+	// Defaults to 'delta' damage, impl by subclass
+	virtual void cure_damage(HP hp_delta, float external_damage_scale);
+
+	void heal(HP delta);
 };
 
 // tbd: add overlayable (like sand or water that brings about effect)

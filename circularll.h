@@ -20,7 +20,8 @@ class CLL {
 		Node* pointy{};
 	public:
 		bridges::Bridges* bridgesCSLL = new bridges::Bridges (3, "mediumrare", "132361449630");
-		
+	
+		void reset_current_to_start();
 		void list_insert(Actor* a);
 		void list_delete(Actor* a);
 		void output_bridges();

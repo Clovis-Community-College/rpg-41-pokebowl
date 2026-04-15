@@ -58,6 +58,10 @@ void CLL::list_insert(Actor* a) {
 	*/
 }
 
+void CLL::reset_current_to_start() {
+	pointy = head;
+}
+
 void CLL::list_delete(Actor* a) {
 if (!size) {//empty
 	cout << "empty. yup\n";

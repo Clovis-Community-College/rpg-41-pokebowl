@@ -23,6 +23,24 @@ void CLL::list_insert(Actor* a) {
 	}
 }
 
+void CLL::list_delete(Actor* a) {
+	if (!size) return;
+	if (size == 1 && head->attacker == a) {
+		delete head;
+		tail = head = tail->next = head->next = nullptr;
+		size = 0;
+		return;
+	}
+
+	Node* tmp = head;
+	if (tmp->attacker == a) {
+		Node* linker = tmp;
+		linker = linker->next;
+		tail->next = linker;
+		delete tmp;
+	}
+}
+
 void CLL::output_bridges() {
 	bridgesCSLL->visualize();
 }

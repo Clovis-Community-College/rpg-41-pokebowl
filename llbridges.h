@@ -21,7 +21,7 @@ public:
 	// actor->starting_speed() holds the initial speed valur for each actor
 	// use it, then add on the dice onto '_speed'
 	void begin_combat(std::vector<Actor*> involved);
-
+	int8_t get_speed();
 	void check_speed(); //checks if current speed is valid (1-40)	
 	decltype(_speed) speed(Actor* actor);
 	void reset_speed(Actor* actor); //sets _speed to the Actor's original starting speed

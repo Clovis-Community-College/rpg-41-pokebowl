@@ -8,7 +8,12 @@ using namespace std;
 //int8_t HasInitiative::get_speed() { return _speed; }
 
 CLL* HasInitiative::begin_combat(vector<Actor*> involved) {
-	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){return a->starting_speed() < b->starting_speed();});
+	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){
+			HasInitiative* nuA = dynamic_cast<HasInitiative*>(a);
+			HasInitiative* nuB = dynamic_cast<HasInitiative*>(b);
+			
+			return nuA->_speed < nuB->_speed;
+		});
 	CLL* combatOrder = new CLL;
 	for (int i = 0; i < involved.size(); i++) { //insert all vector elements into the CLL
 		combatOrder->list_insert(involved.at(i));

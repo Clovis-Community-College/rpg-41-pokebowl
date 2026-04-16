@@ -58,40 +58,62 @@ void CLL::list_insert(Actor* a) {
 	*/
 }
 
+void CLL::reset_current_to_start() {
+	pointy = head;
+}
+
+pair<Actor*, bool> CLL::current() {
+	Actor* tmpActor = pointy->actorPTR;
+	if (pointy == head->prev) {	
+		reset_current_to_start();
+		pair<Actor*, bool> loopResult = {tmpActor, true};
+		return loopResult;
+	}
+	pointy = pointy->next;
+	pair<Actor*, bool> result = {tmpActor, false};
+	return result;
+}
+
 void CLL::list_delete(Actor* a) {
-	if (!size) {//empty
+if (!size) {//empty
 	cout << "empty. yup\n";
 		return;
 } 
 if (size == 1 && head->actorPTR == a) { //deleting from size 1
 	delete head;
+	pointy = nullptr;
 	head = nullptr;
 	size = 0;
 	return;
 }
 Node* tmp = head;
 if (head->actorPTR == a) {
+	if (pointy == head) {
+		pointy = pointy->next;
+	}
 	head->prev->next = head->next;
+	head->next->prev = head->prev;
 	head = head->next;
 	size--;
 	delete tmp;
+	
 	return;
 }
-Node* prev = head;
 tmp = tmp->next;
 while (1) {
+
 	if (tmp->actorPTR == a) {
-		prev->next = tmp->next;
-		if (tmp == head->prev) {
-			head->prev = prev;
+		tmp->prev->next = tmp->next; //link node before deleted one to next one
+		tmp->next->prev = tmp->prev;
+		if (tmp == pointy) {
+			pointy = pointy->next;
 		}
-		size--;
 		delete tmp;
+		size--;
 		return;
 	}
-	if (tmp == head->prev) return;
+	if (tmp == head) return;
 	tmp = tmp->next;
-	prev = prev->next;
 }
 
 	/*

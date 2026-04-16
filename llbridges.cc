@@ -14,7 +14,7 @@ CLL* HasInitiative::begin_combat(vector<Actor*> involved) {
 			
 			return nuA->_speed < nuB->_speed;
 		});
-	CLL* combatOrder = new CLL;
+	CLL* combatOrder = new CLL{};
 	for (int i = 0; i < involved.size(); i++) { //insert all vector elements into the CLL
 		combatOrder->list_insert(involved.at(i));
 	}

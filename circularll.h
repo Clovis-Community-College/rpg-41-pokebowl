@@ -11,6 +11,8 @@ class CLL {
 			Actor* actorPTR = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
+			Node(Actor* a) : actorPTR(a), next(nullptr), prev(nullptr) {}
+			
 		};
 		Node* head = nullptr;
 		bridges::CircSLelement<Actor*> bHead;

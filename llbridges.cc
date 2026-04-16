@@ -5,10 +5,10 @@
 
 using namespace std;
 
-int8_t HasInitiative::get_speed() { return _speed; }
+//int8_t HasInitiative::get_speed() { return _speed; }
 
 void HasInitiative::begin_combat(vector<Actor*> involved) {
-	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){return a->get_speed() < b->get_speed();});
+	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){return a->new_speed() < b->new_speed();});
 	//CLL linkeddList;
 };
 
@@ -19,7 +19,7 @@ void HasInitiative::check_speed() {
 	}
 }
 
-decltype(HasInitiative::_speed) HasInitiative::speed( Actor* actor) {
+decltype(HasInitiative::_speed)  HasInitiative::speed( Actor* actor) {
 	_speed = actor->starting_speed() + ((rand() % 20) + 1);
 	check_speed();
 	return _speed;

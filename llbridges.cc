@@ -8,35 +8,7 @@ using namespace std;
 int8_t HasInitiative::get_speed() { return _speed; }
 
 void HasInitiative::begin_combat(vector<Actor*> involved) {
-	vector<Actor*> heroL;
-	vector<Actor*> enemyL;
-	for (auto x : involved) {
-		speed(x);
-		if (x->type() == "hero") {
-			heroL.push_back(x);
-		} else if (x->type() == "monster") {
-			enemyL.push_back(x);
-		}
-		//WORK IN PROGRESS
-		/*
-		while (heroL.size() or enemyL.size()) {
-			if (heroL.size()) {
-				Actor* maxSpeed{};
-				for (int c = 0; c < heroL.size(); c++) {
-					for (int d = 0; d < heroL.size(); d++) {	
-						if (heroL.at(c) > heroL.at(d)) {
-							maxSpeed = heroL.at(c);
-
-						}
-					}
-				}
-			}
-			if (enemyL.size()) {
-				
-			}
-		}
-		*/
-	}
+	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){return a->get_speed() < b->get_speed();});
 	//CLL linkeddList;
 };
 

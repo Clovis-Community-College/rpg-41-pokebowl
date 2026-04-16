@@ -33,7 +33,6 @@ Actor::Actor(Actor&& actor) = default;
 
 Actor& Actor::operator=(Actor&& actor) = default;
 
-
 string Actor::name() const { return _name; }
 XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
@@ -43,10 +42,10 @@ decltype(Actor::_inv) Actor::items() const { return _inv; }
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
-void Actor::heal(HP delta) {
+/*void Actor::heal(HP delta) {
 	std::cerr << "pls use take_damage() wpls";
 	exit(EXIT_FAILURE);
-}
+}*/
 
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
@@ -71,9 +70,9 @@ void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
 	hp(new_hp);
 }
 
-void Actor::cure_damage(HP hp_delta, float external_damage_scale = 1) {
+void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 	if (hp_delta < 0) { std::cerr << "hp_delta for cure_damage is less than 0"; exit(EXIT_FAILURE); }
-	float combined_hp_delta = hp_delta * external_damage_scale * _traits.hurt_scale;
+	float combined_hp_delta = hp_delta * external_heal_scale;
 	HP new_hp = std::floor((float)hp() + combined_hp_delta);
 	hp(new_hp);
 }
@@ -99,6 +98,8 @@ void Hero::move(Direction d) {
 	}
 	pos(p);
 }
+
+
 
 // H subs
 Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750)) {
@@ -136,6 +137,15 @@ Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(20, 0.4,
 Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 16, 180)) {
 	// Assasin
 }
+
+void Aleph::special(vector<Actor*>& bank) {}
+void Bet::special(vector<Actor*>& bank) {}
+void Gimel::special(vector<Actor*>& bank) {}
+void Dalet::special(vector<Actor*>& bank) {}
+void He::special(vector<Actor*>& bank) {}
+void Vav::special(vector<Actor*>& bank) {}
+void Zayin::special(vector<Actor*>& bank) {}
+void Chet::special(vector<Actor*>& bank) {}
 
 // Monster
 void Monster::move(Direction d) {}
@@ -180,3 +190,12 @@ Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 400, Traits(20, 0.7
 Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 1.1, 19, 220)) {
 	// Persian
 }
+
+void Alpha::special(vector<Actor*>& bank) {}
+void Bravo::special(vector<Actor*>& bank) {}
+void Charlie::special(vector<Actor*>& bank) {}
+void Delta::special(vector<Actor*>& bank) {}
+void Echo::special(vector<Actor*>& bank) {}
+void Foxtrot::special(vector<Actor*>& bank) {}
+void Golf::special(vector<Actor*>& bank) {}
+void Hotel::special(vector<Actor*>& bank) {}

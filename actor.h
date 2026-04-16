@@ -30,7 +30,6 @@ struct Traits {
 
 	// Turn order.
 	Speed starting_speed;
-	Speed new_speed; //accessed by begin_combat() sort
 		
 	// Attack power. 1 signifies no special, 1.x signifies BOOSTED, 0.5 is meh
 	// To be used by combat files to give out damage approriately
@@ -111,7 +110,6 @@ public:
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
-	decltype(_traits.new_speed) new_speed() const;
 
 	bool is_dead() const;
 

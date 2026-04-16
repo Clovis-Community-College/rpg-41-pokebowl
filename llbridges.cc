@@ -5,39 +5,21 @@
 
 using namespace std;
 
-int8_t HasInitiative::get_speed() { return _speed; }
+//int8_t HasInitiative::get_speed() { return _speed; }
 
-void HasInitiative::begin_combat(vector<Actor*> involved) {
-	vector<Actor*> heroL;
-	vector<Actor*> enemyL;
-	for (auto x : involved) {
-		speed(x);
-		if (x->type() == "hero") {
-			heroL.push_back(x);
-		} else if (x->type() == "monster") {
-			enemyL.push_back(x);
-		}
-		//WORK IN PROGRESS
-		/*
-		while (heroL.size() or enemyL.size()) {
-			if (heroL.size()) {
-				Actor* maxSpeed{};
-				for (int c = 0; c < heroL.size(); c++) {
-					for (int d = 0; d < heroL.size(); d++) {	
-						if (heroL.at(c) > heroL.at(d)) {
-							maxSpeed = heroL.at(c);
-
-						}
-					}
-				}
-			}
-			if (enemyL.size()) {
-				
-			}
-		}
-		*/
+unique_ptr<CLL> HasInitiative::begin_combat(vector<Actor*> involved) {
+	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){
+			HasInitiative* nuA = dynamic_cast<HasInitiative*>(a);
+			HasInitiative* nuB = dynamic_cast<HasInitiative*>(b);
+			return nuA->_speed > nuB->_speed;
+		});
+	auto combatOrder = make_unique<CLL>();
+	for (int i = 0; i < involved.size(); i++) { //insert all vector elements into the CLL
+		combatOrder->list_insert(involved.at(i));
 	}
-	//CLL linkeddList;
+
+	return combatOrder;
+
 };
 
 void HasInitiative::check_speed() {
@@ -47,7 +29,7 @@ void HasInitiative::check_speed() {
 	}
 }
 
-decltype(HasInitiative::_speed) HasInitiative::speed( Actor* actor) {
+decltype(HasInitiative::_speed)  HasInitiative::speed( Actor* actor) {
 	_speed = actor->starting_speed() + ((rand() % 20) + 1);
 	check_speed();
 	return _speed;

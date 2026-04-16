@@ -92,6 +92,7 @@ if (head->actorPTR == a) {
 		pointy = pointy->next;
 	}
 	head->prev->next = head->next;
+	head->next->prev = head->prev;
 	head = head->next;
 	size--;
 	delete tmp;

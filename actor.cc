@@ -7,7 +7,7 @@ Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm)
 
 // Actor
 Actor::Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits)
-	: _name(init_name), _pos(init_xy), _hp(init_hp), _traits(init_traits) {}
+	: _name(init_name), _pos(init_xy), _hp(init_hp), _traits(init_traits), _inv(nullptr) {}
 
 Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 	_name = actor._name;
@@ -39,6 +39,7 @@ XY Actor::pos() const { return _pos; }
 HP Actor::hp() const { return _hp; }
 decltype(Actor::_traits.starting_speed) Actor::starting_speed() const { return _traits.starting_speed; }
 decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _traits.attack_damage; }
+decltype(Actor::_inv) Actor::items() const { return _inv; }
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 

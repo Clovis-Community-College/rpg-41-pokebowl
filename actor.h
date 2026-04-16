@@ -2,6 +2,7 @@
 #define ACTOR_H
 
 #include "llbridges.h"
+#include "inventory.h"
 #include <functional>
 #include <iostream>
 #include <string>
@@ -73,6 +74,9 @@ private:
 	// Trait points.
 	Traits _traits;
 
+	// inv, private use only
+	Inventory *_inv;
+
 	// set hp with bounds
 	void hp(HP _hp_); // only for internal HP modification.
 
@@ -103,6 +107,7 @@ public:
 	string name() const;
 	XY pos() const;
 	HP hp() const;
+	decltype(_inv) items() const;
 	
 	// type of Wall, Hero, Mob into string	
 	virtual ActorType type() const = 0;

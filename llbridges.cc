@@ -11,8 +11,7 @@ unique_ptr<CLL> HasInitiative::begin_combat(vector<Actor*> involved) {
 	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){
 			HasInitiative* nuA = dynamic_cast<HasInitiative*>(a);
 			HasInitiative* nuB = dynamic_cast<HasInitiative*>(b);
-			
-			return nuA->_speed < nuB->_speed;
+			return nuA->_speed > nuB->_speed;
 		});
 	auto combatOrder = make_unique<CLL>();
 	for (int i = 0; i < involved.size(); i++) { //insert all vector elements into the CLL

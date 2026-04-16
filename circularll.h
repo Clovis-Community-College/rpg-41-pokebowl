@@ -21,6 +21,7 @@ class CLL {
 		unsigned int size{};
 		Node* pointy{};
 	public:
+		CLL() : head(nullptr), size(0), pointy(nullptr) {}
 		bridges::Bridges* bridgesCSLL = new bridges::Bridges (3, "mediumrare", "132361449630");
 		pair<Actor*, bool> current();	
 		void reset_current_to_start();

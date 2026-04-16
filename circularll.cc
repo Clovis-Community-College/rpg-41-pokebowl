@@ -62,6 +62,18 @@ void CLL::reset_current_to_start() {
 	pointy = head;
 }
 
+pair<Actor*, bool> CLL::current() {
+	Actor* tmpActor = pointy->actorPTR;
+	if (pointy == head->prev) {	
+		reset_current_to_start();
+		pair<Actor*, bool> loopResult = {tmpActor, true};
+		return loopResult;
+	}
+	pointy = pointy->next;
+	pair<Actor*, bool> result = {tmpActor, false};
+	return result;
+}
+
 void CLL::list_delete(Actor* a) {
 if (!size) {//empty
 	cout << "empty. yup\n";

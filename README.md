@@ -82,12 +82,12 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 
 ### Commit log
 
-![w1 log](Screenshot_20260412_000553_Termux.png)
+![w1 log](https://i.ibb.co/0RQCqtY5/Screenshot-20260412-000553-Termux.png)
 <em>Week 1 commit log</em>
 
 ### Game state at week 1
 
-![Game state](Screenshot_20260412_204949_Termux.png)
+![Game state](https://i.ibb.co/PvNv5DZt/Screenshot-20260412-204949-Termux.png)
 
 ### BRIDGES combat
 

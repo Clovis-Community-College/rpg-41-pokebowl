@@ -1,7 +1,5 @@
 #include "actor.h"
 #include "llbridges.h"
-#include <cstdlib>
-#include <ctime>
 
 // Traits
 Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm) 

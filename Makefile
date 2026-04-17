@@ -1,6 +1,6 @@
 BRIDGES = -Ilibs/include
 CCFLAGS = -lncurses -lcurl -Wfatal-errors -Wno-sign-compare -g -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address -std=c++26 -O3
-SRCS = $(wildcard *.cc)
+SRCS := $(filter-out $(wildcard _*.cc), $(wildcard *.cc))
 OBJS = $(SRCS:.cc=.o)
 DEPS = $(OBJS:.o=.d)
 

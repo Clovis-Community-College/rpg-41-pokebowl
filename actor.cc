@@ -77,6 +77,24 @@ void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 	hp(new_hp);
 }
 
+// template method not useless
+// prevention - in case actor subgroup can be refactored
+void Hero::special(Bank& bank) {
+/*
+	// invoked on a HERO
+	// scour for FIRST monsteer opponent
+	decltype std::find_if(bank.start(), bank.end(), [&](decltype(*this) a, decltype(*this) b){
+
+	});
+*/
+	subclass_special(bank);
+}
+void Monster::special(Bank& bank) {
+	subclass_special(bank);
+
+	// ALL BELOW CMT R TRASH CMT, IGNORE
+	// take hero as oppo during porcessing stage
+}
 // Wall
 Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
 
@@ -136,18 +154,18 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 	// Assasin
 }
 
-void Aleph::subclass_special(vector<Actor*>& bank) {
+void Aleph::subclass_special(Bank& bank) {
 	// first opponent AFTER aleph
 	// tbd future memento: move into special()
 	Actor* opponent = nullptr; // sleepy placeholder
 }
-void Bet::subclass_special(vector<Actor*>& bank) {}
-void Gimel::subclass_special(vector<Actor*>& bank) {}
-void Dalet::subclass_special(vector<Actor*>& bank) {}
-void He::subclass_special(vector<Actor*>& bank) {}
-void Vav::subclass_special(vector<Actor*>& bank) {}
-void Zayin::subclass_special(vector<Actor*>& bank) {}
-void Chet::subclass_special(vector<Actor*>& bank) {}
+void Bet::subclass_special(Bank& bank) {}
+void Gimel::subclass_special(Bank& bank) {}
+void Dalet::subclass_special(Bank& bank) {}
+void He::subclass_special(Bank& bank) {}
+void Vav::subclass_special(Bank& bank) {}
+void Zayin::subclass_special(Bank& bank) {}
+void Chet::subclass_special(Bank& bank) {}
 
 // Monster
 void Monster::move(Direction d) {}
@@ -193,11 +211,11 @@ Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 
 	// Persian
 }
 
-void Alpha::subclass_special(vector<Actor*>& bank) {}
-void Bravo::subclass_special(vector<Actor*>& bank) {}
-void Charlie::subclass_special(vector<Actor*>& bank) {}
-void Delta::subclass_special(vector<Actor*>& bank) {}
-void Echo::subclass_special(vector<Actor*>& bank) {}
-void Foxtrot::subclass_special(vector<Actor*>& bank) {}
-void Golf::subclass_special(vector<Actor*>& bank) {}
-void Hotel::subclass_special(vector<Actor*>& bank) {}
+void Alpha::subclass_special(Bank& bank) {}
+void Bravo::subclass_special(Bank& bank) {}
+void Charlie::subclass_special(Bank& bank) {}
+void Delta::subclass_special(Bank& bank) {}
+void Echo::subclass_special(Bank& bank) {}
+void Foxtrot::subclass_special(Bank& bank) {}
+void Golf::subclass_special(Bank& bank) {}
+void Hotel::subclass_special(Bank& bank) {}

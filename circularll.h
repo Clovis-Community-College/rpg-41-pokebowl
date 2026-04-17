@@ -11,6 +11,8 @@ class CLL {
 			Actor* actorPTR = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
+			Node(Actor* a) : actorPTR(a), next(nullptr), prev(nullptr) {}
+			
 		};
 		Node* head = nullptr;
 		bridges::CircSLelement<Actor*> bHead;
@@ -19,6 +21,7 @@ class CLL {
 		unsigned int size{};
 		Node* pointy{};
 	public:
+		CLL() : head(nullptr), size(0), pointy(nullptr) {}
 		bridges::Bridges* bridgesCSLL = new bridges::Bridges (3, "mediumrare", "132361449630");
 		pair<Actor*, bool> current();	
 		void reset_current_to_start();

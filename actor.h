@@ -31,7 +31,7 @@ struct Traits {
 
 	// Turn order.
 	Speed starting_speed;
-
+		
 	// Attack power. 1 signifies no special, 1.x signifies BOOSTED, 0.5 is meh
 	// To be used by combat files to give out damage approriately
 	// Defaults to 1.

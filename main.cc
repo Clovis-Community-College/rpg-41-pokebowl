@@ -9,8 +9,8 @@ int main() {
   Wall w({0, 0});
   Aleph h("hero", {0, 1});
   Alpha m("monster", {98, 98});
-  Hero h1("", {100, 100}, 22);
-
+  Bet h1("", {100, 100});
+	Chet c("hero", {101, 2});
   Map world;
   WeatherSystem weather;
   world.generate();

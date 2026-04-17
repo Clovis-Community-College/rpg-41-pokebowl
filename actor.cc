@@ -99,8 +99,6 @@ void Hero::move(Direction d) {
 	pos(p);
 }
 
-
-
 // H subs
 Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750)) {
 	// Snorlax-like
@@ -138,14 +136,17 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 	// Assasin
 }
 
-void Aleph::special(vector<Actor*>& bank) {}
-void Bet::special(vector<Actor*>& bank) {}
-void Gimel::special(vector<Actor*>& bank) {}
-void Dalet::special(vector<Actor*>& bank) {}
-void He::special(vector<Actor*>& bank) {}
-void Vav::special(vector<Actor*>& bank) {}
-void Zayin::special(vector<Actor*>& bank) {}
-void Chet::special(vector<Actor*>& bank) {}
+void Aleph::subclass_special(vector<Actor*>& bank) {
+	// first opponent
+	Actor* opponent = 
+}
+void Bet::subclass_special(vector<Actor*>& bank) {}
+void Gimel::subclass_special(vector<Actor*>& bank) {}
+void Dalet::subclass_special(vector<Actor*>& bank) {}
+void He::subclass_special(vector<Actor*>& bank) {}
+void Vav::subclass_special(vector<Actor*>& bank) {}
+void Zayin::subclass_special(vector<Actor*>& bank) {}
+void Chet::subclass_special(vector<Actor*>& bank) {}
 
 // Monster
 void Monster::move(Direction d) {}
@@ -191,11 +192,11 @@ Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 
 	// Persian
 }
 
-void Alpha::special(vector<Actor*>& bank) {}
-void Bravo::special(vector<Actor*>& bank) {}
-void Charlie::special(vector<Actor*>& bank) {}
-void Delta::special(vector<Actor*>& bank) {}
-void Echo::special(vector<Actor*>& bank) {}
-void Foxtrot::special(vector<Actor*>& bank) {}
-void Golf::special(vector<Actor*>& bank) {}
-void Hotel::special(vector<Actor*>& bank) {}
+void Alpha::subclass_special(vector<Actor*>& bank) {}
+void Bravo::subclass_special(vector<Actor*>& bank) {}
+void Charlie::subclass_special(vector<Actor*>& bank) {}
+void Delta::subclass_special(vector<Actor*>& bank) {}
+void Echo::subclass_special(vector<Actor*>& bank) {}
+void Foxtrot::subclass_special(vector<Actor*>& bank) {}
+void Golf::subclass_special(vector<Actor*>& bank) {}
+void Hotel::subclass_special(vector<Actor*>& bank) {}

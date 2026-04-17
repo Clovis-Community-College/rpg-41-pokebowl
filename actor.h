@@ -3,7 +3,7 @@
 
 #include "llbridges.h"
 #include "inventory.h"
-#include <functional>
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -145,7 +145,13 @@ public:
 	void move(Direction d) override final;
 };
 
-class Hero : public Actor, public HasInitiative {
+class NonWall : public Actor {
+public:
+	using Actor::Actor;
+	virtual void special(vector<Actor*>& bank) = 0;
+}
+
+class Hero : public NonWall, public HasInitiative {
 public:
 	using Actor::Actor;
 	ActorType type() const override;
@@ -153,8 +159,10 @@ public:
 	// !!!!!!!! each hero is unique, so cannot final here
 	void move(Direction d) override;
 
+	void special(vector<Actor*>& bank) override;
+
 	// Special abilities. TBI by subclasses.
-	virtual void special(vector<Actor*>& bank) = 0; 
+	virtual void subclass_special(vector<Actor*>& bank) = 0; 
 };
 
 // Hero - Hebrew
@@ -164,55 +172,55 @@ public:
 class Aleph : public Hero {
 public:
 	Aleph(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Bet : public Hero {
 public:
 	Bet(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Gimel : public Hero {
 public:
 	Gimel(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Dalet : public Hero {
 public:
 	Dalet(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class He : public Hero {
 public:
 	He(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Vav : public Hero {
 public:
 	Vav(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Zayin : public Hero {
 public:
 	Zayin(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Chet : public Hero {
 public:
 	Chet(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 
 // Monster - Military
 // internal names only
-class Monster : public Actor, public HasInitiative {
+class Monster : public NonWall, public HasInitiative {
 public:
 	using Actor::Actor;
 	ActorType type() const override;
@@ -221,57 +229,59 @@ public:
 	// !!!!!!!! each hero is unique, so cannot final here
 	void move(Direction d) override;
 
+	void special(vector<Actor*>& bank) override;
+
 	// Special abilities. TBI by subclasses.
-	virtual void special(vector<Actor*>& bank) = 0; 
+	virtual void subclass_special(vector<Actor*>& bank) = 0; 
 };
 
 class Alpha : public Monster {
 public:
 	Alpha(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Bravo : public Monster {
 public:
 	Bravo(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Charlie : public Monster {
 public:
 	Charlie(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Delta : public Monster {
 public:
 	Delta(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Echo : public Monster {
 public:
 	Echo(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Foxtrot : public Monster {
 public:
 	Foxtrot(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 	bool is_boss() const override;
 };
 
 class Golf : public Monster {
 public:
 	Golf(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 class Hotel : public Monster {
 public:
 	Hotel(string _name_, XY _pos_);
-	void special(vector<Actor*>& bank) override;
+	void subclass_special(vector<Actor*>& bank) override;
 };
 
 // TODO: diagram with links to code snippets

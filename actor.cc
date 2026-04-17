@@ -137,8 +137,9 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 }
 
 void Aleph::subclass_special(vector<Actor*>& bank) {
-	// first opponent
-	Actor* opponent = 
+	// first opponent AFTER aleph
+	// tbd future memento: move into special()
+	Actor* opponent = nullptr; // sleepy placeholder
 }
 void Bet::subclass_special(vector<Actor*>& bank) {}
 void Gimel::subclass_special(vector<Actor*>& bank) {}

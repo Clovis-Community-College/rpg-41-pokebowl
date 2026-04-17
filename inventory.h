@@ -47,6 +47,8 @@ class Inventory{
 	void add_pokecoins(int amount);
 	bool spend_coins(int amount);
 
+	void gen_rand_loot(int minitems,int maxitems);
+
 	bool buy(const Item& item);
 	bool sell(const string& name);
 

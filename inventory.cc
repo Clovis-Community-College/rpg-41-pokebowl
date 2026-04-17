@@ -1,7 +1,53 @@
 #include "inventory.h"
 #include "/public/read.h"
+#include <ctime>
+#include <cstdlib>
+
+
 
 using namespace std;
+
+//For random inventory generation
+static bool range_initialized=false;
+static void initizialize_randomgen(){
+	if(!range_initialized){
+		srand(time(0));
+		range_initialized=true;
+	}
+}
+
+//NEED TO FINISH RANDOM ITEMS TO BE SLECTED 0-9
+static Item genrand_item(){
+	int roll = rand()% 10;
+	if (roll==0)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==1)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==2)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==3)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==4)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==5)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==6)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==7)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==8)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+	if (roll==9)
+		return Item("Item name tbd","item type tbd",0,0,0,false);
+}
+//WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
+void Inventory::gen_rand_loot(int minitems,int maxitems){
+	initizialize_randomgen();
+	int amount=rand()%(maxitems-minitems+1)+minitems;
+
+	for(int i=0;i<amount;i++)
+		insert(genrand_item());
+}
 
 Inventory::Inventory() : root(nullptr), pokecoins(0), size(0) {}
 Inventory::~Inventory() { extinguish(root); }

@@ -3,48 +3,6 @@
 #include <cstdlib>
 #include <ctime>
 
-//For random inventory generation
-static bool range_initialized=false;
-static void initizialize_randomgen(){
-	if(!range_initialized){
-		srand(time(0));
-		range_initialized=true;
-	}
-}
-
-//NEED TO FINISH RANDOM ITEMS TO BE SLECTED 0-9
-static Item genrand_item(){
-	int roll = rand()% 10;
-	if (roll==0)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==1)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==2)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==3)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==4)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==5)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==6)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==7)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==8)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==9)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-}
-//WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
-static void populate_inventory(Inventory& inventory,int minitems,int maxitems){
-	initizialize_randomgen();
-	int amount=rand()%(maxitems-minitems+1)+minitems;
-
-	for(int i=0;i<amount;i++)
-		inventory.insert(genrand_item());
-}
-
 // Traits
 Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm) 
 	: hp_max(_hpm), attack_damage(_do), hurt_scale(_hs), starting_speed(_ss) {}

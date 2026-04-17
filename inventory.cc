@@ -1,9 +1,21 @@
 #include "inventory.h"
 #include "/public/read.h"
+
 using namespace std;
 
 Inventory::Inventory() : root(nullptr), pokecoins(0), size(0) {}
 Inventory::~Inventory() { extinguish(root); }
+
+Inventory::Inventory(const Inventory& other){
+	root=nullptr;
+	size=0;
+	pokecoins=other.pokecoins;
+	vector<Item> copyitems;
+	other.get_all_items(copyitems);
+
+	for (const Item& item:copyitems)
+		insert(item);
+}
 
 void Inventory::extinguish(Node *temp) {
   if (temp == nullptr)
@@ -13,6 +25,28 @@ void Inventory::extinguish(Node *temp) {
   extinguish(temp->right);
   delete temp;
 }
+void Inventory::collect_items(Node* temp, vector<Item>& list) const{
+	if(temp==nullptr)
+		return;
+	collect_items(temp->left,list);
+	
+	for(int i=0;i<temp->count;i++)
+		list.push_back(temp->data);
+
+	collect_items(temp->right,list);
+}
+
+void Inventory::get_all_items(vector<Item>& list) const{
+	collect_items(root,list);
+}
+
+vector<Item> Inventory::drop_all(){
+	vector<Item> out;
+	get_all_items(out);
+	clear();
+	return out;
+}
+
 
 void Inventory::rprint(Node *temp) const {
   if (temp == nullptr)
@@ -113,6 +147,22 @@ bool Inventory::sell(const string& item){
 	return true;
 }
 
+void Inventory::clear(){
+	extinguish(root);
+	root=nullptr;
+	size=0;
+	}
+
+bool Inventory::get_item_copy(const string& name, Item& item) const{
+	Node* exists=rsearch(root,name);
+
+	if(exists==nullptr)
+		return false;
+
+	item=exists->data;
+	return true;
+}
+
 
 bool Inventory::drop(const string& item){
 	Node* exists = rsearch(root, item);
@@ -158,10 +208,15 @@ bool Inventory::remove(const string& name){
 			nextup = nextup->left;
 		}
 		currentnode->data = nextup->data;
-		currentnode->count= nextup->count;
+		currentnode->count= 1;
 
 		currentnode=nextup;
 		parent=parent2;
+
+		if(currentnode->count>1){
+			currentnode->count--;
+			return true;
+		}
 
 	}
 

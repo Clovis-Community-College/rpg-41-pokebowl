@@ -2,6 +2,7 @@
 
 #include "/public/read.h"
 #include <string>
+#include<vector>
 #include "pokeitems.h"
 using namespace std;
 
@@ -21,12 +22,14 @@ class Inventory{
 
 	void rprint(Node* temp) const;
 	void extinguish(Node* temp);
+	void collect_items(Node* temp, vector<Item>& list) const;
 
 	Node* rinsert(Node* temp, const Item& item);
 	Node* rsearch(Node*temp, const string& name) const;
 
 	public:
 	Inventory();
+	Inventory(const Inventory& other);
 	~Inventory();
 	
 	//some funcs will be bools to be used as checkers for other functions, will also perform act within function before returning true/false
@@ -35,7 +38,11 @@ class Inventory{
 	bool drop(const string& name);///note that special key items can not be dropped
 	bool contains(const string& name) const;
 	int get_item_count(const string& name) const;
+	bool get_item_copy(const string& name, Item& item) const;
 	void print() const;
+	void clear();
+	void get_all_items(vector<Item>& list) const;
+	vector<Item> drop_all();
 
 	void add_pokecoins(int amount);
 	bool spend_coins(int amount);

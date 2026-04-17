@@ -219,21 +219,10 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 }
 
 void Aleph::subclass_special(Bank& bank) {
-	// first opponent AFTER aleph
-	// tbd future memento: move into special()
-//	Actor* opponent = nullptr; // sleepy placeholder
-
-	// ABOVE CMT ARR PURE TRASH!!!!!
-
-	// cond check
-/*	bool is_self
-	for (Actor* opponent : bank) {
-		if (opponent == this)
-	}
-*/
 	for (Actor* opponent : bank) {
 		// workin with ptrs here
-		this->attack(opponent);
+		if (!opponent) continue;
+		if (opponent->type() == "monster") this->attack(opponent);
 	}
 }
 

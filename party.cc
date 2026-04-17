@@ -18,3 +18,13 @@ bool Party::side_dead(ActorType type) const {
 
 	return no_remaining_type;
 }
+
+float Party::weather_scale(string weather) const {
+	// limitation: cnanot to per-actor scaling yet
+	// but if have time - which means never
+	if (weather == "Clear") return 1;// clear
+	else if (weather == "Rain") return 0.9; // rain slippery
+	else if (weather == "Fog") return 0.85; // fog blinds vision
+	else if (weather == "Windy") return 1.1; // windy more "smooth-moving"
+	else return 1; //clear as a fallback
+}

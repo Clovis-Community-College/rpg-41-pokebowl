@@ -12,6 +12,8 @@ class Party {
 public:
 	// party.bank for the vector
 	std::vector<Actor*> bank;
+
+	bool side_dead(ActorType type) const;
 };
 
 #endif

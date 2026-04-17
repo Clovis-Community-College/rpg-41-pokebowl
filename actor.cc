@@ -114,7 +114,7 @@ bool Actor::_good_to_attack(Actor* opponent) const {
 
 	// if opponent die, we leave its corpse there, no deletion
 	// we can revive it like a zombie????????? hypothetical
-
+	// if so move into subclass version
 	return true;
 }
 

@@ -7,8 +7,9 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <optional>
 
-using std::string, std::cout, std::cin, std::vector;
+using std::string, std::cout, std::cin, std::vector, std::optional;
 using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
@@ -75,9 +76,6 @@ private:
 	// Trait points.
 	Traits _traits;
 
-	// inv, private use only
-	Inventory *_inv;
-
 	// set hp with bounds
 	void hp(HP _hp_); // only for internal HP modification.
 
@@ -89,6 +87,9 @@ protected:
 	void pos(XY _pos_);
 
 public:
+	// Inventory. NOW FREE TO GRAB AND STEAL /s
+	optional<Inventory> items;
+
 	// Cstor
 	Actor() = delete;
 	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
@@ -108,7 +109,7 @@ public:
 	string name() const;
 	XY pos() const;
 	HP hp() const;
-	decltype(_inv) items() const;
+//	decltype(_inv) items() const;
 	
 	// type of Wall, Hero, Mob into string	
 	virtual ActorType type() const = 0;

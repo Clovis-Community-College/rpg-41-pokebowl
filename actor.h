@@ -8,7 +8,7 @@
 #include <string>
 #include <cmath>
 
-using std::string, std::cout, std::cin, std::function;
+using std::string, std::cout, std::cin;
 using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
@@ -149,11 +149,11 @@ class NonWall : public Actor {
 public:
 	using Actor::Actor;
 	virtual void special(vector<Actor*>& bank) = 0;
-}
+};
 
 class Hero : public NonWall, public HasInitiative {
 public:
-	using Actor::Actor;
+	using NonWall::NonWall;
 	ActorType type() const override;
 
 	// !!!!!!!! each hero is unique, so cannot final here
@@ -222,7 +222,7 @@ public:
 // internal names only
 class Monster : public NonWall, public HasInitiative {
 public:
-	using Actor::Actor;
+	using NonWall::NonWall;
 	ActorType type() const override;
 	virtual bool is_boss() const; // default to false
 	

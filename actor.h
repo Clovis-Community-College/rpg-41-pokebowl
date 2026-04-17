@@ -147,6 +147,12 @@ public:
 	void move(Direction d) override final;
 };
 
+class Merchant : public Wall {
+	using Wall::Wall;
+	// no override for type, treat merchant like a wall.
+	void open_interface();
+};
+
 class NonWall : public Actor {
 public:
 	using Actor::Actor;

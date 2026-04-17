@@ -11,12 +11,14 @@ class CLL {
 			Actor* actorPTR = nullptr;
 			Node* next = nullptr;
 			Node* prev = nullptr;
-			Node(Actor* a) : actorPTR(a), next(nullptr), prev(nullptr) {}
-			
+			// removal of bellow was neccessary for code compilation
+			// sry george ;(((
+			// Node(Actor* a) : actorPTR(a), next(nullptr), prev(nullptr) {}
+				
 		};
 		Node* head = nullptr;
-		bridges::CircSLelement<Actor*> bHead;
-		bridges::CircSLelement<Actor*> bTail;
+		bridges::CircSLelement<Actor*> bHead();
+		bridges::CircSLelement<Actor*> bTail();
 		//Node* tail = nullptr;
 		unsigned int size{};
 		Node* pointy{};

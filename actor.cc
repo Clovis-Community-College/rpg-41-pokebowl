@@ -42,14 +42,24 @@ decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _tr
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
-/*void Actor::heal(HP delta) {
-	std::cerr << "pls use take_damage() wpls";
-	exit(EXIT_FAILURE);
-}*/
+bool Actor::is_self_with(const Actor *other) const {
+	return this == other;
+}
+
+bool Actor::share_type_with(const Actor *other) const {
+	return type() == other->type();
+}
 
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
-void Actor::hp(HP _hp_) {
+
+// if have time, refactor into one generalized function
+void Actor::hp(HP hp_delta, float external_scale, const function<float(float, float)> &op) {
+	if (hp_delta < 0) { std::cerr << "hp_delta less than 0"; exit(EXIT_FAILURE); }
+	float combined_hp_delta = hp_delta * external_scale * _traits.hurt_scale;
+	float new_hp = op((float)hp(), combined_hp_delta);
+
+	[&] (HP _hp_) {
 	if (_hp_ > _traits.hp_max)
 		_hp = _traits.hp_max; // cap HP
 
@@ -60,47 +70,101 @@ void Actor::hp(HP _hp_) {
 
 	else
 		_hp = _hp_;
+	} (new_hp); // type narrowing intended
+	// bcs in here, the needed rounding op is (arbitrarily chosen to be) std::floor()
 }
 
-// if have time, refactor into one generalized function
 void Actor::take_damage(HP hp_delta, float external_damage_scale = 1) {
-	if (hp_delta < 0) { std::cerr << "hp_delta for take_damage is less than 0"; exit(EXIT_FAILURE); }
-	float combined_hp_delta = hp_delta * external_damage_scale * _traits.hurt_scale;
-	HP new_hp = std::floor((float)hp() - combined_hp_delta);
-	hp(new_hp);
+	auto op = [](float a, float b) -> float {
+		return a - b;
+	};
+	hp(hp_delta, external_damage_scale, op);
 }
 
 void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
-	if (hp_delta < 0) { std::cerr << "hp_delta for cure_damage is less than 0"; exit(EXIT_FAILURE); }
-	float combined_hp_delta = hp_delta * external_heal_scale;
-	HP new_hp = std::floor((float)hp() + combined_hp_delta);
-	hp(new_hp);
+	auto op = [](float a, float b) -> float {
+		return a + b;
+	};
+	hp(hp_delta, external_heal_scale, op);
 }
 
-// template method not useless
-// prevention - in case actor subgroup can be refactored
-void Hero::special(Bank& bank) {
-/*
-	// invoked on a HERO
-	// scour for FIRST monsteer opponent
-	decltype std::find_if(bank.start(), bank.end(), [&](decltype(*this) a, decltype(*this) b){
+void Actor::move(Direction d) {}
 
-	});
-*/
-	subclass_special(bank);
-}
-void Monster::special(Bank& bank) {
-	subclass_special(bank);
+void Actor::attack(Actor* opponent) {
+	if (!opponent) return; // Null check. Just in case.
 
-	// ALL BELOW CMT R TRASH CMT, IGNORE
-	// take hero as oppo during porcessing stage
+	// Condition check
+	bool gtg_general = _good_to_attack(opponent); // GENERAL conditions for attack
+	bool gtg_specific = _subclass_good_to_attack(opponent); // SUBCLASS-SPECIFIC conditions for attack
+	if (!gtg_general || !gtg_specific) return;
+
+	// now opponent ALWAYS lives and not itself
+	_attack(opponent);
+	
+	// plug-in for custom attack behavior
+	_post_attack(opponent);
 }
+
+bool Actor::_good_to_attack(Actor* opponent) const {
+	// Cant attack oneself
+	if (is_self_with(opponent)) return false;
+
+	// Cant attack a corpse
+        if (opponent->is_dead()) return false;
+
+	// if opponent die, we leave its corpse there, no deletion
+	// we can revive it like a zombie????????? hypothetical
+
+	return true;
+}
+
+bool Actor::_subclass_good_to_attack(Actor* opponent) const {
+	// default behavior is to let all attack thru
+	// (after general check)
+	return true;
+}
+
+void Actor::_attack(Actor* opponent) {
+	HP hp_delta = attack_damage();
+	float external_damage_scale = 1; // weather.getScale() needed
+	opponent->take_damage(hp_delta, external_damage_scale);
+}
+
+void Actor::_post_attack(Actor* opponent) {
+	// for subclasses
+	// defaults to nothing
+}
+
 // Wall
 Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
 
 ActorType Wall::type() const { return "wall"; }
 
-void Wall::move(Direction d) {}
+void Wall::_attack(Actor* opponent) {
+	// no attack is possible if wall attacks sth
+}
+
+// Merchant
+
+void Merchant::_attack(Actor* opponent) {
+	// no attack is possible if wall attacks sth
+	// TODO: open merchant shop and shit
+}
+
+// NonWall
+
+// template method not useless
+// prevention - in case actor subgroup can be refactored
+void NonWall::special(Bank& bank) {
+	subclass_special(bank);
+}
+
+
+bool NonWall::_subclass_good_to_attack(Actor* opponent) const {
+	// no attack of same type - can be overriden
+	bool two_actors_different_kind = (type() != opponent->type());
+	return two_actors_different_kind;
+}
 
 // Hero
 ActorType Hero::type() const { return "hero"; }
@@ -155,12 +219,25 @@ Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 
 }
 
 void Aleph::subclass_special(Bank& bank) {
-	// first opponent AFTER aleph
-	// tbd future memento: move into special()
-	Actor* opponent = nullptr; // sleepy placeholder
+	for (Actor* opponent : bank) {
+		// workin with ptrs here
+		if (!opponent) continue;
+		if (opponent->type() == "monster") this->attack(opponent);
+	}
 }
+
 void Bet::subclass_special(Bank& bank) {}
 void Gimel::subclass_special(Bank& bank) {}
+
+
+bool Dalet::_subclass_good_to_attack(Actor* opponent) const {
+	// no attack of same type
+	bool two_actors_different_kind = (type() != opponent->type());
+	bool is_hero = opponent->type() == "hero";
+	return two_actors_different_kind || is_hero; // logically always true, but semantically makes sense
+
+}
+
 void Dalet::subclass_special(Bank& bank) {}
 void He::subclass_special(Bank& bank) {}
 void Vav::subclass_special(Bank& bank) {}
@@ -168,8 +245,6 @@ void Zayin::subclass_special(Bank& bank) {}
 void Chet::subclass_special(Bank& bank) {}
 
 // Monster
-void Monster::move(Direction d) {}
-
 ActorType Monster::type() const { return "monster"; }
 
 bool Monster::is_boss() const { return false; }

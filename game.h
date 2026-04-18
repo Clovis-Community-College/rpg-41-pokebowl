@@ -8,7 +8,7 @@
 #include "pokeitems.h"
 #include <ncurses.h>
 
-enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT };
+enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT, LOOT_POPUP };
 enum class InvSubState { BROWSE, EQUIP };
 enum class EquipSubState { SELECT_HERO, VIEW_HERO };
 
@@ -21,6 +21,9 @@ public:
     int equip_cursor;
     int equip_hero_idx;
     Item selected_item;
+    
+    std::vector<Item> last_drops;
+    int last_exp_gained;
 
     Map world;
     WeatherSystem weather;

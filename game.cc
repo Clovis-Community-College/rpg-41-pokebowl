@@ -29,6 +29,7 @@ Game::Game() {
     inv_cursor = 0;
     equip_cursor = 0;
     equip_hero_idx = 0;
+    last_exp_gained = 0;
 
     initscr();
     raw();
@@ -166,14 +167,15 @@ void Game::handle_input(int ch) {
         }
     } else if (state == GameState::COMBAT) {
         if (ch == 'k') {
-            std::vector<Item> drops;
+            last_drops.clear();
             if (boss_mob->items.has_value()) {
-                boss_mob->items->get_all_items(drops);
-                for (const auto& item : drops) {
+                boss_mob->items->get_all_items(last_drops);
+                for (const auto& item : last_drops) {
                     player_party.shared_inventory.insert(item);
                 }
             }
-            state = GameState::MAP;
+            last_exp_gained = 500;
+            state = GameState::LOOT_POPUP;
             boss_mob->set_pos({-1, -1});
         } else if (ch == 'r') {
             state = GameState::MAP;
@@ -192,7 +194,7 @@ void Game::render() {
     int start_y = h_main->pos().y - max_y / 2;
     int start_x = h_main->pos().x - max_x / 2;
 
-    if (state == GameState::MAP || state == GameState::INVENTORY || state == GameState::EQUIPMENT) {
+    if (state == GameState::MAP || state == GameState::INVENTORY || state == GameState::EQUIPMENT || state == GameState::LOOT_POPUP) {
         for (int y = 0; y < max_y; ++y) {
             for (int x = 0; x < max_x; ++x) {
                 int map_x = start_x + x;
@@ -214,7 +216,7 @@ void Game::render() {
             attron(COLOR_PAIR(2)); mvaddch(my, mx, 'M'); attroff(COLOR_PAIR(2));
         }
 
-        if (state == GameState::MAP) {
+        if (state == GameState::MAP || state == GameState::LOOT_POPUP) {
             weather.Update(world, h_main->pos());
             weather.draw(h_main->pos().x - start_x, h_main->pos().y - start_y, max_x, max_y);
         }
@@ -309,6 +311,24 @@ void Game::render() {
                 mvprintw(max_y - 3, 4, "Up/Down: Browse | Enter: Unequip Item | ESC/e: Back");
             }
             attroff(COLOR_PAIR(5));
+        } // Closes state == GameState::EQUIPMENT
+        
+        if (state == GameState::LOOT_POPUP) {
+            attron(COLOR_PAIR(5) | A_REVERSE);
+            for (int r = 0; r < 8; r++) {
+                mvprintw(max_y/2 - 4 + r, max_x/2 - 20, "                                        ");
+            }
+            mvprintw(max_y/2 - 3, max_x/2 - 18, "=== BATTLE WON ===");
+            mvprintw(max_y/2 - 1, max_x/2 - 18, "Party Gained: %d XP!", last_exp_gained);
+            mvprintw(max_y/2 + 1, max_x/2 - 18, "Items Gained:");
+            if (last_drops.empty()) {
+                mvprintw(max_y/2 + 2, max_x/2 - 16, "None");
+            } else {
+                for (size_t i = 0; i < last_drops.size() && i < 2; i++) {
+                    mvprintw(max_y/2 + 2 + i, max_x/2 - 16, "- %s", last_drops[i].get_name().c_str());
+                }
+            }
+            attroff(COLOR_PAIR(5) | A_REVERSE);
         }
 
     } else if (state == GameState::COMBAT) {
@@ -332,6 +352,12 @@ void Game::run() {
     int ch = 0;
     while (ch != 'q') {
         render();
+        if (state == GameState::LOOT_POPUP) {
+            refresh();
+            napms(1500);
+            state = GameState::MAP;
+            continue;
+        }
         ch = getch();
         if (ch == 'q') break;
         handle_input(ch);

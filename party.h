@@ -2,19 +2,22 @@
 #define PARTY_H
 
 #include <vector>
+#include <deque>
 #include "actor.h"
+#include "inventory.h"
 
-// The madhouse class controlling attack
-
-
-// Instansiated ONCE per game.
 class Party {
 public:
-	// party.bank for the vector
 	std::vector<Actor*> bank;
+    std::deque<XY> history;
+    Inventory shared_inventory;
+
+    void add_member(Actor* actor);
+    void init_history(XY initial_pos);
+    void record_move(XY old_pos);
 
 	bool side_dead(ActorType type) const;
-	float weather_scale(string weather) const; // no need to import weather, as the used thing is only a string!
+	float weather_scale(string weather) const;
 };
 
 #endif

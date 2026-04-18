@@ -85,5 +85,22 @@ void Party::inator() {
 	// WHERE THE F**K IS THE RESULT (supposed to be) STORED IN?????
 	HasInitiative::begin_combat(bank_rankable);
 }
+	//out of scope!!!!!
 
+	// B - you spin round and round like a record
+	while (!side_dead("monster") && !side_dead("hero")) {
+		// trash bin code, MUST rewrite
+		// section:
+		// find first living opponent
+auto it = std::find_if(bank.begin(), bank.end(),
+    [&actor](Actor* opponent){
+        bool both_alive = !actor->is_dead() && !opponent->is_dead();
+        bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
+        bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
+        return both_alive && (monster_hits_hero || hero_hits_monster);
+    });
+
+if (it == bank.end()) continue;
+Actor* opponent = *it;
+	}
 }

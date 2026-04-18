@@ -13,12 +13,13 @@ class Party {
 public:
 	// party.bank for the actor vector
 	std::vector<Actor*> bank;
-    std::deque<XY> history;
-    Inventory shared_inventory;
 
-    void add_member(Actor* actor);
-    void init_history(XY initial_pos);
-    void record_move(XY old_pos);
+	std::deque<XY> history;
+	Inventory shared_inventory; // IOrphan pending
+
+	void add_member(Actor* actor);
+	void init_history(XY initial_pos);
+	void record_move(XY old_pos);
 
 	bool side_dead(ActorType type) const;
 	static float weather_scale(string weather); // no need to import weather, as the used thing is only a string!

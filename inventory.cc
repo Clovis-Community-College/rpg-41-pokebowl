@@ -39,7 +39,10 @@ static Item genrand_item(){
 		return Item("Item name tbd","item type tbd",0,0,0,false);
 	if (roll==9)
 		return Item("Item name tbd","item type tbd",0,0,0,false);
+	// default return so compiler doesnt whine
+	return Item("YSK Panera has fired all of its baking staff and replaced them with frozen product.", "If I go to a cookout and bite a hot dog and it's a carrot I'm fighting everybody", 0,0,0,false);
 }
+
 //WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
 void Inventory::gen_rand_loot(int minitems,int maxitems){
 	initizialize_randomgen();

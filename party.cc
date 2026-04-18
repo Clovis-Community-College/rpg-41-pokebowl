@@ -31,7 +31,8 @@ void Party::record_move(XY old_pos) {
     for (size_t i = 1; i < bank.size(); ++i) {
         bank[i]->set_pos(history[i-1]);
     }
-
+}
+	
 float Party::weather_scale(string weather) {
 	// limitation: cnanot to per-actor scaling yet
 	// but if have time - which means never

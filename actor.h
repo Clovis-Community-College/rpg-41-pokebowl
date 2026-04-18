@@ -3,6 +3,8 @@
 
 #include "llbridges.h"
 #include "inventory.h"
+#include "pokeitems.h"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -15,6 +17,7 @@ using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
 using InversedDefenseScale = float;
+using WeatherScale = float;
 using ActorType = string;
 using Bank = std::vector<Actor*>;
 
@@ -40,6 +43,10 @@ struct Traits {
 	// Defaults to 1.
 	AttackHP attack_damage;
 
+	// Weather damage scale
+	// defaults to 1
+	WeatherScale weather_scale_damage;
+
 	// Hurt scale/modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
@@ -47,7 +54,7 @@ struct Traits {
 	InversedDefenseScale hurt_scale;
 
 	// cstor for struct lol
-	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm); 
+	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, WeatherScale _wsd); 
 };
 
 enum Direction {
@@ -95,7 +102,7 @@ public:
 
 	// Cstor
 	Actor() = delete;
-	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
+	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0,0});
 
 	// Virtual dstor for the virtual dstor god
 	virtual ~Actor();
@@ -120,6 +127,10 @@ public:
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
+
+	// set weather scale
+	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
+	void weather_scale_damage(WeatherScale wsd);
 
 	bool is_dead() const;
 	bool is_self_with(const Actor *other) const;
@@ -164,11 +175,31 @@ class Merchant : public Wall {
 public:
 	using Wall::Wall;
 
-	// no override for type, treat merchant like a wall.
+	ActorType type() const override;
 
 	// open merchant shop
 	// no good name here bcs.... inheritance hell
 	// but composition will need a Shop class galore
+	void _attack(Actor* opponent) override;
+};
+
+class Drop : public Wall {
+public:	
+	// orphan type
+	using IOrphan = vector<Item>;
+
+private:
+	IOrphan orphaned_items;
+public:
+	Drop(XY xy, IOrphan io);
+
+	// positionally treat drop like a wall.
+	ActorType type() const override;
+
+	// can spawn.
+
+	// transfer inventory on contact
+	// no good name here bcs.... inheritance hell
 	void _attack(Actor* opponent) override;
 };
 

@@ -2,8 +2,8 @@
 #include "llbridges.h"
 
 // Traits
-Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm) 
-	: hp_max(_hpm), attack_damage(_do), hurt_scale(_hs), starting_speed(_ss) {}
+Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, WeatherScale _wsd) 
+	: hp_max(_hpm), attack_damage(_do), hurt_scale(_hs), starting_speed(_ss), weather_scale_damage(_wsd) {}
 
 // Actor
 Actor::Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits)
@@ -39,6 +39,10 @@ HP Actor::hp() const { return _hp; }
 decltype(Actor::_traits.starting_speed) Actor::starting_speed() const { return _traits.starting_speed; }
 decltype(Actor::_traits.attack_damage) Actor::attack_damage() const { return _traits.attack_damage; }
 //decltype(Actor::_inv) Actor::items() const { return _inv; }
+decltype(Actor::_traits.weather_scale_damage) Actor::weather_scale_damage() const {
+	return _traits.weather_scale_damage;
+}
+
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
@@ -53,7 +57,10 @@ bool Actor::share_type_with(const Actor *other) const {
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
 
-// if have time, refactor into one generalized function
+void Actor::weather_scale_damage(WeatherScale wsd) {
+	_traits.weather_scale_damage = wsd;
+}
+
 void Actor::hp(HP hp_delta, float external_scale, const function<float(float, float)> &op) {
 	if (hp_delta < 0) { std::cerr << "hp_delta less than 0"; exit(EXIT_FAILURE); }
 	float combined_hp_delta = hp_delta * external_scale * _traits.hurt_scale;
@@ -126,7 +133,7 @@ bool Actor::_subclass_good_to_attack(Actor* opponent) const {
 
 void Actor::_attack(Actor* opponent) {
 	HP hp_delta = attack_damage();
-	float external_damage_scale = 1; // weather.getScale() needed
+	float external_damage_scale = weather_scale_damage() * 1; // 1 is placehoder for potion effect if have time
 	opponent->take_damage(hp_delta, external_damage_scale);
 }
 
@@ -136,7 +143,7 @@ void Actor::_post_attack(Actor* opponent) {
 }
 
 // Wall
-Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX)) {}
+Wall::Wall(XY xy) : Actor("wall", xy, HP_MAX, Traits(0, 0, 0, HP_MAX, 1)) {}
 
 ActorType Wall::type() const { return "wall"; }
 
@@ -150,6 +157,18 @@ void Merchant::_attack(Actor* opponent) {
 	// no attack is possible if wall attacks sth
 	// TODO: open merchant shop and shit
 }
+
+ActorType Merchant::type() const { return "merchant"; }
+// Drop
+
+Drop::Drop(XY xy, IOrphan io) : Wall(xy), orphaned_items(io) {}
+
+void Drop::_attack(Actor* opponent) {
+	// no attack is possible if wall attacks sth
+	// TODO: wait for Joe's pickup func
+}
+
+ActorType Drop::type() const { return "drop"; }
 
 // NonWall
 
@@ -182,39 +201,39 @@ void Hero::move(Direction d) {
 }
 
 // H subs
-Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750)) {
+Aleph::Aleph(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750, 1)) {
 	// Snorlax-like
 	// very high HP, mid attk, slightly worse defense BUT very slow speed, go last
 }
 
-Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 100, Traits(200, 1.75, 8, 100)) {
+Bet::Bet(string _name_, XY _pos_) : Hero(_name_, _pos_, 100, Traits(200, 1.75, 8, 100, 1)) {
 	// glass cannon
 }
 
-Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 200, Traits(60, 1, 19, 200)) {
+Gimel::Gimel(string _name_, XY _pos_) : Hero(_name_, _pos_, 200, Traits(60, 1, 19, 200, 1)) {
 	// speedster - but "speed"-first not speed-first
 }
 
-Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 400, Traits(20, 0.75, 10, 400)) {
+Dalet::Dalet(string _name_, XY _pos_) : Hero(_name_, _pos_, 400, Traits(20, 0.75, 10, 400, 1)) {
 	// tbd: healer
 }
 
-He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 300, Traits(100, 1, 13, 300)) {
+He::He(string _name_, XY _pos_) : Hero(_name_, _pos_, 300, Traits(100, 1, 13, 300, 1)) {
 	// eevee(TM), the most "generic" Poke ever
 
 }
 
-Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(150, 1.3, 12, 250)) {
+Vav::Vav(string _name_, XY _pos_) : Hero(_name_, _pos_, 250, Traits(150, 1.3, 12, 250, 1)) {
 	// berserker
 	// with great attack comes great fragility
 }
 
-Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(20, 0.4, 3, 750)) {
+Zayin::Zayin(string _name_, XY _pos_) : Hero(_name_, _pos_, 750, Traits(20, 0.4, 3, 750, 1)) {
 	// Shuckle
 	// movable wall basically
 }
 
-Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 16, 180)) {
+Chet::Chet(string _name_, XY _pos_) : Hero(_name_, _pos_, 180, Traits(180, 1.2, 16, 180, 1)) {
 	// Assasin
 }
 
@@ -252,37 +271,37 @@ bool Monster::is_boss() const { return false; }
 // M sub
 bool Foxtrot::is_boss() const { return true; }
 
-Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 100, Traits(40, 1.25, 5, 100)) {
+Alpha::Alpha(string _name_, XY _pos_) : Monster(_name_, _pos_, 100, Traits(40, 1.25, 5, 100, 1)) {
 	// Rattata
 	// alpha version monster, not alpha monster
 }
 
-Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 60, Traits(15, 1, 15, 60)) {
+Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 60, Traits(15, 1, 15, 60, 1)) {
 	// Zubat
 	// weaker than rattata. but SHOULD BE more numerous?
 }
 
-Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 425, Traits(120, 0.9, 6, 425)) {
+Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 425, Traits(120, 0.9, 6, 425, 1)) {
 	// Machoke
 }
 
-Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 1.4, 12, 200)) {
+Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 1.4, 12, 200, 1)) {
 	// Gengar, another glass cannon
 }
 
-Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1, 10, 300)) {
+Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1, 10, 300, 1)) {
 	// Ditto
 }
 
-Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 3000, Traits(200, 0.5, 14, 3000)) {
+Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 3000, Traits(200, 0.5, 14, 3000, 1)) {
 	// BOSS - mewtwo
 }
 
-Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 400, Traits(20, 0.7, 8, 400)) {
+Golf::Golf(string _name_, XY _pos_) : Monster(_name_, _pos_, 400, Traits(20, 0.7, 8, 400, 1)) {
 	// Blissey, healer for monsters
 }
 
-Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 1.1, 19, 220)) {
+Hotel::Hotel(string _name_, XY _pos_) : Monster(_name_, _pos_, 220, Traits(140, 1.1, 19, 220, 1)) {
 	// Persian
 }
 

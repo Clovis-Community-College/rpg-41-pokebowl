@@ -5,19 +5,28 @@
 #include <deque>
 #include "actor.h"
 #include "inventory.h"
+#include "circularll.h"
+#include "weather.h"
 
 class Party {
+	WeatherSystem weather(); // tbd: WHEN to change weather? either way Orcs will crawll weathersystem THEN applies it to each Actor.
 public:
+	// party.bank for the actor vector
 	std::vector<Actor*> bank;
-    std::deque<XY> history;
-    Inventory shared_inventory;
 
-    void add_member(Actor* actor);
-    void init_history(XY initial_pos);
-    void record_move(XY old_pos);
+	std::deque<XY> history;
+	Inventory shared_inventory; // IOrphan pending
+
+	void add_member(Actor* actor);
+	void init_history(XY initial_pos);
+	void record_move(XY old_pos);
 
 	bool side_dead(ActorType type) const;
-	float weather_scale(string weather) const;
+	static float weather_scale(string weather); // no need to import weather, as the used thing is only a string!
+
+	// the one ultimate
+	// Party-inator
+	void inator();
 };
 
 #endif

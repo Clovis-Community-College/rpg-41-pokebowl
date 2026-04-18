@@ -31,7 +31,8 @@ void Party::record_move(XY old_pos) {
     for (size_t i = 1; i < bank.size(); ++i) {
         bank[i]->set_pos(history[i-1]);
     }
-
+}
+	
 float Party::weather_scale(string weather) {
 	// limitation: cnanot to per-actor scaling yet
 	// but if have time - which means never
@@ -49,15 +50,15 @@ void Party::inator() {
 
 	// for god sake dont pass null in here
 	auto interactable = [&](const Actor* actor){
-		return	(actor->type() == "monster") &&
-			(actor->type() == "hero") &&
-			(actor->type() == "merchant") &&
+		return	(actor->type() == "monster") ||
+			(actor->type() == "hero") ||
+			(actor->type() == "merchant") ||
 			(actor->type() == "drop");
 	};
 
 	
 	auto rankable = [&](const Actor* actor){
-		return	(actor->type() == "monster") &&
+		return	(actor->type() == "monster") ||
 			(actor->type() == "hero");
 	};
 
@@ -92,15 +93,14 @@ void Party::inator() {
 		// trash bin code, MUST rewrite
 		// section:
 		// find first living opponent
-auto it = std::find_if(bank.begin(), bank.end(),
-    [&actor](Actor* opponent){
-        bool both_alive = !actor->is_dead() && !opponent->is_dead();
-        bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
-        bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
-        return both_alive && (monster_hits_hero || hero_hits_monster);
-    });
+		auto it = std::find_if(bank.begin(), bank.end(), [&actor](Actor* opponent){
+			bool both_alive = !actor->is_dead() && !opponent->is_dead();
+			bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
+			bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
+			return both_alive && (monster_hits_hero || hero_hits_monster);
+		});
 
-if (it == bank.end()) continue;
-Actor* opponent = *it;
+		if (it == bank.end()) continue;
+		Actor* opponent = *it;
 	}
 }

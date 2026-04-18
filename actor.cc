@@ -2,7 +2,7 @@
 #include "llbridges.h"
 
 // Traits
-Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, AttackHP _wsd) 
+Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, WeatherScale _wsd) 
 	: hp_max(_hpm), attack_damage(_do), hurt_scale(_hs), starting_speed(_ss), weather_scale_damage(_wsd) {}
 
 // Actor
@@ -57,7 +57,7 @@ bool Actor::share_type_with(const Actor *other) const {
 void Actor::name(string _name_) { _name = _name_; }
 void Actor::pos(XY _pos_) { _pos = _pos_; }
 
-void Actor::weather_scale_damage(AttackHP wsd) {
+void Actor::weather_scale_damage(WeatherScale wsd) {
 	_traits.weather_scale_damage = wsd;
 }
 

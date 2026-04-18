@@ -17,6 +17,7 @@ using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
 using InversedDefenseScale = float;
+using WeatherScale = float;
 using ActorType = string;
 using Bank = std::vector<Actor*>;
 
@@ -44,7 +45,7 @@ struct Traits {
 
 	// Weather damage scale
 	// defaults to 1
-	AttackHP weather_scale_damage;
+	WeatherScale weather_scale_damage;
 
 	// Hurt scale/modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
@@ -53,7 +54,7 @@ struct Traits {
 	InversedDefenseScale hurt_scale;
 
 	// cstor for struct lol
-	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, AttackHP _wsd); 
+	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, WeatherScale _wsd); 
 };
 
 enum Direction {
@@ -129,7 +130,7 @@ public:
 
 	// set weather scale
 	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
-	void weather_scale_damage(AttackHP wsd);
+	void weather_scale_damage(WeatherScale wsd);
 
 	bool is_dead() const;
 	bool is_self_with(const Actor *other) const;

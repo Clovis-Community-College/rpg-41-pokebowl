@@ -40,6 +40,10 @@ struct Traits {
 	// Defaults to 1.
 	AttackHP attack_damage;
 
+	// Weather damage scale
+	// defaults to 1
+	AttackHP weather_scale_damage;
+
 	// Hurt scale/modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
@@ -47,7 +51,7 @@ struct Traits {
 	InversedDefenseScale hurt_scale;
 
 	// cstor for struct lol
-	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm); 
+	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, AttackHP _wsd); 
 };
 
 enum Direction {
@@ -95,7 +99,7 @@ public:
 
 	// Cstor
 	Actor() = delete;
-	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
+	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0,0});
 
 	// Virtual dstor for the virtual dstor god
 	virtual ~Actor();
@@ -120,6 +124,10 @@ public:
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
+
+	// set weather scale
+	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
+	void weather_scale_damage(AttackHP wsd);
 
 	bool is_dead() const;
 	bool is_self_with(const Actor *other) const;

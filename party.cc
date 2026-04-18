@@ -12,14 +12,6 @@ bool Party::side_dead(ActorType type) const {
 	return no_remaining_type;
 }
 
-float Party::weather_scale(string weather) const {
-	if (weather == "Clear") return 1;
-	else if (weather == "Rain") return 0.9;
-	else if (weather == "Fog") return 0.85;
-	else if (weather == "Windy") return 1.1;
-	else return 1;
-}
-
 void Party::add_member(Actor* actor) {
     bank.push_back(actor);
 }
@@ -39,4 +31,13 @@ void Party::record_move(XY old_pos) {
     for (size_t i = 1; i < bank.size(); ++i) {
         bank[i]->set_pos(history[i-1]);
     }
+
+float Party::weather_scale(string weather) {
+	// limitation: cnanot to per-actor scaling yet
+	// but if have time - which means never
+	if (weather == "Clear") return 1;// clear
+	else if (weather == "Rain") return 0.9; // rain slippery
+	else if (weather == "Fog") return 0.85; // fog blinds vision
+	else if (weather == "Windy") return 1.1; // windy more "smooth-moving"
+	else return 1; //clear as a fallback
 }

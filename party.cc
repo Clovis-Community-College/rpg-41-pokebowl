@@ -62,9 +62,8 @@ void Party::inator() {
 			(actor->type() == "hero");
 	};
 
-	// scope for good-old memory management
 	// create EVERYTHING then kill it outside init step
-{
+
 	vector<Actor*> bank_rankable;
 
 	// A - Initialization != cstor!!!!!!!
@@ -83,15 +82,23 @@ void Party::inator() {
 	}
 
 	// A2 - call any range-based function here
-	// WHERE THE F**K IS THE RESULT (supposed to be) STORED IN?????
-	HasInitiative::begin_combat(bank_rankable);
-}
-	//out of scope!!!!!
 
+	// get the turn list
+	auto cll_ptr = HasInitiative::begin_combat(bank_rankable);
+	if (cll_ptr) turn_list = *cll_ptr;
+}
+
+void Party::you_spin_me_round() {
 	// B - you spin round and round like a record
 	while (!side_dead("monster") && !side_dead("hero")) {
 		// trash bin code, MUST rewrite
 		// section:
+
+		// get current actor (list auto-advance)
+		auto actor_pair = turn_list.current();
+		if (actor_pair.second) { /* cycle lapsed */ }
+		Actor* actor = actor_pair.first;
+
 		// find first living opponent
 		auto it = std::find_if(bank.begin(), bank.end(), [&actor](Actor* opponent){
 			bool both_alive = !actor->is_dead() && !opponent->is_dead();
@@ -102,5 +109,6 @@ void Party::inator() {
 
 		if (it == bank.end()) continue;
 		Actor* opponent = *it;
+	
 	}
 }

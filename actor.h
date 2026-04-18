@@ -175,7 +175,7 @@ class Merchant : public Wall {
 public:
 	using Wall::Wall;
 
-	// no override for type, treat merchant like a wall.
+	ActorType type() const override;
 
 	// open merchant shop
 	// no good name here bcs.... inheritance hell
@@ -194,6 +194,7 @@ public:
 	Drop(XY xy, IOrphan io);
 
 	// positionally treat drop like a wall.
+	ActorType type() const override;
 
 	// can spawn.
 

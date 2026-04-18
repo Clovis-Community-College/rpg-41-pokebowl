@@ -41,3 +41,49 @@ float Party::weather_scale(string weather) {
 	else if (weather == "Windy") return 1.1; // windy more "smooth-moving"
 	else return 1; //clear as a fallback
 }
+
+void Party::inator() {
+	// diffrent funciton for different stages?
+	// be damned
+	// im gassed
+
+	// for god sake dont pass null in here
+	auto interactable = [&](const Actor* actor){
+		return	(actor->type() == "monster") &&
+			(actor->type() == "hero") &&
+			(actor->type() == "merchant") &&
+			(actor->type() == "drop");
+	};
+
+	
+	auto rankable = [&](const Actor* actor){
+		return	(actor->type() == "monster") &&
+			(actor->type() == "hero");
+	};
+
+	// scope for good-old memory management
+	// create EVERYTHING then kill it outside init step
+{
+	vector<Actor*> bank_rankable;
+
+	// A - Initialization != cstor!!!!!!!
+	// A1 - first fill-in loop
+	for (auto actor : bank) {
+		// dont bother with null
+		if (!actor) continue;
+
+		// A1.a - speed() fill
+		if (rankable(actor)) {
+			bank_rankable.push_back(actor);
+			
+		}
+
+		
+	}
+
+	// A2 - call any range-based function here
+	// WHERE THE F**K IS THE RESULT (supposed to be) STORED IN?????
+	HasInitiative::begin_combat(bank_rankable);
+}
+
+}

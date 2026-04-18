@@ -158,6 +158,7 @@ void Merchant::_attack(Actor* opponent) {
 	// TODO: open merchant shop and shit
 }
 
+ActorType Merchant::type() const { return "merchant"; }
 // Drop
 
 Drop::Drop(XY xy, IOrphan io) : Wall(xy), orphaned_items(io) {}
@@ -166,6 +167,8 @@ void Drop::_attack(Actor* opponent) {
 	// no attack is possible if wall attacks sth
 	// TODO: wait for Joe's pickup func
 }
+
+ActorType Drop::type() const { return "drop"; }
 
 // NonWall
 

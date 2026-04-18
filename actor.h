@@ -91,6 +91,8 @@ public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
 	optional<Inventory> items;
 
+	void set_pos(XY new_pos) { pos(new_pos); }
+
 	// Cstor
 	Actor() = delete;
 	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});

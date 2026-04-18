@@ -3,6 +3,8 @@
 
 #include "llbridges.h"
 #include "inventory.h"
+#include "pokeitems.h"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -177,6 +179,25 @@ public:
 	// open merchant shop
 	// no good name here bcs.... inheritance hell
 	// but composition will need a Shop class galore
+	void _attack(Actor* opponent) override;
+};
+
+class Drop : public Wall {
+public:	
+	// orphan type
+	using IOrphan = vector<Item>;
+
+private:
+	IOrphan orphaned_items;
+public:
+	Drop(XY xy, IOrphan io);
+
+	// positionally treat drop like a wall.
+
+	// can spawn.
+
+	// transfer inventory on contact
+	// no good name here bcs.... inheritance hell
 	void _attack(Actor* opponent) override;
 };
 

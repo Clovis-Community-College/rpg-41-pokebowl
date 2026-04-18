@@ -158,6 +158,15 @@ void Merchant::_attack(Actor* opponent) {
 	// TODO: open merchant shop and shit
 }
 
+// Drop
+
+Drop::Drop(XY xy, IOrphan io) : Wall(xy), orphaned_items(io) {}
+
+void Drop::_attack(Actor* opponent) {
+	// no attack is possible if wall attacks sth
+	// TODO: wait for Joe's pickup func
+}
+
 // NonWall
 
 // template method not useless

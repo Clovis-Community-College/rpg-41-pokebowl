@@ -3,17 +3,21 @@
 
 #include "llbridges.h"
 #include "inventory.h"
+#include "pokeitems.h"
+
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <optional>
 
-using std::string, std::cout, std::cin, std::vector, std::optional;
+using std::string, std::cout, std::cin, std::vector, std::optional, std::function;
 using HP = int32_t;
 using Speed = int8_t;
 using AttackHP = HP;
 using InversedDefenseScale = float;
+using WeatherScale = float;
 using ActorType = string;
 using Bank = std::vector<Actor*>;
 
@@ -39,6 +43,10 @@ struct Traits {
 	// Defaults to 1.
 	AttackHP attack_damage;
 
+	// Weather damage scale
+	// defaults to 1
+	WeatherScale weather_scale_damage;
+
 	// Hurt scale/modulator.
 	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
 	// Defaults to 1
@@ -46,7 +54,7 @@ struct Traits {
 	InversedDefenseScale hurt_scale;
 
 	// cstor for struct lol
-	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm); 
+	Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, WeatherScale _wsd); 
 };
 
 enum Direction {
@@ -76,8 +84,8 @@ private:
 	// Trait points.
 	Traits _traits;
 
-	// set hp with bounds
-	void hp(HP _hp_); // only for internal HP modification.
+	// Generalzied hp mod by delta.
+	void hp(HP hp_delta, float external_scale, const function<float(float, float)> &op);
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
@@ -90,9 +98,11 @@ public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
 	optional<Inventory> items;
 
+	void set_pos(XY new_pos) { pos(new_pos); }
+
 	// Cstor
 	Actor() = delete;
-	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0});
+	Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0,0});
 
 	// Virtual dstor for the virtual dstor god
 	virtual ~Actor();
@@ -118,12 +128,18 @@ public:
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
 
+	// set weather scale
+	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
+	void weather_scale_damage(WeatherScale wsd);
+
 	bool is_dead() const;
+	bool is_self_with(const Actor *other) const;
+	bool share_type_with(const Actor *other) const;
 
 	// Move behaviour. TBI by subclasses.
 	// Actor should only move on int32_teger-based steps
 	// (i.e., actors on a chessboard).
-	virtual void move(Direction d) = 0;
+	virtual void move(Direction d);
 
 	// Do damage to Actor.
 	// Defaults to 'delta' damage, impl by subclass
@@ -134,7 +150,15 @@ public:
 	// Defaults to 'delta' damage, impl by subclass
 	virtual void cure_damage(HP hp_delta, float external_heal_scale);
 
-//	void heal(HP delta);
+	// The dreaded dispatch hell
+	// if opponent die during attack, opponent cant attk actor.
+	void attack(Actor* opponent);
+
+protected:
+	bool _good_to_attack(Actor* opponent) const;
+	virtual bool _subclass_good_to_attack(Actor* opponent) const;
+	virtual void _attack(Actor* opponent);
+	virtual void _post_attack(Actor* opponent);
 };
 
 // tbd: add overlayable (like sand or water that brings about effect)
@@ -144,13 +168,55 @@ class Wall : public Actor {
 public:
 	Wall(XY xy);
 	ActorType type() const override;
-	void move(Direction d) override final;
+	void _attack(Actor* opponent) override;
+};
+
+class Merchant : public Wall {
+public:
+	using Wall::Wall;
+
+	ActorType type() const override;
+
+	// open merchant shop
+	// no good name here bcs.... inheritance hell
+	// but composition will need a Shop class galore
+	void _attack(Actor* opponent) override;
+};
+
+class Drop : public Wall {
+public:	
+	// orphan type
+	using IOrphan = vector<Item>;
+
+private:
+	IOrphan orphaned_items;
+public:
+	Drop(XY xy, IOrphan io);
+
+	// positionally treat drop like a wall.
+	ActorType type() const override;
+
+	// can spawn.
+
+	// transfer inventory on contact
+	// no good name here bcs.... inheritance hell
+	void _attack(Actor* opponent) override;
 };
 
 class NonWall : public Actor {
 public:
 	using Actor::Actor;
-	virtual void special(Bank& bank) = 0;
+
+protected:
+	bool _subclass_good_to_attack(Actor* opponent) const override;
+
+	// SHARED special-related functionalities
+	// Applies one actor's "special functions" 
+	// on MULTIPLE actor
+	void special(Bank& bank);
+
+	// Special abilities. TBI by subclasses.
+	virtual void subclass_special(Bank& bank) = 0;
 };
 
 class Hero : public NonWall, public HasInitiative {
@@ -160,11 +226,6 @@ public:
 
 	// !!!!!!!! each hero is unique, so cannot final here
 	void move(Direction d) override;
-
-	void special(Bank& bank) override;
-
-	// Special abilities. TBI by subclasses.
-	virtual void subclass_special(Bank& bank) = 0; 
 };
 
 // Hero - Hebrew
@@ -192,6 +253,7 @@ public:
 class Dalet : public Hero {
 public:
 	Dalet(string _name_, XY _pos_);
+	bool _subclass_good_to_attack(Actor* opponent) const override final;
 	void subclass_special(Bank& bank) override;
 };
 
@@ -219,7 +281,6 @@ public:
 	void subclass_special(Bank& bank) override;
 };
 
-
 // Monster - Military
 // internal names only
 class Monster : public NonWall, public HasInitiative {
@@ -227,14 +288,6 @@ public:
 	using NonWall::NonWall;
 	ActorType type() const override;
 	virtual bool is_boss() const; // default to false
-	
-	// !!!!!!!! each hero is unique, so cannot final here
-	void move(Direction d) override;
-
-	void special(Bank& bank) override;
-
-	// Special abilities. TBI by subclasses.
-	virtual void subclass_special(Bank& bank) = 0; 
 };
 
 class Alpha : public Monster {

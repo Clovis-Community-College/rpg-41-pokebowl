@@ -63,6 +63,7 @@ static Item genrand_item(){
 		return Item("Dragonite Slam", "weapon",30,0,40,false);
 	
 }
+
 //WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
 void Inventory::gen_rand_loot(int minitems,int maxitems){
 	initizialize_randomgen();

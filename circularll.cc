@@ -101,6 +101,7 @@ void CLL::list_insert(Actor* a) {
 
 void CLL::reset_current_to_start() {
 	pointy = head;
+	bPointy = bHead;
 }
 
 pair<Actor*, bool> CLL::current() {
@@ -111,30 +112,40 @@ pair<Actor*, bool> CLL::current() {
 		return loopResult;
 	}
 	pointy = pointy->next;
+	bPointy = bPointy->getNext();
 	pair<Actor*, bool> result = {tmpActor, false};
 	return result;
 }
 
 void CLL::list_delete(Actor* a) {
-if (!size) {//empty
-	cout << "empty. yup\n";
-		return;
-} 
+if (!size) return; 
 if (size == 1 && head->actorPTR == a) { //deleting from size 1
 	delete head;
+	delete bHead;
 	pointy = nullptr;
+	bPointy = nullptr;
 	head = nullptr;
+	bHead = nullptr;
 	size = 0;
 	return;
 }
 Node* tmp = head;
+CircDLelement<string> *bTmp = bHead;
 if (head->actorPTR == a) {
 	if (pointy == head) {
 		pointy = pointy->next;
+		bPointy = bPointy->getNext();
 	}
 	head->prev->next = head->next;
 	head->next->prev = head->prev;
 	head = head->next;
+
+	bHead->getPrev()->setNext(bHead->getNext());
+	bHead->getNext()->setPrev(bHead->getPrev());
+	bHead = bHead->getNext();
+
+	
+
 	size--;
 	delete tmp;
 	

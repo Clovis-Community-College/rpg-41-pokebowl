@@ -12,6 +12,7 @@ void CLL::mark_pointy() {
 }
 
 void CLL::output_bridges() {
+	if (!bHead) return;
 	bridgesCLL->setDataStructure(bHead);
 	bridgesCLL->visualize();
 }

@@ -1,5 +1,7 @@
 #include "circularll.h"
+#include <CircDLelement.h>
 #include <CircSLelement.h>
+#include <sstream>
 
 using namespace bridges;
 using namespace std;
@@ -13,33 +15,43 @@ void CLL::mark_pointy() {
 
 void CLL::output_bridges() {
 	if (!bHead) return;
+	mark_pointy();
 	bridgesCLL->setDataStructure(bHead);
 	bridgesCLL->visualize();
 }
 
 void CLL::list_insert(Actor* a) {
+	stringstream NodeLabel;
+	NodeLabel << a->name() << " {" << a->type() << ") - SPEED " << dynamic_cast<HasInitiative*>(a)->get_speed();
 	if (!head) {
-	/*
-	head = head->prev = new Node{a, };
-	size = 1;
-	head->next = head->prev;
-	head->prev->next = head;
-	return;
-	*/
-	
-	head = new Node{ a};
-	head->next = head;
-	head->prev = head;
-	//head = new Node{ a};
-	//head->next = head;
-	//head->prev = head;
-	pointy = head;
-	size = 1;
-	return;
+		head = new Node{ a};
+		head->next = head;
+		head->prev = head;
+		pointy = head;
+		
+		bHead = new CircDLelement<string>(NodeLabel.str(), NodeLabel.str());	
+		bHead->setNext(bHead);
+		bHead->setPrev(bHead);
+		bPointy = bHead;
+
+		size = 1;
+		return;
 	}
 	if (head == head->prev) {
 		head->prev = new Node{ a , head, head };
 		head->next = head->prev;
+		
+		CircDLelement<string>* toLinkup = new CircDLelement<string>(NodeLabel.str(),NodeLabel.str());
+
+		toLinkup->setNext(bHead);
+		toLinkup->setPrev(bHead);
+
+		bHead->setPrev(toLinkup);
+		
+		bHead->setNext(bHead->getPrev());
+
+		toLinkup->getLinkVisualizer(bHead)->setColor("white");
+
 		size++;
 		return;
 	}

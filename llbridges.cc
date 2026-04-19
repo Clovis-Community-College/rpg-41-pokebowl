@@ -1,4 +1,5 @@
 #include "actor.h"
+#include <cstdint>
 #include <cstdlib>
 #include "llbridges.h"
 #include "circularll.h"
@@ -38,4 +39,8 @@ decltype(HasInitiative::_speed)  HasInitiative::speed( Actor* actor) {
 void HasInitiative::reset_speed(Actor* actor) {
 	_speed = actor->starting_speed();
 	check_speed();
+}
+
+int8_t HasInitiative::get_speed() {
+	return _speed;
 }

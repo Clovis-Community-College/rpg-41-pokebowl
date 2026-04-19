@@ -2,7 +2,7 @@
 
 Game::Game() {
     h_aleph = new Aleph("Aleph", {0, 1});
-    boss_mob = new Alpha("Boss M.", {98, 98});
+    boss_mob = new Foxtrot("Boss M.", {98, 98});
     h_main = new Bet("Bet", {100, 100});
     h_chet = new Chet("Chet", {101, 2});
     h_dalet = new Dalet("Dalet", {102, 3});
@@ -18,6 +18,8 @@ Game::Game() {
 
     player_party.shared_inventory.insert(Item("Potion", "Consume", 50, 50, 0, false));
     player_party.shared_inventory.insert(Item("Sword", "Weapon", 500, 0, 20, false));
+
+	// spauly note: inator() here ig
 
     boss_mob->items = Inventory();
     boss_mob->items->insert(Item("Boss Key", "Key", 0, 0, 0, true));
@@ -48,11 +50,12 @@ Game::Game() {
 
 Game::~Game() {
     endwin();
-    delete h_aleph;
-    delete boss_mob;
-    delete h_main;
-    delete h_chet;
-    delete h_dalet;
+	// spauly note:
+	// too lazy for a kill_all()
+	// vector copy prevents iterator hell
+auto _bank = player_party.bank;
+    for (const auto actor : _bank) 
+	player_party.kill(actor, false);
 }
 
 void Game::handle_input(int ch) {
@@ -174,11 +177,14 @@ void Game::handle_input(int ch) {
                 }
             }
             state = GameState::MAP;
-            boss_mob->set_pos({-1, -1});
+			// quest 1 passed
+			quests.boss_killed();
+         //   boss_mob->set_pos({-1, -1});
+            boss_mob->pos({-1, -1});
         } else if (ch == 'r') {
             state = GameState::MAP;
             if (!player_party.history.empty()) {
-                h_main->set_pos(player_party.history[0]);
+                h_main->pos(player_party.history[0]);
             }
         }
     }
@@ -217,6 +223,8 @@ void Game::render() {
         if (state == GameState::MAP) {
             weather.Update(world, h_main->pos());
             weather.draw(h_main->pos().x - start_x, h_main->pos().y - start_y, max_x, max_y);
+			// quest 
+			quests.draw(max_x);
         }
 
         char p_chars[] = {'@', 'A', 'B', 'C', 'D', 'E'};
@@ -317,6 +325,15 @@ void Game::render() {
         for (size_t i = 0; i < player_party.bank.size(); ++i) {
              mvprintw(6 + i * 2, 4, "@ %s (HP: %d/%d)", player_party.bank[i]->name().c_str(), player_party.bank[i]->hp(), player_party.bank[i]->hp());
         }
+	
+	// spauly note: show hp or shit affected by Party::one_more_time() idk
+	//
+	// basically, if in combat state, 
+	// CHECK win (hero_wins) or lose (monster_wins)	status from Party::status enums
+	// 	- win -> SHOW win screen, lose -> SHOW lose screen
+	//	- otherwise, RUN Party::one_more_time() to advance combat state 
+	// 	  then SHOW changes/new state
+	// add equip ability or shit to taste
 
         mvprintw(6, max_x - 40, "M %s (HP: %d/%d)", boss_mob->name().c_str(), boss_mob->hp(), boss_mob->hp());
         mvprintw(8, max_x - 40, "[Boss has drops: %d]", boss_mob->items.has_value() ? boss_mob->items->get_size() : 0);

@@ -9,6 +9,15 @@ using namespace std;
 //int8_t HasInitiative::get_speed() { return _speed; }
 
 unique_ptr<CLL> HasInitiative::begin_combat(vector<Actor*> involved) {
+	// random speed fill stage
+	for (auto actor : involved) { 
+		// defensive, as input vector is already only has mobster and hero
+		// but... Just-in-Case™
+		if (actor->type() != "monster" && actor->type() != "hero") continue;
+		auto h_actor = dynamic_cast<HasInitiative*>(actor);
+		h_actor->speed(actor);
+	}
+
 	sort(involved.begin(), involved.end(), [](Actor* a, Actor* b){
 			HasInitiative* nuA = dynamic_cast<HasInitiative*>(a);
 			HasInitiative* nuB = dynamic_cast<HasInitiative*>(b);

@@ -85,5 +85,5 @@ void WeatherSystem::draw(int x, int y, int tempx, int tempy){
 							}
 						}
 					}
-					}
+				}
 					

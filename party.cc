@@ -64,8 +64,7 @@ void Party::kill(Actor* actor) {
 
 	// make drop corresponding to actor
 	Drop* drop = new Drop(xy, orphaned_inv, coins);
-	bank.push_back(drop);
-	add_member(drop);
+	add_member(drop); // vector pushback != rendering !!!!!!
 }
 
 void Party::inator() {

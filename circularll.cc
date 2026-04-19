@@ -37,6 +37,9 @@ void CLL::list_insert(Actor* a) {
 		
 		if (a->type() == "monster") {
 			bHead->setShape(SQUARE);
+			bHead->setColor("magenta");
+		} else {
+			bHead->setColor("lime");
 		}
 
 		size = 1;
@@ -58,10 +61,13 @@ void CLL::list_insert(Actor* a) {
 		toLinkup->getLinkVisualizer(bHead)->setColor("white");
 		
 		if (a->type() == "monster") {
+			toLinkup->setShape(SQUARE);
 			toLinkup->setColor("magenta");
-			toLinkup->getLinkVisualizer(toLinkup->getNext())->setColor("magenta");
+			toLinkup->getLinkVisualizer(bHead)->setColor("magenta");
+		} else {
+			toLinkup->setColor("lime");
+			toLinkup->getLinkVisualizer(bHead)->setColor("lime");
 		}
-
 		size++;
 		return;
 	}
@@ -76,30 +82,21 @@ void CLL::list_insert(Actor* a) {
 		toLinkup->setPrev(bHead->getPrev());
 
 		toLinkup->getLinkVisualizer(bHead->getPrev())->setColor("white");
+		
+		bHead->getPrev()->setNext(toLinkup);
+		bHead->setPrev(bHead->getPrev()->getNext());
+
+		if (a->type() == "monster") {
+			toLinkup->setShape(SQUARE);
+			toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("magenta");
+			toLinkup->setColor("magenta");
+		} else {
+			toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("lime");
+			toLinkup->setColor("lime");
+		}
 
 		size++;
 	}
-
-	/* OLD METHOD
-	if (!head) {
-		head = tail = new Node{a};
-		//CircSLelement<Actor*>* e1 = new CircSLelement<Actor*>(a);	
-		size = 1;
-		return;
-	}
-	//remove if/ else
-	if (head == tail || head != tail) {
-		tail->next = new Node{a};
-		tail = tail->next;
-		tail->next = head;
-		size++;
-		return;
-	}
-	else {
-		cerr << "circularll.h: list_insert() error";
-		exit(EXIT_FAILURE);
-	}
-	*/
 }
 
 void CLL::reset_current_to_start() {
@@ -192,8 +189,4 @@ while (1) {
 		tmp = tmp->next;
 		prev = prev->next;
 	}*/
-}
-
-void CLL::output_bridges() {
-	bridgesCSLL->visualize();
 }

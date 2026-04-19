@@ -29,7 +29,7 @@ void Party::record_move(XY old_pos) {
         history.pop_back();
     }
     for (size_t i = 1; i < bank.size(); ++i) {
-        bank[i]->set_pos(history[i-1]);
+        bank[i]->pos(history[i-1]);
     }
 }
 	
@@ -41,6 +41,29 @@ float Party::weather_scale(string weather) {
 	else if (weather == "Fog") return 0.85; // fog blinds vision
 	else if (weather == "Windy") return 1.1; // windy more "smooth-moving"
 	else return 1; //clear as a fallback
+}
+
+void Party::kill(Actor* actor) {
+	// container of the dead's assests
+	IOrphan orphaned_inv{};
+	int coins{};
+
+	// item + coin transfer to a temp spot
+	if (auto items = actor->items; items.has_value()) {
+		orphaned_inv = items.value().drop_all(); // item transfer
+		coins = items.value().get_coins(); //coin transfer
+	}
+
+	// coords transfer
+	XY xy = actor->pos();
+
+	// delete actor from cll -> bank -> itself(?)
+	turn_order.list_delete(actor);
+	std::erase_if(bank, [actor](Actor* a){ return a == actor; });
+	delete actor;
+
+	// make drop corresponding to actor
+	Drop* drop = new Drop(xy, orphaned_inv, coins);
 }
 
 void Party::inator() {
@@ -85,7 +108,7 @@ void Party::inator() {
 
 	// get the turn list
 	auto cll_ptr = HasInitiative::begin_combat(bank_rankable);
-	if (cll_ptr) turn_list = std::move(*cll_ptr);
+	if (cll_ptr) turn_order = std::move(*cll_ptr);
 }
 
 void Party::you_spin_me_round() {
@@ -95,7 +118,7 @@ void Party::you_spin_me_round() {
 		// section:
 
 		// get current actor (list auto-advance)
-		auto actor_pair = turn_list.current();
+		auto actor_pair = turn_order.current();
 		if (actor_pair.second) { /* cycle lapsed */ }
 		Actor* actor = actor_pair.first;
 

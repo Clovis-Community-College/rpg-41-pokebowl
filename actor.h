@@ -19,7 +19,8 @@ using AttackHP = HP;
 using InversedDefenseScale = float;
 using WeatherScale = float;
 using ActorType = string;
-using Bank = std::vector<Actor*>;
+using Bank = vector<Actor*>;
+using IOrphan = vector<Item>;
 
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
@@ -61,12 +62,7 @@ enum Direction {
 	LEFT,
 	RIGHT,
 	UP,
-	DOWN,
-	LEFT_UP,
-	RIGHT_UP,
-	LEFT_DOWN,
-	RIGHT_DOWN
-	// TBD: combination, varying steps per press
+	DOWN
 };
 
 class Actor {
@@ -90,15 +86,9 @@ private:
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 
-	// setter with validation
-	void name(string _name_);
-	void pos(XY _pos_);
-
 public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
-	optional<Inventory> items;
-
-	void set_pos(XY new_pos) { pos(new_pos); }
+	optional<Inventory> items{};
 
 	// Cstor
 	Actor() = delete;
@@ -119,7 +109,11 @@ public:
 	string name() const;
 	XY pos() const;
 	HP hp() const;
-//	decltype(_inv) items() const;
+//	decltype(items) items() const;
+
+	// setter with validation
+	void name(string _name_);
+	void pos(XY _pos_);
 	
 	// type of Wall, Hero, Mob into string	
 	virtual ActorType type() const = 0;
@@ -184,14 +178,10 @@ public:
 };
 
 class Drop : public Wall {
-public:	
-	// orphan type
-	using IOrphan = vector<Item>;
-
 private:
 	IOrphan orphaned_items;
 public:
-	Drop(XY xy, IOrphan io);
+	Drop(XY xy, IOrphan io, int coins);
 
 	// positionally treat drop like a wall.
 	ActorType type() const override;

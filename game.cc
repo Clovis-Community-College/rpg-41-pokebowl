@@ -174,11 +174,11 @@ void Game::handle_input(int ch) {
                 }
             }
             state = GameState::MAP;
-            boss_mob->set_pos({-1, -1});
+            boss_mob->pos({-1, -1});
         } else if (ch == 'r') {
             state = GameState::MAP;
             if (!player_party.history.empty()) {
-                h_main->set_pos(player_party.history[0]);
+                h_main->pos(player_party.history[0]);
             }
         }
     }

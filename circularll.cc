@@ -33,6 +33,11 @@ void CLL::list_insert(Actor* a) {
 		bHead->setNext(bHead);
 		bHead->setPrev(bHead);
 		bPointy = bHead;
+		bHead->setSize(20);
+		
+		if (a->type() == "monster") {
+			bHead->setShape(SQUARE);
+		}
 
 		size = 1;
 		return;
@@ -51,6 +56,11 @@ void CLL::list_insert(Actor* a) {
 		bHead->setNext(bHead->getPrev());
 
 		toLinkup->getLinkVisualizer(bHead)->setColor("white");
+		
+		if (a->type() == "monster") {
+			toLinkup->setColor("magenta");
+			toLinkup->getLinkVisualizer(toLinkup->getNext())->setColor("magenta");
+		}
 
 		size++;
 		return;
@@ -59,6 +69,14 @@ void CLL::list_insert(Actor* a) {
 		head->prev->next = new Node{ a , head, head->prev};
 		head->prev = head->prev->next;
 		//tail->next = head;
+		
+		CircDLelement<string>* toLinkup = new CircDLelement<string>(NodeLabel.str(),NodeLabel.str());
+
+		toLinkup->setNext(bHead);
+		toLinkup->setPrev(bHead->getPrev());
+
+		toLinkup->getLinkVisualizer(bHead->getPrev())->setColor("white");
+
 		size++;
 	}
 

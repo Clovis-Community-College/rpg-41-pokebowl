@@ -19,6 +19,8 @@ Game::Game() {
     player_party.shared_inventory.insert(Item("Potion", "Consume", 50, 50, 0, false));
     player_party.shared_inventory.insert(Item("Sword", "Weapon", 500, 0, 20, false));
 
+	// spauly note: inator() here ig
+
     boss_mob->items = Inventory();
     boss_mob->items->insert(Item("Boss Key", "Key", 0, 0, 0, true));
     boss_mob->items->insert(Item("Eye", "Material", 10, 0, 0, false));
@@ -48,6 +50,7 @@ Game::Game() {
 
 Game::~Game() {
     endwin();
+	// spauly note:
 	// too lazy for a kill_all()
 	// vector copy prevents iterator hell
 auto _bank = player_party.bank;
@@ -322,6 +325,11 @@ void Game::render() {
         for (size_t i = 0; i < player_party.bank.size(); ++i) {
              mvprintw(6 + i * 2, 4, "@ %s (HP: %d/%d)", player_party.bank[i]->name().c_str(), player_party.bank[i]->hp(), player_party.bank[i]->hp());
         }
+	
+	// spauly note: show hp or shit affected by Party::one_more_time() idk
+	// basically, if in combat state, 
+	// run the Party::one_more_time() to advance combat state THEN show it
+	// CHECK win (hero_wins) or lose (monster_wins)	status from Party::status enums
 
         mvprintw(6, max_x - 40, "M %s (HP: %d/%d)", boss_mob->name().c_str(), boss_mob->hp(), boss_mob->hp());
         mvprintw(8, max_x - 40, "[Boss has drops: %d]", boss_mob->items.has_value() ? boss_mob->items->get_size() : 0);

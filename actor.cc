@@ -283,6 +283,7 @@ Bravo::Bravo(string _name_, XY _pos_) : Monster(_name_, _pos_, 60, Traits(15, 1,
 
 Charlie::Charlie(string _name_, XY _pos_) : Monster(_name_, _pos_, 425, Traits(120, 0.9, 6, 425, 1)) {
 	// Machoke
+	//ADD SPECIAL KEY TYPE TO INVENTORY
 }
 
 Delta::Delta(string _name_, XY _pos_) : Monster(_name_, _pos_, 200, Traits(160, 1.4, 12, 200, 1)) {

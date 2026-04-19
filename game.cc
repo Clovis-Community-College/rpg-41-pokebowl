@@ -49,7 +49,9 @@ Game::Game() {
 Game::~Game() {
     endwin();
 	// too lazy for a kill_all()
-    for (auto actor : player_party.bank)
+	// vector copy prevents iterator hell
+auto _bank = player_party.bank;
+    for (const auto actor : _bank) 
 	player_party.kill(actor, false);
 }
 

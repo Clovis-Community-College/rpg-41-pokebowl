@@ -12,8 +12,8 @@ class Party {
 	WeatherSystem weather(); // tbd: WHEN to change weather? either way Orcs will crawll weathersystem THEN applies it to each Actor.
 public:
 	// party.bank for the actor vector
-	std::vector<Actor*> bank;
-
+	Bank bank;
+	CLL turn_list;
 	std::deque<XY> history;
 	Inventory shared_inventory; // IOrphan pending
 
@@ -27,6 +27,7 @@ public:
 	// the one ultimate
 	// Party-inator
 	void inator();
+	void you_spin_me_round();
 };
 
 #endif

@@ -4,8 +4,15 @@
 using namespace bridges;
 using namespace std;
 
+void CLL::mark_pointy() {
+	if (!bPointy) return;
+	bPointy->setColor("Red");
+	bPointy->getLinkVisualizer(bPointy->getNext())->setColor("Red");
+	bPointy->getLinkVisualizer(bPointy->getNext())->setThickness(2.0f);
+}
+
 void CLL::output_bridges() {
-	bridgesCLL->setDataStructure()
+	bridgesCLL->setDataStructure(bHead);
 	bridgesCLL->visualize();
 }
 

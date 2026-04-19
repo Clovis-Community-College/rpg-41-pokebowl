@@ -32,6 +32,6 @@ class CLL {
 		void list_insert(Actor* a);
 		void list_delete(Actor* a);
 		void output_bridges();
-
+		void mark_pointy(); //marks current node pointy points to as red in Bridges visualization
 		bridges::CircDLelement<string>* get_bHead() {return bHead;}
 };

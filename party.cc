@@ -1,17 +1,5 @@
 #include "party.h"
 
-bool Party::side_dead(ActorType type) const {
-	auto it = std::find_if(bank.begin(), bank.end(), [&](const Actor* a) -> bool {
-		if (!a) return false;
-		bool is_living = !a->is_dead();
-		bool is_type = a->type() == type;
-		return is_living && is_type;
-	});
-
-	bool no_remaining_type = (it == bank.end());
-	return no_remaining_type;
-}
-
 void Party::add_member(Actor* actor) {
     bank.push_back(actor);
 }
@@ -74,6 +62,8 @@ void Party::inator() {
 	// be damned
 	// im gassed
 
+	status = init;
+
 	// for god sake dont pass null in here
 	auto interactable = [&](const Actor* actor){
 		return	(actor->type() == "monster") ||
@@ -103,33 +93,44 @@ void Party::inator() {
 	if (cll_ptr) turn_order = std::move(*cll_ptr); // move, or point to the void
 }
 
-void Party::you_spin_me_round() {
-	// B - you spin round and round like a record
-	// literally, as turn doesn't "end" at end of CLL
-	while (!side_dead("monster") && !side_dead("hero")) {
-		// trash bin code, MUST rewrite
-		// section:
+void Party::one_more_time() {
+	// if wins lose no more turn
+	if (status == hero_wins || status == monster_wins) return;
 
-		// get current actor (list auto-advance)
-		auto actor_pair = turn_order.current();
-		if (actor_pair.second) { /* cycle lapsed */ }
-		Actor* actor = actor_pair.first;
+	status = ongoing;
 
-		// find first living opponent
-		auto it = std::find_if(bank.begin(), bank.end(), [&actor](Actor* opponent){
-			bool both_alive = !actor->is_dead() && !opponent->is_dead();
-			bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
-			bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
-			return both_alive && (monster_hits_hero || hero_hits_monster);
-		});
+	// get current actor (list auto-advance)
+	auto actor_pair = turn_order.current();
+	if (actor_pair.second) { /* cycle has lapsed */ }
+	Actor* actor = actor_pair.first;
 
-		if (it == bank.end()) continue;
-		Actor* opponent = *it;
+	// find first living opponent
+	auto fightable = [&actor](Actor* opponent){
+		bool both_alive = !actor->is_dead() && !opponent->is_dead();
+		bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
+		bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
+		return both_alive && (monster_hits_hero || hero_hits_monster);
+	};
 
-		// One-turn attack
-		actor->attack(opponent);
+	auto it = std::find_if(bank.begin(), bank.end(), fightable);
 
-		// opponent might die, who knows
-		if (opponent->is_dead()) kill(opponent);
+	Actor* opponent = *it;
+
+	// One-turn attack
+	actor->attack(opponent);
+
+	// opponent might die, who knows
+	if (opponent->is_dead()) kill(opponent);
+
+	// find second opponent to determine state
+	// its o(N) anw
+	auto it_next = std::find_if(it, bank.end(), fightable);
+		
+	// check wining cond
+	if (it_next == bank.end()) {
+		// Make sure there r decent 
+		// None of that no-or-1-or-2 actors inside
+		if (actor->type() == "hero") status = hero_wins;
+		else if (actor->type() == "monster") status = monster_wins;
 	}
 }

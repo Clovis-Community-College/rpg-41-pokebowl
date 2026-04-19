@@ -8,8 +8,8 @@ using namespace std;
 
 void CLL::mark_pointy() {
 	if (!bPointy) return;
-	bPointy->setColor("Red");
-	bPointy->getLinkVisualizer(bPointy->getNext())->setColor("Red");
+	bPointy->setColor("magenta");
+	bPointy->getLinkVisualizer(bPointy->getNext())->setColor("magenta");
 	bPointy->getLinkVisualizer(bPointy->getNext())->setThickness(2.0f);
 }
 
@@ -35,12 +35,8 @@ void CLL::list_insert(Actor* a) {
 		bPointy = bHead;
 		bHead->setSize(20);
 		
-		if (a->type() == "monster") {
-			bHead->setShape(SQUARE);
-			bHead->setColor("magenta");
-		} else {
-			bHead->setColor("lime");
-		}
+		if (a->type() == "monster") bHead->setShape(SQUARE); 
+		bHead->setColor("lime");	
 
 		size = 1;
 		return;
@@ -58,20 +54,19 @@ void CLL::list_insert(Actor* a) {
 		
 		bHead->setNext(bHead->getPrev());
 
-		toLinkup->getLinkVisualizer(bHead)->setColor("white");
+		toLinkup->getLinkVisualizer(bHead)->setColor("lime");
 		
 		if (a->type() == "monster") {
 			toLinkup->setShape(SQUARE);
-			toLinkup->setColor("magenta");
-			toLinkup->getLinkVisualizer(bHead)->setColor("magenta");
-		} else {
-			toLinkup->setColor("lime");
-			toLinkup->getLinkVisualizer(bHead)->setColor("lime");
-		}
+		} 
+		toLinkup->setColor("lime");
+		bHead->getLinkVisualizer(toLinkup)->setColor("lime");
 		size++;
 		return;
 	}
 	if (head != head->prev) {
+		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("orange");
+
 		head->prev->next = new Node{ a , head, head->prev};
 		head->prev = head->prev->next;
 		//tail->next = head;
@@ -86,14 +81,13 @@ void CLL::list_insert(Actor* a) {
 		bHead->getPrev()->setNext(toLinkup);
 		bHead->setPrev(bHead->getPrev()->getNext());
 
-		if (a->type() == "monster") {
-			toLinkup->setShape(SQUARE);
-			toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("magenta");
-			toLinkup->setColor("magenta");
-		} else {
-			toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("lime");
-			toLinkup->setColor("lime");
-		}
+		if (a->type() == "monster") toLinkup->setShape(SQUARE);
+		
+		toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("lime");
+		toLinkup->setColor("lime");
+		
+		bHead->getLinkVisualizer(bHead->getPrev())->setColor("white");
+		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("lime");
 
 		size++;
 	}
@@ -144,60 +138,41 @@ if (head->actorPTR == a) {
 	bHead->getNext()->setPrev(bHead->getPrev());
 	bHead = bHead->getNext();
 
-	
+	bHead->getPrev()->getLinkVisualizer(bHead)->setColor("lime");
+
+	bHead->getLinkVisualizer(bHead->getPrev())->setColor("white");
+	bHead->setSize(20);
 
 	size--;
 	delete tmp;
+	delete bTmp;
 	
 	return;
 }
 tmp = tmp->next;
+bTmp = bTmp->getNext();
 while (1) {
-
 	if (tmp->actorPTR == a) {
 		tmp->prev->next = tmp->next; //link node before deleted one to next one
 		tmp->next->prev = tmp->prev;
+		
+		bTmp->getPrev()->setNext(bTmp->getNext());
+		bTmp->getNext()->setPrev(bTmp->getPrev());
+
+		bTmp->getPrev()->getLinkVisualizer(bTmp->getNext())->setColor("lime");
+		bTmp->getNext()->getLinkVisualizer(bTmp->getPrev())->setColor("white");
+
 		if (tmp == pointy) {
 			pointy = pointy->next;
+			bPointy = bPointy->getNext();
 		}
 		delete tmp;
+		delete bTmp;
 		size--;
 		return;
 	}
 	if (tmp == head) return;
-	tmp = tmp->next;
-}
-
-	/*
-	if (!size) return;
-	if (size == 1 && head->attacker == a) {
-		delete head;
-		tail = head = tail->next = head->next = nullptr;
-		size = 0;
-		return;
-	}
-	Node* tmp = head;
-	if (head->attacker == a) {
-		tail->next = head->next;
-		head = head->next;
-		size--;
-		delete tmp;
-		return;
-	}
-	Node* prev = head;
-	tmp = tmp->next;
-	while (1) {
-		if (tmp->attacker == a) {
-			prev->next = tmp->next;
-			if (tmp == tail) {
-				tail = prev;
-			}
-			size--;
-			delete tmp;
-			return;
-		}
-		if (tmp == tail) return;
 		tmp = tmp->next;
-		prev = prev->next;
-	}*/
+		bTmp = bTmp->getNext();
+	}
 }

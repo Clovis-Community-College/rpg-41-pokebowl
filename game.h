@@ -1,5 +1,5 @@
 #pragma once
-
+#include "quest.h"
 #include "actor.h"
 #include "map.h"
 #include "party.h"
@@ -31,6 +31,7 @@ public:
     Chet* h_chet;
     Dalet* h_dalet;
     Alpha* boss_mob;
+	QuestSystem quests;
 
     Game();
     ~Game();

@@ -88,30 +88,19 @@ void Party::inator() {
 			(actor->type() == "hero");
 	};
 
-	// create EVERYTHING then kill it outside init step
-
 	vector<Actor*> bank_rankable;
 
-	// A - Initialization != cstor!!!!!!!
-	// A1 - first fill-in loop
 	for (auto actor : bank) {
 		// dont bother with null
 		if (!actor) continue;
 
-		// A1.a - speed() fill
-		if (rankable(actor)) {
-			bank_rankable.push_back(actor);
-			
-		}
-
-		
+		if (rankable(actor))
+			bank_rankable.push_back(actor);		
 	}
-
-	// A2 - call any range-based function here
 
 	// get the turn list
 	auto cll_ptr = HasInitiative::begin_combat(bank_rankable);
-	if (cll_ptr) turn_order = std::move(*cll_ptr);
+	if (cll_ptr) turn_order = std::move(*cll_ptr); // move, or point to the void
 }
 
 void Party::you_spin_me_round() {

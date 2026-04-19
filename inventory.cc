@@ -18,27 +18,50 @@ static void initizialize_randomgen(){
 
 //NEED TO FINISH RANDOM ITEMS TO BE SLECTED 0-9
 static Item genrand_item(){
-	int roll = rand()% 10;
+	int roll = rand()% 21;
 	if (roll==0)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==1)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==2)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==3)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==4)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==5)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==6)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==7)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==8)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
-	if (roll==9)
-		return Item("Item name tbd","item type tbd",0,0,0,false);
+		return Item("Pika's Lightning Rod","weapon",50,0,45,false);
+	else if (roll==1)
+		return Item("Blastoise's Water Spit","weapon",50,0,35,false);
+	else if (roll==2)
+		return Item("Small Healing Potion","heal",10,20,0,false);
+	else if (roll==3)
+		return Item("Big Healing Potion","heal",20,50,0,false);
+	else if (roll==4)
+		return Item("Charizard's Fireball","weapon",20,0,50,false);
+	else if (roll==5)
+		return Item("Mewtwo's Psychic Wand","weapon",15,0,40,false);
+	else if (roll==6)
+		return Item("Poke Berry","heal",5,10,0,false);
+	else if (roll==7)
+		return Item("Snorlax's Scratch","weapon",15,0,25,false);
+	else if (roll==8)
+		return Item("Bulbasaur's Vine Whip","weapon",15,0,25,false);
+	else if (roll==9)
+		return Item("Meowth's Punch","weapon",5,0,5,false);
+	else if (roll==10)
+		return Item("Poke banana","heal",5,15,0,false);
+	else if (roll==11)
+		return Item("Mega Heal", "heal",25,60,0,false);
+	else if (roll==12)
+		return Item("Gyrados's Water Tornado", "weapon",40,0,45,false);
+	else if (roll==13)
+		return Item("Lucario's Aura Punch", "weapon",70,0,65,false);
+	else if (roll==14)
+		return Item("Citrus Fruit", "heal",10,20,0,false);
+	else if (roll==15)
+		return Item("Healing Potion", "heal",15,35,0,false);
+	else if (roll==16)
+		return Item("Raichu's Thunder Strike", "weapon",50,0,50,false);
+	else if (roll==17)
+		return Item("Tyranitaur's Smash", "weapon",50,0,50,false);
+	else if (roll==18)
+		return Item("Greninja Water Shuriken", "weapon",25,0,30,false);
+	else if (roll==19)
+		return Item("Arcanine Flame Burst", "weapon",25,0,30,false);
+	else 
+		return Item("Dragonite Slam", "weapon",30,0,40,false);
+	
 }
 //WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
 void Inventory::gen_rand_loot(int minitems,int maxitems){
@@ -71,13 +94,16 @@ void Inventory::extinguish(Node *temp) {
   extinguish(temp->right);
   delete temp;
 }
+
+//COmplete for inventory drop
 void Inventory::collect_items(Node* temp, vector<Item>& list) const{
 	if(temp==nullptr)
 		return;
 	collect_items(temp->left,list);
 	
-	for(int i=0;i<temp->count;i++)
+	for(int i=0;i<temp->count;i++){
 		list.push_back(temp->data);
+	}
 
 	collect_items(temp->right,list);
 }
@@ -87,10 +113,24 @@ void Inventory::get_all_items(vector<Item>& list) const{
 }
 
 vector<Item> Inventory::drop_all(){
-	vector<Item> out;
-	get_all_items(out);
+	vector<Item> kept_items;
+	vector<Item> dropped_items;
+	vector<Item> all_items;
+	get_all_items(all_items);
+
+	for(const Item& item: all_items){
+		if(item.is_special())
+			kept_items.push_back(item);
+		else {
+			dropped_items.push_back(item);
+		}
+	}
 	clear();
-	return out;
+
+	for(const Item& item: kept_items)
+		insert(item);
+
+	return dropped_items;
 }
 
 
@@ -129,6 +169,14 @@ Inventory::Node* Inventory::rsearch(Node* temp,const string& name) const{
 		return rsearch(temp->left,name);
 	else
 		return rsearch(temp->right,name);
+	}
+
+
+//for picking up purposes
+void Inventory::pickup_all(const vector<Item>& vec){
+	for(const Item& x: vec){
+		insert(x);
+	}
 }
 
 void Inventory::insert(const Item& item){
@@ -154,6 +202,10 @@ int Inventory::get_item_count(const string& name) const{
 void Inventory::print() const{
 	rprint(root);
 }
+
+void Inventory::merchant_operation(Inventory& inv){
+}
+
 
 void Inventory::add_pokecoins(int amount){
 	if(amount>0)

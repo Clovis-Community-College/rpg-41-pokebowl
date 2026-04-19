@@ -2,7 +2,7 @@
 
 Game::Game() {
     h_aleph = new Aleph("Aleph", {0, 1});
-    boss_mob = new Alpha("Boss M.", {98, 98});
+    boss_mob = new Foxtrot("Boss M.", {98, 98});
     h_main = new Bet("Bet", {100, 100});
     h_chet = new Chet("Chet", {101, 2});
     h_dalet = new Dalet("Dalet", {102, 3});
@@ -48,11 +48,9 @@ Game::Game() {
 
 Game::~Game() {
     endwin();
-    delete h_aleph;
-    delete boss_mob;
-    delete h_main;
-    delete h_chet;
-    delete h_dalet;
+	// too lazy for a kill_all()
+    for (auto actor : player_party.bank)
+	player_party.kill(actor, false);
 }
 
 void Game::handle_input(int ch) {

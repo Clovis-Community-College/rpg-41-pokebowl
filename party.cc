@@ -2,10 +2,10 @@
 
 bool Party::side_dead(ActorType type) const {
 	auto it = std::find_if(bank.begin(), bank.end(), [&](const Actor* a) -> bool {
-		bool not_null = a;
+		if (!a) return false;
 		bool is_living = !a->is_dead();
 		bool is_type = a->type() == type;
-		return not_null && is_living && is_type;
+		return is_living && is_type;
 	});
 
 	bool no_remaining_type = (it == bank.end());
@@ -43,7 +43,7 @@ float Party::weather_scale(string weather) {
 	else return 1; //clear as a fallback
 }
 
-void Party::kill(Actor* actor) {
+void Party::kill(Actor* actor, bool gen_drop = true) {
 	// container of the dead's assests
 	IOrphan orphaned_inv{};
 	int orphaned_coins{};
@@ -62,9 +62,11 @@ void Party::kill(Actor* actor) {
 	std::erase_if(bank, [actor](Actor* a){ return a == actor; });
 	delete actor;
 
+	if (!gen_drop) return;
+
 	// make drop corresponding to actor
 	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);
-	add_member(drop); // vector pushback != rendering !!!!!!
+	add_member(drop); // vector pushback != rendering !!!!!! latter UNimplemented?
 }
 
 void Party::inator() {

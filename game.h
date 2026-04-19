@@ -30,7 +30,7 @@ public:
     Bet* h_main;
     Chet* h_chet;
     Dalet* h_dalet;
-    Alpha* boss_mob;
+    Foxtrot* boss_mob;
 
     Game();
     ~Game();

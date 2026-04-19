@@ -85,7 +85,7 @@ void Party::inator() {
 
 	// get the turn list
 	auto cll_ptr = HasInitiative::begin_combat(bank_rankable);
-	if (cll_ptr) turn_list = *cll_ptr;
+	if (cll_ptr) turn_list = std::move(*cll_ptr);
 }
 
 void Party::you_spin_me_round() {

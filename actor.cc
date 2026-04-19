@@ -7,7 +7,9 @@ Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm, Weath
 
 // Actor
 Actor::Actor(string init_name, XY init_xy, HP init_hp, Traits init_traits)
-	: _name(init_name), _pos(init_xy), _hp(init_hp), _traits(init_traits), items(nullopt) {}
+	: _name(init_name), _pos(init_xy), _hp(init_hp), _traits(init_traits), items(nullopt) {
+	items.emplace();
+}
 
 Actor::Actor(const Actor &actor) : _traits(actor._traits) {
 	_name = actor._name;

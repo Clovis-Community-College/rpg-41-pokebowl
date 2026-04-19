@@ -46,12 +46,12 @@ float Party::weather_scale(string weather) {
 void Party::kill(Actor* actor) {
 	// container of the dead's assests
 	IOrphan orphaned_inv{};
-	int coins{};
+	int orphaned_coins{};
 
 	// item + coin transfer to a temp spot
 	if (auto items = actor->items; items.has_value()) {
 		orphaned_inv = items.value().drop_all(); // item transfer
-		coins = items.value().get_coins(); //coin transfer
+		orphaned_coins = items.value().get_coins(); //coin transfer
 	}
 
 	// coords transfer
@@ -63,7 +63,7 @@ void Party::kill(Actor* actor) {
 	delete actor;
 
 	// make drop corresponding to actor
-	Drop* drop = new Drop(xy, orphaned_inv, coins);
+	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);
 	add_member(drop); // vector pushback != rendering !!!!!!
 }
 
@@ -114,6 +114,7 @@ void Party::inator() {
 
 void Party::you_spin_me_round() {
 	// B - you spin round and round like a record
+	// literally, as turn doesn't "end" at end of CLL
 	while (!side_dead("monster") && !side_dead("hero")) {
 		// trash bin code, MUST rewrite
 		// section:
@@ -133,6 +134,11 @@ void Party::you_spin_me_round() {
 
 		if (it == bank.end()) continue;
 		Actor* opponent = *it;
-	
+
+		// One-turn attack
+		actor->attack(opponent);
+
+		// opponent might die, who knows
+		if (opponent->is_dead()) kill(opponent);
 	}
 }

@@ -1,19 +1,5 @@
 #include "party.h"
 
-/*
-bool Party::side_dead(ActorType type) const {
-	auto it = std::find_if(bank.begin(), bank.end(), [&](const Actor* a) -> bool {
-		if (!a) return false;
-		bool is_living = !a->is_dead();
-		bool is_type = a->type() == type;
-		return is_living && is_type;
-	});
-
-	bool no_remaining_type = (it == bank.end());
-	return no_remaining_type;
-}
-*/
-
 void Party::add_member(Actor* actor) {
     bank.push_back(actor);
 }
@@ -148,11 +134,3 @@ void Party::one_more_time() {
 		else if (actor->type() == "monster") status = monster_wins;
 	}
 }
-
-/*
-string Party::win_lose() const {
-	if (side_dead("monster")) return "win";
-	else if (side_dead("hero")) return "lose";
-	else return "none";
-}
-*/

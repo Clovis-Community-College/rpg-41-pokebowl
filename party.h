@@ -8,7 +8,7 @@
 #include "circularll.h"
 #include "weather.h"
 
-enum COMBAT_STATE {
+enum CombatState {
 	init,
 	ongoing,
 	hero_wins,
@@ -24,7 +24,7 @@ public:
 	std::deque<XY> history;
 	Inventory shared_inventory; // IOrphan pending
 
-	COMBAT_STATE status = init;
+	CombatState status = init;
 
 	void add_member(Actor* actor);
 	void init_history(XY initial_pos);

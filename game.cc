@@ -327,9 +327,13 @@ void Game::render() {
         }
 	
 	// spauly note: show hp or shit affected by Party::one_more_time() idk
+	//
 	// basically, if in combat state, 
-	// run the Party::one_more_time() to advance combat state THEN show it
 	// CHECK win (hero_wins) or lose (monster_wins)	status from Party::status enums
+	// 	- win -> SHOW win screen, lose -> SHOW lose screen
+	//	- otherwise, RUN Party::one_more_time() to advance combat state 
+	// 	  then SHOW changes/new state
+	// add equip ability or shit to taste
 
         mvprintw(6, max_x - 40, "M %s (HP: %d/%d)", boss_mob->name().c_str(), boss_mob->hp(), boss_mob->hp());
         mvprintw(8, max_x - 40, "[Boss has drops: %d]", boss_mob->items.has_value() ? boss_mob->items->get_size() : 0);

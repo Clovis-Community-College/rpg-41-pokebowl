@@ -174,6 +174,9 @@ void Game::handle_input(int ch) {
                 }
             }
             state = GameState::MAP;
+			// quest 1 passed
+			quests.boss_killed();
+         //   boss_mob->set_pos({-1, -1});
             boss_mob->pos({-1, -1});
         } else if (ch == 'r') {
             state = GameState::MAP;
@@ -217,6 +220,8 @@ void Game::render() {
         if (state == GameState::MAP) {
             weather.Update(world, h_main->pos());
             weather.draw(h_main->pos().x - start_x, h_main->pos().y - start_y, max_x, max_y);
+			// quest 
+			quests.draw(max_x);
         }
 
         char p_chars[] = {'@', 'A', 'B', 'C', 'D', 'E'};

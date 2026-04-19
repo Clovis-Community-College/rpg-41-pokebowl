@@ -2,6 +2,12 @@
 #include <CircSLelement.h>
 
 using namespace bridges;
+using namespace std;
+
+void CLL::output_bridges() {
+	bridgesCLL->setDataStructure()
+	bridgesCLL->visualize();
+}
 
 void CLL::list_insert(Actor* a) {
 	if (!head) {

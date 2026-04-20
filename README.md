@@ -3,7 +3,7 @@
 > *Nintendo, please don't sue us. Sue Kerney for appproving this project instead.*
 
 ## What's this game about?
-blablabla. balbalbalbalajsjdhrgeuehehegeheb.
+Pokebowl is a Pokemon-themed, singleplayer RPG. Explore the One Great Lake, meet your heroes, and complete quests. Heroes fight monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch. **Beat Foxtrot the Boss & all her monsters** to win and become the ultimate Poke-player!
 
 ## Key commands
 | Key | Action |
@@ -11,7 +11,6 @@ blablabla. balbalbalbalajsjdhrgeuehehegeheb.
 | Arrow keys | Move actors |
 | `i` | Open inventory |
 | `q` | Quit game |
-| [any key] | [unimplemented] |
 
 ## Checklist, 1 2 3
  

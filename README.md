@@ -1,24 +1,31 @@
-# <img src="https://cdn.discordapp.com/attachments/1490826095551971329/1495702370368098405/Pokebowl.png?ex=69e734e1&is=69e5e361&hm=ece73fc7ddb5b06d7a8b061205d8bc5203e8a33715d45ccda99aa15f107178de&"/> PokéBowl©
+<div align="center">
+<img src="https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/Pokebowl.png"/>
+  <h1 style="font-size: 28px; margin: 10px 0;">PokéBowl©</h1>
+  <p><em>A Pokémon-inspired, terminal-native RPG. Powered by Kerney's server, C++, and calories.</em></p>
+</div>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/C%2B%2B-26-blue?logo=cplusplus&logoColor=white" alt="C++">
+  <img src="https://img.shields.io/badge/platform-Linux-lightgrey?logo=linux" alt="Platform">
+  <img src="https://img.shields.io/badge/status-WIP-yellow" alt="Status">
+</p>
 
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 
-#### Shoutout to all PokéBowl team members!
-<a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
-</a>
-
 ## What's this game about?
-*PokéBowl©* is a Pokemon-inspired, singleplayer, console-based RPG.
-- Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
+**PokéBowl©** is a Pokemon-inspired, singleplayer, console-based RPG.
 - Explore the One Great Lake with arrow keys (⬅️⬆️⬇️➡️), meet your heroes, access your own inventory (`i`, `e`), and complete quests.
 - See your Heroes fighting monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch.
 
-**Defeat Foxtrot the Boss, kill all monsters** to win and conquer the Poké-verse!
+*Defeat Foxtrot the Boss, kill all monsters* to win and conquer the Poké-verse!
 
-## Key commands
+### Quick start
+Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
+
+### Key commands
 | Key | Action |
 |-----|--------|
-| `⬅️⬆️⬇️➡️` | Move player |
+| `← ↑ ↓ →` | Move player |
 | `i` | Open inventory |
 | `e` | Open equipment table |
 | `q` | Quit game |
@@ -168,3 +175,15 @@ classDiagram
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.h#L1-L334
 
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.cc#L1-L326
+
+---
+
+## Contributors
+
+<div align="center">
+<h4>Shoutout to all PokéBowl team members!</h4>
+<a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
+</a>
+</div>
+

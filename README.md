@@ -1,4 +1,4 @@
-# <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> PokéBowl© RPG
+# <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> PokéBowl©
 
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 

@@ -1,4 +1,4 @@
-# <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> PokéBowl©
+# <img src="https://cdn.discordapp.com/attachments/1490826095551971329/1495702370368098405/Pokebowl.png?ex=69e734e1&is=69e5e361&hm=ece73fc7ddb5b06d7a8b061205d8bc5203e8a33715d45ccda99aa15f107178de&"/> PokéBowl©
 
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 

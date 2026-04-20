@@ -101,8 +101,18 @@
 [ unimplemented.png ]
 ```
 
-### `Actor` class
-[desc]
+### `Actor` class hierachy
+- `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.
+    - **Stationary objects** (`Drop` and `Merchant`) inherit from `Wall`. 
+    - **Moving objects** (`Hero` and 
+`Monsters`) inherit from `NonWall`.
+
+- `Hero` and `Monster` also inherit from `HasInitiative`.
+    - This gives them a speed value (1 through 40) for combat turn order.
+      
+- `Hero` subclasses include Aleph, Bet, Gimel, Dalet, He, Vav, Zayin, and Chet.
+- `Monster` subclasses include Alpha, Bravo, Charlie, Delta, Echo, Foxtrot, Golf, and Hotel.
+    - `Foxtrot` is the game's **Boss**.
 
 #### Class diagram
 ```mermaid

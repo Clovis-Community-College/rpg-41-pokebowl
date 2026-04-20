@@ -1,27 +1,33 @@
-# <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> Pokébowl RPG
+# <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> PokéBowl© RPG
 
 > *Nintendo, please don't sue us. Sue Kerney for appproving this project instead.*
 
 ## What's this game about?
-Pokebowl is a Pokemon-themed, singleplayer RPG. Explore the One Great Lake, meet your heroes, and complete quests. Heroes fight monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch. **Beat Foxtrot the Boss & all her monsters** to win and become the ultimate Poke-player!
+*PokéBowl©* is a Pokemon-inspired, singleplayer, console-based RPG.
+
+- Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
+- Explore the One Great Lake with arrow keys (⬅️⬆️⬇️➡️), meet your heroes, access your own inventory (`i`, `e`), and complete quests.
+- See your Heroes fighting monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch.
+
+**Defeat Foxtrot the Boss, kill all her monsters** to win and conquer the Poké-verse!
 
 ## Key commands
 | Key | Action |
 |-----|--------|
-| Arrow keys | Move actors |
+| Arrow keys | Move player |
 | `i` | Open inventory |
-| `q` | Quit game |
+| `e` | Open equipment table |
 
 ## Checklist, 1 2 3
  
 ### Group
 
 #### Quality
-- `💢` **A)** Fun to play — *Everyone*
-- `💢` **B)** Decent amount of content / take at least a little while to win — *Everyone*
+- `🚧` **A)** Fun to play — *Everyone*
+- `🚧` **B)** Decent amount of content / take at least a little while to win — *Everyone*
 - `🚧` **C)** Has an interesting world map in color — *McKay*
-- `💢` **D)** Win and lose — *name*
-- `💢` **E)** Combat — *name*
+- `✅` **D)** Win and lose — *name*
+- `🚧` **E)** Combat — *name*
   
 #### Documentation
 - `🚧` **A)** README describes game: directions to win, key commands, CLI params — *Tony*
@@ -39,16 +45,16 @@ Pokebowl is a Pokemon-themed, singleplayer RPG. Explore the One Great Lake, meet
 - `✅` Stationary objects, Heroes, Monsters inheriting from `Actor`
 - `✅` `Hero` class with 4+ subclasses (stub, stub, stub, unimplemented, unimplemented)
 - `✅` `Monster` class with 5+ subclasses (stub, stub, stub, stub, stub, stub) including a **Boss** (killing Boss = win condition)
-- `🚧` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
-- `💢` README: description of class hierarchy + diagram showing class relationships
+- `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
+- `🚧` README: description of class hierarchy + diagram showing class relationships
  
 #### B — "BRIDGEngineer" (George)
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it
-- `💢` On combat start: roll d20 + speed, sort fastest-first into circular linked list
-- `🚧` Circular linked list for turn order: advance on turn end, wrap at tail, remove on death
+- `✅` On combat start: roll d20 + speed, sort fastest-first into circular linked list
+- `✅` Circular linked list for turn order: advance on turn end, wrap at tail, remove on death
 - `🚧` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
-- `💢` Works for any combat
-- `💢` Each BRIDGES node labeled with actor name + initiative value
+- `✅` Works for any combat
+- `✅` Each BRIDGES node labeled with actor name + initiative value
 - `💢` Screenshot of BRIDGES combat visualization embedded in README
  
 #### C — "JJK Curse Lord" (McKay)
@@ -57,25 +63,25 @@ Pokebowl is a Pokemon-themed, singleplayer RPG. Explore the One Great Lake, meet
 - `✅` Color
 - `✅` Scrollable world map with towns, lakes, and other features
 - `💢` Combat displayed on screen
-- `💢` Inventory displayed on screen
+- `✅` Inventory displayed on screen
 - `🚧` Party moves on map when arrow keys pressed
-- `🚧` Demonstrates reasonable ncurses proficiency
+- `✅` Demonstrates reasonable ncurses proficiency
  
 #### D — "Sephiroth, Master of the Tree" (Jovanni)
-- `🚧` BST inventory system using `😵‍💫` `custom BST/std::multimap`
-- `🚧` Print all items in inventory in alphabetical order —
+- `✅` BST inventory system using **`custom BST`**
+- `✅` Print all items in inventory in alphabetical order —
 - `✅` Support multiple copies of same item
-- `💢` Pick up and drop items
-- `💢` Buy items with gold from merchant; sell non-Key Items to merchant
-- `💢` Key Items: cannot be dropped; removed only by completing their quest
-- `💢` Monsters have randomly generated inventories that drop on defeat
-- `🚧` Items have varied stats (damage, speed modifier, healing amount, merchant cost, etc.)
-- `🚧` Coordinated with McKay (C) for inventory display, Tony (A) for hero/monster inventory ownership
+- `✅` Pick up and drop items
+- `✅` Buy items with gold from merchant; sell non-Key Items to merchant
+- `✅` Key Items: cannot be dropped; removed only by completing their quest
+- `✅` Monsters have randomly generated inventories that drop on defeat
+- `✅` Items have varied stats (damage, speed modifier, healing amount, merchant cost, etc.)
+- `✅` Coordinated with McKay (C) for inventory display, Tony (A) for hero/monster inventory ownership
  
 #### E — "Scared Balloon" (Dillion)
 - `✅` Dynamic weather system
-- `💢` Quest system
-- `💢` Hash table implemented and used as part of the system
+- `🚧` Quest system
+- `✅` Hash table implemented and used as part of the system
 
 ## Screenshots
 

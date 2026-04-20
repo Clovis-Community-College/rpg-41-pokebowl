@@ -29,13 +29,15 @@ void WeatherSystem::Update(const Map& world, const XY& pos){
 		weather = "Clear";
 	}
 	else if(r == 1){
-		weather = "Rain";
+
+		// probably the worst way to implement but i already typed it below and didnt want to go throught the work of delete B)
+		weather = "Rainy, should've brought an umbrella";
 	}
 	else if(r == 2){
-		weather = "Fog";
+		weather = "Foggy, hope you can see";
 	}
 	else if(r == 3){
-		weather ="Windy";
+		weather ="Windy, it's cold";
 	}
 
 	cycle = 80 + rand()%60;
@@ -63,7 +65,7 @@ void WeatherSystem::draw(int tempx, int tempy){
 	for(int y = 0; y < tempy; y++){
 		for(int x = 0; x < tempx; x++){
 
-				if(weather == "Fog"){
+				if(weather == "Foggy, hope you can see"){
 					if((x+y) % 6 == 0){
 						attron(COLOR_PAIR(5));
 						mvaddch(y, x, '=');
@@ -72,14 +74,14 @@ void WeatherSystem::draw(int tempx, int tempy){
 				}
 
 				// using ncurses, different pproach possible tho but ncurses seems cool
-				if(weather == "Rain"){
+				if(weather == "Rainy, should've brought an umbrella"){
 					if((x+y)  % 5== 0){
 					attron(COLOR_PAIR(3));
 					mvaddch(y, x, '.');
 					attroff(COLOR_PAIR(3));
 					}
 				}
-				else if(weather == "Windy"){
+				else if(weather == "Windy, it's cold"){
 					if((x+y)  % 7 == 0){
 					attron(COLOR_PAIR(5));
 					mvaddch(y, x, '/');

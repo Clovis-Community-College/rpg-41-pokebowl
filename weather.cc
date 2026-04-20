@@ -11,7 +11,7 @@ using namespace std;
 // In-game cycle rand?
 WeatherSystem::WeatherSystem(){
 	weather = "Clear";
-	cycle = 10;
+	cycle = 80;
 }
 
 void WeatherSystem::Update(const Map& world, const XY& pos){
@@ -38,7 +38,8 @@ void WeatherSystem::Update(const Map& world, const XY& pos){
 		weather ="Windy";
 	}
 
-	cycle =10;
+	cycle = 80 + rand()%60;
+	// lkast longer?
 }
 
 // return current weather
@@ -51,39 +52,42 @@ void WeatherSystem::printWeather(){
 	cout << "Weather: " << weather << endl;
 }
 
-void WeatherSystem::draw(int x, int y, int tempx, int tempy){
+void WeatherSystem::draw(int tempx, int tempy){
 	if(weather == "Clear"){
 		return;
 	}
-	// made this a 4x4 grid so it doesnt mess w grass/rain, will remove grid once i get a better system and/or sprites
+	
 
+	// goas across whole screen ut over borders
 
-	// also need to fix randomizer
+	for(int y = 0; y < tempy; y++){
+		for(int x = 0; x < tempx; x++){
 
-	for(int i = -2; i <= 1; i++){
-		for(int j = -2; j <= 1; j++){
-			int shiftx = x + j;
-			int shifty = y + i;
-
-			if(shiftx >= 0 && shiftx < tempx && shifty >= 0 && tempy){
-				if(shiftx == x && shifty == y){
-					continue;
+				if(weather == "Fog"){
+					if((x+y) % 6 == 0){
+						attron(COLOR_PAIR(5));
+						mvaddch(y, x, '=');
+						attroff(COLOR_PAIR(5));
+					}
 				}
-
 
 				// using ncurses, different pproach possible tho but ncurses seems cool
 				if(weather == "Rain"){
+					if((x+y)  % 5== 0){
 					attron(COLOR_PAIR(3));
-					mvaddch(shifty, shiftx, '.');
+					mvaddch(y, x, '.');
 					attroff(COLOR_PAIR(3));
+					}
 				}
 				else if(weather == "Windy"){
+					if((x+y)  % 7 == 0){
 					attron(COLOR_PAIR(5));
-					mvaddch(shifty, shiftx, '/');
+					mvaddch(y, x, '/');
 					attroff(COLOR_PAIR(5));
 								}
+				}
 							}
 						}
 					}
-				}
+				
 					

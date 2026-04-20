@@ -1,4 +1,5 @@
 #include "game.h"
+#include <ncurses.h>
 
 Game::Game() {
     h_aleph = new Aleph("Aleph", {0, 1});
@@ -194,7 +195,7 @@ void Game::handle_input(int ch) {
 void Game::render() {
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
-    clear();
+    erase();
 
     int start_y = h_main->pos().y - max_y / 2;
     int start_x = h_main->pos().x - max_x / 2;
@@ -223,7 +224,17 @@ void Game::render() {
 
         if (state == GameState::MAP) {
             weather.Update(world, h_main->pos());
-            weather.draw(h_main->pos().x - start_x, h_main->pos().y - start_y, max_x, max_y);
+           // changed grid
+		//	weather.draw(h_main->pos().x - start_x, h_main->pos().y - start_y, max_x, max_y);
+			weather.draw(max_x, max_y);
+			string msg = "The weather is now " + weather.getWeather() +"!";
+
+			int row = max_y - 1;
+			int col = max_x - msg.length() -2;
+
+			attron(COLOR_PAIR(5));
+			mvprintw(row,col, "%s", msg.c_str());
+			attroff(COLOR_PAIR(5));
 			// quest 
 			quests.draw(max_x);
         }

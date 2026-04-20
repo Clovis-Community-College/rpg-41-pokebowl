@@ -14,9 +14,10 @@
 ## Key commands
 | Key | Action |
 |-----|--------|
-| Arrow keys | Move player |
+| `⬅️⬆️⬇️➡️` | Move player |
 | `i` | Open inventory |
 | `e` | Open equipment table |
+| `q` | Quit game |
 
 ## Checklist, 1 2 3
  
@@ -43,7 +44,7 @@
 #### A — "Inheritor of Suffering" (Tony)
 - `✅` Pure virtual / abstract `Actor` class
 - `✅` Stationary objects, Heroes, Monsters inheriting from `Actor`
-- `✅` `Hero` class with 4+ subclasses (stub, stub, stub, unimplemented, unimplemented)
+- `✅` `Hero` class with 4+ subclasses (Hebrew alphabet, Aleph -> )
 - `✅` `Monster` class with 5+ subclasses (stub, stub, stub, stub, stub, stub) including a **Boss** (killing Boss = win condition)
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
 - `🚧` README: description of class hierarchy + diagram showing class relationships
@@ -100,8 +101,14 @@
 [ unimplemented.png ]
 ```
 
-### Class diagram
+### `Actor` class
+
+#### Class diagram
 
 ```
 [ unimplemented.png ]
 ```
+
+#### Code snapshots
+
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.cc#L1-L326

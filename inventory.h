@@ -46,7 +46,6 @@ class Inventory{
 	void get_all_items(vector<Item>& list) const;
 	vector<Item> drop_all();
 	void pickup_all(const vector<Item>& vec);
-	void merchant_operation(Inventory& inv);
 
 
 	void add_pokecoins(int amount);

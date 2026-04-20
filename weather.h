@@ -22,7 +22,7 @@ class WeatherSystem{
 			
 		void printWeather();
 		
-		void draw(int x, int y, int tempx, int tempy); // 4x4 grid till we figure out how to do weather better
+		void draw( int tempx, int tempy);
 
 };
 

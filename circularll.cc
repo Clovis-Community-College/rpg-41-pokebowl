@@ -176,3 +176,15 @@ while (1) {
 		bTmp = bTmp->getNext();
 	}
 }
+
+CLL::~CLL() {
+	delete bridgesCLL;
+	if (!head) return;
+	Node* whereWeAt = head->next;
+	while (whereWeAt != head) {
+		Node* tmp = whereWeAt;
+		whereWeAt = whereWeAt->next;
+		delete tmp;
+	}
+	delete head;
+}

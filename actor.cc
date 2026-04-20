@@ -158,6 +158,15 @@ void Wall::_attack(Actor* opponent) {
 void Merchant::_attack(Actor* opponent) {
 	// no attack is possible if wall attacks sth
 	// TODO: open merchant shop and shit
+	if(!items)//ifno inv then make one
+		items.emplace();
+
+	items->clear();//clears last stock
+	items->gen_rand_loot(6,12);//generates new stock every interactiom
+
+	if(!opponent->items)//if actor doesnt have inventory then create theirs
+		opponent->items.emplace();
+
 }
 
 ActorType Merchant::type() const { return "merchant"; }

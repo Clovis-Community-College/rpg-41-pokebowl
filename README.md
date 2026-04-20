@@ -103,6 +103,7 @@
 
 ### `Actor` class
 [desc]
+
 #### Class diagram
 
 ```
@@ -110,5 +111,7 @@
 ```
 
 #### Code snapshots
+
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.h#L1-L334
+
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.cc#L1-L326

@@ -321,6 +321,7 @@ void Game::render() {
         }
 
     } else if (state == GameState::COMBAT) {
+	player_party.inator(); // spauly note: this is for init the comabt shit, change its call site as needed
         mvprintw(2, max_x / 2 - 8, "=== BATTLE OVERVIEW ===");
         
         for (size_t i = 0; i < player_party.bank.size(); ++i) {

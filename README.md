@@ -13,7 +13,7 @@
 - Explore the One Great Lake with arrow keys (⬅️⬆️⬇️➡️), meet your heroes, access your own inventory (`i`, `e`), and complete quests.
 - See your Heroes fighting monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch.
 
-**Defeat Foxtrot the Boss, kill all her monsters** to win and conquer the Poké-verse!
+**Defeat Foxtrot the Boss, kill all monsters** to win and conquer the Poké-verse!
 
 ## Key commands
 | Key | Action |

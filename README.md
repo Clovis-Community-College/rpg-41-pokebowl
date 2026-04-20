@@ -105,22 +105,48 @@
 [desc]
 
 #### Class diagram
-
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
+    direction TB
+
     Actor <|-- Wall
     Actor <|-- NonWall
-    NonWall <|-- Hero
-    NonWall <|-- Monster
     Wall <|-- Merchant
     Wall <|-- Drop
-    Hero <|-- Aleph
-    Hero <|-- Bet
-    Hero <|-- Gimel
-    Hero <|-- Dalet
-    Monster <|-- Foxtrot
+    NonWall <|-- Hero
+    NonWall <|-- Monster
     HasInitiative <|-- Hero
     HasInitiative <|-- Monster
+
+    class Hero {
+        <<has-subclasses>>
+        Aleph
+        Bet
+        Gimel
+        Dalet
+        He
+        Vav
+        Zayin
+        Chet
+    }
+
+    class Monster {
+        <<has-subclasses>>
+        Alpha
+        Bravo
+        Charlie
+        Delta
+        Echo
+        Golf
+        Hotel
+        Foxtrot - BOSS
+    }
+
 ```
 
 #### Code snapshots

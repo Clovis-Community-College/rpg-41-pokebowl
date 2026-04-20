@@ -106,8 +106,21 @@
 
 #### Class diagram
 
-```
-[ unimplemented.png ]
+```mermaid
+classDiagram
+    Actor <|-- Wall
+    Actor <|-- NonWall
+    NonWall <|-- Hero
+    NonWall <|-- Monster
+    Wall <|-- Merchant
+    Wall <|-- Drop
+    Hero <|-- Aleph
+    Hero <|-- Bet
+    Hero <|-- Gimel
+    Hero <|-- Dalet
+    Monster <|-- Foxtrot
+    HasInitiative <|-- Hero
+    HasInitiative <|-- Monster
 ```
 
 #### Code snapshots

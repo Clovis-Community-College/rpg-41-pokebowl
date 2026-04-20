@@ -52,8 +52,8 @@ class Inventory{
 
 	void gen_rand_loot(int minitems,int maxitems);
 
-	bool buy(const Item& item);
-	bool sell(const string& name);
+	bool buy(Inventory& merchant, const string& item_name);
+	bool sell(Inventory& merchant, const string& item_name);
 
 	int get_size() const;
 	int get_coins() const;

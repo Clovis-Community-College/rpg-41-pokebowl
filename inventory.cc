@@ -220,9 +220,7 @@ void Inventory::print() const{
 	rprint(root);
 }
 
-void Inventory::merchant_operation(Inventory& merchant){
-		int choice;
-}
+
 
 
 void Inventory::add_pokecoins(int amount){

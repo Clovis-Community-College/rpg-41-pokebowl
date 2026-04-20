@@ -204,7 +204,8 @@ void Inventory::print() const{
 	rprint(root);
 }
 
-void Inventory::merchant_operation(Inventory& inv){
+void Inventory::merchant_operation(Inventory& merchant{
+		int choice
 }
 
 
@@ -221,28 +222,39 @@ bool Inventory::spend_coins(int amount){
 	return true;
 }
 
-bool Inventory::buy(const Item& item){
-	if (!spend_coins(item.get_cost()))
+bool Inventory::buy(Inventory& merchant, const string& item_name){
+	Item item;
+	if(!merchant.get_item_copy(item_name,item))
 		return false;
 
-	insert(item);//size adjusted
+	if(!spend_coins(item.get_cost()))
+		return false;
+
+	if(!merchant.remove(item_name)){
+		add_pokecoins(item.get_cost());//to make sure if it fails, then pokecoins are readded
+		return false;
+	}
+
+	insert(item);
+
 	return true;
 }
 
-bool Inventory::sell(const string& item){
-	Node* exists = rsearch(root, item);
+bool Inventory::sell(Inventory& merchant, const string& item_name){
+	Node* exists = rsearch(root, item_name);
 
 	if(exists==nullptr)
 		return false;
 	if(exists->data.is_special())
 		return false;
-
+	Item item=exists->data;
 	int amount = exists->data.get_cost();
 
-	if(!remove(item))//size adjusted
+	if(!remove(item_name))//size adjusted
 		return false;
 
 	add_pokecoins(amount);
+	merchant.insert(item);
 	return true;
 }
 

@@ -31,6 +31,8 @@ class Inventory{
 	Inventory();
 	Inventory(const Inventory& other);
 	~Inventory();
+
+	Inventory& operator=(const Inventory& other);
 	
 	//some funcs will be bools to be used as checkers for other functions, will also perform act within function before returning true/false
 	void insert(const Item& item);

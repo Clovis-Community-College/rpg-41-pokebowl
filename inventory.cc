@@ -76,6 +76,22 @@ void Inventory::gen_rand_loot(int minitems,int maxitems){
 Inventory::Inventory() : root(nullptr), pokecoins(0), size(0) {}
 Inventory::~Inventory() { extinguish(root); }
 
+Inventory& Inventory::operator=(const Inventory& other){
+	if(this==&other)
+		return *this;
+
+	clear();
+	pokecoins=other.pokecoins;
+
+	vector<Item> copi;
+	other.get_all_items(copi);
+
+	for(const Item& item:copi)
+		insert(item);
+
+	return *this;
+}
+
 Inventory::Inventory(const Inventory& other){
 	root=nullptr;
 	size=0;
@@ -319,15 +335,13 @@ bool Inventory::remove(const string& name){
 			nextup = nextup->left;
 		}
 		currentnode->data = nextup->data;
-		currentnode->count= 1;
+		currentnode->count= nextup->count;
 
 		currentnode=nextup;
 		parent=parent2;
 
-		if(currentnode->count>1){
-			currentnode->count--;
-			return true;
-		}
+		currentnode->count=1;
+		
 
 	}
 

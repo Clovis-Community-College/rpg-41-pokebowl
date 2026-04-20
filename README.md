@@ -2,9 +2,13 @@
 
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting "Pokebowl" instead.*
 
+#### Shoutout to all PokéBowl team members!
+<a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
+</a>
+
 ## What's this game about?
 *PokéBowl©* is a Pokemon-inspired, singleplayer, console-based RPG.
-
 - Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 - Explore the One Great Lake with arrow keys (⬅️⬆️⬇️➡️), meet your heroes, access your own inventory (`i`, `e`), and complete quests.
 - See your Heroes fighting monsters at first contact. Let Dalet heal companions, and protect them from Delta's one-shot punch.

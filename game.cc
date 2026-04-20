@@ -195,7 +195,7 @@ void Game::handle_input(int ch) {
 void Game::render() {
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
-    clear();
+    erase();
 
     int start_y = h_main->pos().y - max_y / 2;
     int start_x = h_main->pos().x - max_x / 2;

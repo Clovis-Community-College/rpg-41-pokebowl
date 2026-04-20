@@ -64,7 +64,7 @@ void WeatherSystem::draw(int tempx, int tempy){
 		for(int x = 0; x < tempx; x++){
 
 				if(weather == "Fog"){
-					if(rand()%6 == 0){
+					if((x+y) % 6 == 0){
 						attron(COLOR_PAIR(5));
 						mvaddch(y, x, '=');
 						attroff(COLOR_PAIR(5));
@@ -73,14 +73,14 @@ void WeatherSystem::draw(int tempx, int tempy){
 
 				// using ncurses, different pproach possible tho but ncurses seems cool
 				if(weather == "Rain"){
-					if(rand()%5 == 0){
+					if((x+y)  % 5== 0){
 					attron(COLOR_PAIR(3));
 					mvaddch(y, x, '.');
 					attroff(COLOR_PAIR(3));
 					}
 				}
 				else if(weather == "Windy"){
-					if(rand()%7 == 0){
+					if((x+y)  % 7 == 0){
 					attron(COLOR_PAIR(5));
 					mvaddch(y, x, '/');
 					attroff(COLOR_PAIR(5));

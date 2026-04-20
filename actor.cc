@@ -270,6 +270,13 @@ void Chet::subclass_special(Bank& bank) {}
 // Monster
 ActorType Monster::type() const { return "monster"; }
 
+Monster::Monster(string init_name, XY init_xy, HP init_hp, Traits init_traits) :
+	NonWall(init_name, init_xy, init_hp, init_traits) {
+		// emplace() already in ctor, so no nullopt check
+		items.value().gen_rand_loot(2,5);
+		if (is_boss()) items.value().insert(Item("Boss Key", "Key", 0, 0, 0, true));
+}
+
 bool Monster::is_boss() const { return false; }
 
 // M sub

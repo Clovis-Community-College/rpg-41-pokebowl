@@ -13,6 +13,7 @@ Game::Game() {
     player_party.add_member(h_aleph);
     player_party.add_member(h_chet);
     player_party.add_member(h_dalet);
+    player_party.add_member(boss_mob);
     
     player_party.init_history(h_main->pos());
 

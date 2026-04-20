@@ -275,7 +275,7 @@ public:
 // internal names only
 class Monster : public NonWall, public HasInitiative {
 public:
-	using NonWall::NonWall;
+	Monster(string init_name, XY init_xy, HP init_hp, Traits init_traits = {0,0,0,0,0});
 	ActorType type() const override;
 	virtual bool is_boss() const; // default to false
 };

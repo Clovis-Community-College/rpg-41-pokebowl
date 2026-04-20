@@ -10,6 +10,15 @@
   <img src="https://img.shields.io/badge/status-WIP-yellow" alt="Status">
 </p>
 
+<div align="center">
+<h4>Shoutout to all <i>PokéBowl©</i> team members!</h4>
+<a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
+</a>
+</p>
+</div>
+
+
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 
 ## What's this game about?
@@ -175,15 +184,3 @@ classDiagram
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.h#L1-L334
 
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.cc#L1-L326
-
----
-
-## Contributors
-
-<div align="center">
-<h4>Shoutout to all PokéBowl team members!</h4>
-<a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
-</a>
-</div>
-

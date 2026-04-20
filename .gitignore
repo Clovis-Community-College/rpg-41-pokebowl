@@ -5,5 +5,3 @@ _*
 !*.h
 !Makefile
 !.gitignore
-!libs/
-!libs/**

@@ -1,19 +1,36 @@
 BRIDGES = -Ilibs/include
-CCFLAGS = -lncurses -lcurl -Wfatal-errors -Wno-sign-compare -g -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address -std=c++26 -O3
+CCFLAGS = $(BRIDGES) -lncurses -lcurl -Wno-sign-compare -fsanitize=undefined -fsanitize=address -std=c++26 -O3 -w
 SRCS := $(filter-out $(wildcard _*.cc), $(wildcard *.cc))
 OBJS = $(SRCS:.cc=.o)
 DEPS = $(OBJS:.o=.d)
 
+MOVE_UP    := \033[A
+CLEAR_LINE := \033[2K
+
 # shell env for the a.out prompt, else it fails to run a.out
 SHELL := /bin/bash
+BRIDGES_URL = https://bridgesuncc.github.io/sw/bridges-cxx-3.4.3-x86_64-linux-gnu.tgz
 
-# BRIDGES import:
-# copy 'libs' folder in BRIDGES, paste into project directory,
-# then append-front $(BRIDGES) at CCFLAGS, line 2.
+all: a.out
 
-a.out: $(OBJS)
+libs:
+	@echo "Downloading BRIDGES..."
+	@curl -L $(BRIDGES_URL) -o bridges.tgz
+	@tar -xzf bridges.tgz
+	@mv bridges-cxx-*-x86_64-linux-gnu libs
+	@rm bridges.tgz
+
+	@echo -ne "BRIDGES installed!"
+	@echo
+
+a.out: $(OBJS) | libs
+	@echo -ne "Linking '$@'..."
+	@echo
+
 	@ # Equivalent to: g++ {flags} a.o b.o ... -o a.out
-	@g++ $(CCFLAGS) $^ -o $@
+	@g++ $(CCFLAGS) $(OBJS) -o $@
+
+	@echo -ne "$(CLEAR_LINE)"
 
 	@ # msg wont show if LINKING fail
 	@echo Done linking
@@ -23,6 +40,8 @@ a.out: $(OBJS)
 	@ # prompt to run a.out convieniently
 	@read -p "Run a.out too? [y/n]: " ans; \
 	if [ "$$ans" = "y" ]; then ./$@; fi
+	
+	@echo -ne "$(MOVE_UP)$(CLEAR_LINE)"
 	
 %.o: %.cc
 	@ # -MMD -MP auto-magically consider all @ #include-s when
@@ -36,10 +55,13 @@ a.out: $(OBJS)
 	@ # 	g++ {flags} -c foo.cc -o foo.o
 	@ #
 	
+	@echo -ne "Compiling '$<'...\n"
 	@g++ $(CCFLAGS) -MMD -MP -c $< -o $@
 
+	@echo -ne "$(MOVE_UP)$(CLEAR_LINE)"
+
 	@ # msg wont show if a .cc fails to compile
-	@echo Done compiling '$<'!
+#	@echo Done compiling '$<'!
 
 -include $(DEPS)
 

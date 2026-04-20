@@ -124,7 +124,7 @@ void Game::handle_input(int ch) {
                 player_party.shared_inventory.remove(selected_item.get_name());
                 
                 std::string type = selected_item.get_type();
-                if (type == "Weapon" || type == "Armor" || type == "Equipment") {
+                if (type == "Weapon" || type == "Armor" || type == "Equipment"||type=="weapon"||type=="heal") {
                     if (!player_party.bank[hero_idx]->items.has_value()) {
                         player_party.bank[hero_idx]->items = Inventory();
                     }
@@ -258,7 +258,7 @@ void Game::render() {
 
             if (inv_sub == InvSubState::EQUIP) {
                 std::string t = selected_item.get_type();
-                bool is_equip = (t == "Weapon" || t == "Armor" || t == "Equipment");
+                bool is_equip = (t == "Weapon" || t == "Armor" || t == "Equipment"||t =="weapon"||t=="heal");
 
                 if (is_equip) {
                     mvprintw(max_y - 8, 4, "!! Equipping: %s", selected_item.get_name().c_str());

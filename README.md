@@ -47,7 +47,7 @@
 - `✅` `Hero` class with 4+ subclasses (Hebrew alphabet, Aleph -> )
 - `✅` `Monster` class with 5+ subclasses (stub, stub, stub, stub, stub, stub) including a **Boss** (killing Boss = win condition)
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
-- `🚧` README: description of class hierarchy + diagram showing class relationships
+- `🚧` README: ![description of class hierarchy](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#actor-class) + ![diagram showing class relationships](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#class-diagram) + ![code snapshots](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#code-snapshots)
  
 #### B — "BRIDGEngineer" (George)
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it
@@ -102,7 +102,7 @@
 ```
 
 ### `Actor` class
-
+[desc]
 #### Class diagram
 
 ```

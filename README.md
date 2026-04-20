@@ -1,6 +1,6 @@
 # <img src="https://i.redd.it/is0wgptfp0x01.jpg"/> PokéBowl© RPG
 
-> *Nintendo, please don't sue us. Go sue Kerney for greenlitting "Pokebowl" instead.*
+> *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 
 #### Shoutout to all PokéBowl team members!
 <a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
@@ -48,8 +48,8 @@
 #### A — "Inheritor of Suffering" (Tony)
 - `✅` Pure virtual / abstract `Actor` class
 - `✅` Stationary objects, Heroes, Monsters inheriting from `Actor`
-- `✅` `Hero` class with 4+ subclasses (Hebrew alphabet, Aleph -> )
-- `✅` `Monster` class with 5+ subclasses (stub, stub, stub, stub, stub, stub) including a **Boss** (killing Boss = win condition)
+- `✅` `Hero` class with 4+ subclasses.
+- `✅` `Monster` class with 5+ subclasses  including a **Boss**
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
 - `🚧` README: ![description of class hierarchy](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#actor-class) + ![diagram showing class relationships](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#class-diagram) + ![code snapshots](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#code-snapshots)
  

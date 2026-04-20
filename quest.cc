@@ -4,8 +4,8 @@
 QuestSystem::QuestSystem(){
 	//hash map quest QuestSystem
 	quests[1] = "Kill Monster, bring back the key..";
-	quests[2] = "Get the eye..";
-	quests[3] = "Do something else";
+	quests[2] = "Bring back the Eye..";
+	quests[3] = "TBA";
 
 	// default false and active
 	done[1] = false;
@@ -15,6 +15,7 @@ QuestSystem::QuestSystem(){
 
 void QuestSystem::boss_killed(){
 	done[1] = true;
+	done[2] = true;
 }
 
 void QuestSystem::draw(int max_x){

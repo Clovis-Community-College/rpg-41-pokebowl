@@ -26,6 +26,51 @@ class CLL {
 		bridges::CircDLelement<string> *bPointy = nullptr;
 	public:
 		CLL() : head(nullptr), size(0), pointy(nullptr) {}
+
+		CLL(const CLL&) = delete;
+		CLL& operator=(const CLL&) = delete;
+
+		CLL(CLL&& other) noexcept
+			: head(other.head), bHead(other.bHead),
+			  size(other.size), pointy(other.pointy),
+			  bPointy(other.bPointy), bridgesCLL(other.bridgesCLL) {
+			other.head = nullptr;
+			other.bHead = nullptr;
+			other.size = 0;
+			other.pointy = nullptr;
+			other.bPointy = nullptr;
+			other.bridgesCLL = nullptr;
+		}
+
+		CLL& operator=(CLL&& other) noexcept {
+			if (this != &other) {
+				if (head) {
+					Node* cur = head->next;
+					while (cur != head) {
+						Node* tmp = cur;
+						cur = cur->next;
+						delete tmp;
+					}
+					delete head;
+				}
+				delete bridgesCLL;
+
+				head = other.head;
+				bHead = other.bHead;
+				size = other.size;
+				pointy = other.pointy;
+				bPointy = other.bPointy;
+				bridgesCLL = other.bridgesCLL;
+
+				other.head = nullptr;
+				other.bHead = nullptr;
+				other.size = 0;
+				other.pointy = nullptr;
+				other.bPointy = nullptr;
+				other.bridgesCLL = nullptr;
+			}
+			return *this;
+		}
 		bridges::Bridges* bridgesCLL = new bridges::Bridges (3, "mediumrare", "132361449630");
 		pair<Actor*, bool> current();	
 		void reset_current_to_start();

@@ -1,12 +1,15 @@
 #include "game.h"
 #include <ncurses.h>
+#include <cstdlib>
 
 Game::Game() {
     h_aleph = new Aleph("Aleph", {0, 1});
-    boss_mob = new Foxtrot("Boss M.", {98, 98});
     h_main = new Bet("Bet", {100, 100});
     h_chet = new Chet("Chet", {101, 2});
     h_dalet = new Dalet("Dalet", {102, 3});
+
+    current_enemy = nullptr;
+    current_enemy_is_boss = false;
 
     world.generate();
 
@@ -14,18 +17,16 @@ Game::Game() {
     player_party.add_member(h_aleph);
     player_party.add_member(h_chet);
     player_party.add_member(h_dalet);
-    player_party.add_member(boss_mob);
+    
+    spawn_monster(true); // Spawn boss at north
+    for (int i = 0; i < 15; i++) {
+        spawn_monster(false); // Spawn initial roaming monsters
+    }
     
     player_party.init_history(h_main->pos());
 
     player_party.shared_inventory.insert(Item("Potion", "Consume", 50, 50, 0, false));
     player_party.shared_inventory.insert(Item("Sword", "Weapon", 500, 0, 20, false));
-
-	// spauly note: inator() here ig
-
-    boss_mob->items = Inventory();
-    boss_mob->items->insert(Item("Boss Key", "Key", 0, 0, 0, true));
-    boss_mob->items->insert(Item("Eye", "Material", 10, 0, 0, false));
 
     state = GameState::MAP;
     inv_sub = InvSubState::BROWSE;
@@ -58,6 +59,37 @@ Game::~Game() {
 auto _bank = player_party.bank;
     for (const auto actor : _bank) 
 	player_party.kill(actor, false);
+
+    for (auto m : roaming_monsters) {
+        if (m) delete m;
+    }
+    roaming_monsters.clear();
+}
+
+void Game::spawn_monster(bool is_boss) {
+    if (is_boss) {
+        roaming_monsters.push_back(new Foxtrot("Boss M.", {100, 10}));
+        return;
+    }
+    
+    int x, y;
+    do {
+        x = rand() % world.get_width();
+        y = rand() % world.get_height();
+    } while (world.get_tile(x, y) != '.' || (x >= 90 && x <= 110 && y >= 90 && y <= 110)); 
+    
+    if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5) return;
+
+    int type = rand() % 5;
+    Monster* m = nullptr;
+    switch(type) {
+        case 0: m = new Alpha("Alpha", {x, y}); break;
+        case 1: m = new Bravo("Bravo", {x, y}); break;
+        case 2: m = new Charlie("Charlie", {x, y}); break;
+        case 3: m = new Delta("Delta", {x, y}); break;
+        case 4: m = new Echo("Echo", {x, y}); break;
+    }
+    if (m) roaming_monsters.push_back(m);
 }
 
 void Game::handle_input(int ch) {
@@ -89,15 +121,30 @@ void Game::handle_input(int ch) {
         }
 
         if (wants_to_move) {
-            if (target_x == boss_mob->pos().x && target_y == boss_mob->pos().y) {
-                state = GameState::COMBAT;
-            } else if (target_x >= 0 && target_y >= 0 && target_x < world.get_width() &&
+            bool entered_combat = false;
+            for (auto it = roaming_monsters.begin(); it != roaming_monsters.end(); ++it) {
+                if ((*it)->pos().x == target_x && (*it)->pos().y == target_y) {
+                    current_enemy = *it;
+                    current_enemy_is_boss = current_enemy->is_boss();
+                    roaming_monsters.erase(it);
+                    player_party.add_member(current_enemy);
+                    state = GameState::COMBAT;
+                    player_party.last_action.clear();
+                    player_party.inator();
+                    entered_combat = true;
+                    break;
+                }
+            }
+            if (!entered_combat && target_x >= 0 && target_y >= 0 && target_x < world.get_width() &&
                        target_y < world.get_height() && world.is_passable(target_x, target_y, *h_main)) {
                 
                 XY old_pos = h_main->pos();
                 h_main->move(dir);
                 if (h_main->pos().x != old_pos.x || h_main->pos().y != old_pos.y) {
                     player_party.record_move(old_pos);
+                    if (rand() % 20 == 0 && roaming_monsters.size() < 25) {
+                        spawn_monster(false);
+                    }
                 }
             }
         }
@@ -170,23 +217,124 @@ void Game::handle_input(int ch) {
             }
         }
     } else if (state == GameState::COMBAT) {
-        if (ch == 'k') {
-            std::vector<Item> drops;
-            if (boss_mob->items.has_value()) {
-                boss_mob->items->get_all_items(drops);
-                for (const auto& item : drops) {
-                    player_party.shared_inventory.insert(item);
+        if (player_party.status == init || player_party.status == ongoing) {
+            if (ch == ' ') {
+                player_party.one_more_time();
+                if (player_party.status == hero_wins) {
+                    combat_loot.clear();
+                    for (auto* a : player_party.bank) {
+                        if (a && a->type() == "monster" && a->is_dead() && a->items.has_value()) {
+                            auto loot = a->items->drop_all();
+                            for (auto& item : loot) {
+                                combat_loot.push_back(item);
+                                player_party.shared_inventory.insert(item);
+                            }
+                        }
+                    }
+                    auto completed = quests.check_items(player_party.shared_inventory);
+                    if (!completed.empty()) {
+                        int max_y, max_x;
+                        getmaxyx(stdscr, max_y, max_x);
+
+                        int box_w = 50;
+                        int box_h = 6 + (int)completed.size() * 2;
+                        int box_x = (max_x - box_w) / 2;
+                        int box_y = (max_y - box_h) / 2;
+
+                        for (int fade = 0; fade < 3; fade++) {
+                            erase();
+
+                            if (fade == 0) attron(A_BOLD | COLOR_PAIR(3));
+                            else if (fade == 1) attron(COLOR_PAIR(3));
+                            else attron(A_DIM | COLOR_PAIR(3));
+
+                            for (int y = box_y; y < box_y + box_h; y++) {
+                                mvhline(y, box_x, ' ', box_w);
+                            }
+
+                            mvprintw(box_y, box_x, "+");
+                            mvhline(box_y, box_x + 1, '-', box_w - 2);
+                            mvprintw(box_y, box_x + box_w - 1, "+");
+                            mvprintw(box_y + box_h - 1, box_x, "+");
+                            mvhline(box_y + box_h - 1, box_x + 1, '-', box_w - 2);
+                            mvprintw(box_y + box_h - 1, box_x + box_w - 1, "+");
+                            for (int y = box_y + 1; y < box_y + box_h - 1; y++) {
+                                mvprintw(y, box_x, "|");
+                                mvprintw(y, box_x + box_w - 1, "|");
+                            }
+
+                            std::string title = "QUEST COMPLETE!";
+                            mvprintw(box_y + 2, box_x + (box_w - (int)title.size()) / 2, "%s", title.c_str());
+
+                            int line = box_y + 4;
+                            for (auto& q : completed) {
+                                std::string star = "* " + q;
+                                mvprintw(line, box_x + (box_w - (int)star.size()) / 2, "%s", star.c_str());
+                                line += 2;
+                            }
+
+                            if (fade == 0) attroff(A_BOLD | COLOR_PAIR(3));
+                            else if (fade == 1) attroff(COLOR_PAIR(3));
+                            else attroff(A_DIM | COLOR_PAIR(3));
+
+                            refresh();
+
+                            if (fade == 0) napms(1500);
+                            else if (fade == 1) napms(700);
+                            else napms(300);
+                        }
+                    }
+                }
+            } else if (ch == 'r') {
+                state = GameState::MAP;
+                if (current_enemy) {
+                    auto& bank = player_party.bank;
+                    bank.erase(std::remove(bank.begin(), bank.end(), current_enemy), bank.end());
+                    roaming_monsters.push_back(current_enemy);
+                    current_enemy = nullptr;
+                }
+                if (!player_party.history.empty()) {
+                    h_main->pos(player_party.history[0]);
                 }
             }
-            state = GameState::MAP;
-			// quest 1 passed
-			quests.boss_killed();
-         //   boss_mob->set_pos({-1, -1});
-            boss_mob->pos({-1, -1});
-        } else if (ch == 'r') {
-            state = GameState::MAP;
-            if (!player_party.history.empty()) {
-                h_main->pos(player_party.history[0]);
+        } else if (player_party.status == hero_wins) {
+            if (ch == ' ') {
+                state = GameState::MAP;
+                if (current_enemy_is_boss) {
+                    quests.boss_killed();
+                }
+                for (auto it = player_party.bank.begin(); it != player_party.bank.end();) {
+                    Actor* a = *it;
+                    if (a && a->type() == "monster") {
+                        player_party.turn_order.list_delete(a);
+                        it = player_party.bank.erase(it);
+                        delete a;
+                    } else {
+                        ++it;
+                    }
+                }
+                combat_loot.clear();
+                current_enemy = nullptr;
+                current_enemy_is_boss = false;
+            }
+        } else if (player_party.status == monster_wins) {
+            if (ch == ' ') {
+                state = GameState::MAP;
+                for (auto it = player_party.bank.begin(); it != player_party.bank.end();) {
+                    Actor* a = *it;
+                    if (a && a->type() == "monster") {
+                        player_party.turn_order.list_delete(a);
+                        it = player_party.bank.erase(it);
+                        delete a;
+                    } else {
+                        ++it;
+                    }
+                }
+                current_enemy = nullptr;
+                current_enemy_is_boss = false;
+                if (!player_party.history.empty()) {
+                    h_main->pos(player_party.history[0]);
+                }
             }
         }
     }
@@ -216,10 +364,13 @@ void Game::render() {
             }
         }
 
-        int mx = boss_mob->pos().x - start_x;
-        int my = boss_mob->pos().y - start_y;
-        if (mx >= 0 && mx < max_x && my >= 0 && my < max_y) {
-            attron(COLOR_PAIR(2)); mvaddch(my, mx, 'M'); attroff(COLOR_PAIR(2));
+        for (auto m : roaming_monsters) {
+            if (!m) continue;
+            int mx = m->pos().x - start_x;
+            int my = m->pos().y - start_y;
+            if (mx >= 0 && mx < max_x && my >= 0 && my < max_y) {
+                attron(COLOR_PAIR(2)); mvaddch(my, mx, m->is_boss() ? 'B' : 'M'); attroff(COLOR_PAIR(2));
+            }
         }
 
         if (state == GameState::MAP) {
@@ -308,7 +459,20 @@ void Game::render() {
                 Actor* hero = player_party.bank[equip_hero_idx];
                 mvprintw(2, 4, "=== EQUIPMENT: %s ===", hero->name().c_str());
                 mvprintw(4, 4, "Stats:");
-                mvprintw(5, 6, "HP: %d   Speed: %d   Attack: %d", hero->hp(), hero->starting_speed(), hero->attack_damage());
+                int total_atk = hero->attack_damage();
+                int total_heal = 0;
+                if (hero->items.has_value()) {
+                    std::vector<Item> eq;
+                    hero->items->get_all_items(eq);
+                    for (auto& it : eq) {
+                        total_atk += it.get_damage();
+                        total_heal += it.get_heal();
+                    }
+                }
+                mvprintw(5, 6, "HP: %d   Speed: %d   Attack: %d", hero->hp(), hero->starting_speed(), total_atk);
+                if (total_heal > 0) {
+                    mvprintw(6, 6, "Heal Bonus: +%d", total_heal);
+                }
                 
                 mvprintw(7, 4, "Equipped Items:");
                 std::vector<Item> equipped;
@@ -332,27 +496,58 @@ void Game::render() {
         }
 
     } else if (state == GameState::COMBAT) {
-	player_party.inator(); // spauly note: this is for init the comabt shit, change its call site as needed
-        mvprintw(2, max_x / 2 - 8, "=== BATTLE OVERVIEW ===");
+        mvprintw(2, max_x / 2 - 11, "=== BATTLE OVERVIEW ===");
         
+        int hero_y = 6;
         for (size_t i = 0; i < player_party.bank.size(); ++i) {
-             mvprintw(6 + i * 2, 4, "@ %s (HP: %d/%d)", player_party.bank[i]->name().c_str(), player_party.bank[i]->hp(), player_party.bank[i]->hp());
+            if (player_party.bank[i] && player_party.bank[i]->type() == "hero") {
+                if (player_party.bank[i]->is_dead()) {
+                    mvprintw(hero_y, 4, "X %s (DEAD)", player_party.bank[i]->name().c_str());
+                } else {
+                    mvprintw(hero_y, 4, "@ %s (HP: %d)", player_party.bank[i]->name().c_str(), player_party.bank[i]->hp());
+                }
+                hero_y += 2;
+            }
         }
-	
-	// spauly note: show hp or shit affected by Party::one_more_time() idk
-	//
-	// basically, if in combat state, 
-	// CHECK win (hero_wins) or lose (monster_wins)	status from Party::status enums
-	// 	- win -> SHOW win screen, lose -> SHOW lose screen
-	//	- otherwise, RUN Party::one_more_time() to advance combat state 
-	// 	  then SHOW changes/new state
-	// add equip ability or shit to taste
 
-        mvprintw(6, max_x - 40, "M %s (HP: %d/%d)", boss_mob->name().c_str(), boss_mob->hp(), boss_mob->hp());
-        mvprintw(8, max_x - 40, "[Boss has drops: %d]", boss_mob->items.has_value() ? boss_mob->items->get_size() : 0);
+        int monster_y = 6;
+        for (size_t i = 0; i < player_party.bank.size(); ++i) {
+            if (player_party.bank[i] && player_party.bank[i]->type() == "monster") {
+                if (player_party.bank[i]->is_dead()) {
+                    mvprintw(monster_y, max_x - 40, "X %s (DEAD)", player_party.bank[i]->name().c_str());
+                } else {
+                    mvprintw(monster_y, max_x - 40, "M %s (HP: %d)", player_party.bank[i]->name().c_str(), player_party.bank[i]->hp());
+                }
+                monster_y += 2;
+            }
+        }
 
-        mvprintw(max_y - 4, 4, "Battle Mockup - Press 'k' to Kill & Loot Boss");
-        mvprintw(max_y - 3, 4, "Press 'r' to Retreat to Map");
+        if (!player_party.last_action.empty()) {
+            mvprintw(max_y / 2, 4, "> %s", player_party.last_action.c_str());
+        }
+
+        if (player_party.status == init || player_party.status == ongoing) {
+            mvprintw(max_y - 4, 4, "Press 'SPACE' to next turn, or 'r' to Run.");
+        } else if (player_party.status == hero_wins) {
+            int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;
+            mvprintw(loot_start, 4, "Victory! Loot collected:");
+            if (combat_loot.empty()) {
+                mvprintw(loot_start + 1, 6, "(no items)");
+            } else {
+                for (size_t i = 0; i < combat_loot.size() && (int)(loot_start + 1 + i) < max_y - 3; ++i) {
+                    mvprintw(loot_start + 1 + i, 6, "- %s (+%d dmg, +%d heal)",
+                        combat_loot[i].get_name().c_str(),
+                        combat_loot[i].get_damage(),
+                        combat_loot[i].get_heal());
+                }
+                if ((int)(loot_start + 1 + combat_loot.size()) < max_y - 3) {
+                    mvprintw(loot_start + 1 + combat_loot.size(), 6, "Total: %d items", (int)combat_loot.size());
+                }
+            }
+            mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
+        } else if (player_party.status == monster_wins) {
+            mvprintw(max_y - 4, 4, "Monsters win... Press 'SPACE' to return to map.");
+        }
     }
 
     refresh();

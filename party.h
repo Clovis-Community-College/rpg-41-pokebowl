@@ -25,6 +25,7 @@ public:
 	Inventory shared_inventory; // IOrphan pending
 
 	CombatState status = init;
+	string last_action;
 
 	void add_member(Actor* actor);
 	void init_history(XY initial_pos);

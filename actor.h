@@ -329,6 +329,4 @@ public:
 	void subclass_special(Bank& bank) override;
 };
 
-// TODO: diagram with links to code snippets
-
 #endif

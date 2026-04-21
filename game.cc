@@ -11,6 +11,11 @@ Game::Game() {
     current_enemy = nullptr;
     current_enemy_is_boss = false;
 
+    inn_zone.load_inn();
+    saved_overworld_pos = {0, 0};
+    inn_pos = {0, 0};
+    inn_healed = false;
+
     world.generate();
 
     player_party.add_member(h_main);
@@ -145,6 +150,14 @@ void Game::handle_input(int ch) {
                     if (rand() % 20 == 0 && roaming_monsters.size() < 25) {
                         spawn_monster(false);
                     }
+
+                    char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
+                    if (stepped == 'I') {
+                        saved_overworld_pos = h_main->pos();
+                        inn_pos = inn_zone.get_spawn();
+                        inn_healed = false;
+                        state = GameState::INN;
+                    }
                 }
             }
         }
@@ -215,6 +228,47 @@ void Game::handle_input(int ch) {
                     }
                 }
             }
+        }
+    } else if (state == GameState::INN) {
+        if (ch == 'h') {
+            state = GameState::INN_DIALOG;
+            return;
+        }
+        if (ch == 'v') {
+            h_main->pos(saved_overworld_pos);
+            state = GameState::MAP;
+            return;
+        }
+
+        int tx = inn_pos.x;
+        int ty = inn_pos.y;
+        bool wants_move = false;
+
+        switch (ch) {
+            case KEY_UP:    ty--; wants_move = true; break;
+            case KEY_DOWN:  ty++; wants_move = true; break;
+            case KEY_LEFT:  tx--; wants_move = true; break;
+            case KEY_RIGHT: tx++; wants_move = true; break;
+        }
+
+        if (wants_move && inn_zone.is_passable(tx, ty)) {
+            if (inn_zone.is_exit(tx, ty)) {
+                h_main->pos(saved_overworld_pos);
+                state = GameState::MAP;
+            } else {
+                inn_pos = {tx, ty};
+            }
+        }
+    } else if (state == GameState::INN_DIALOG) {
+        if (ch == '1' && !inn_healed) {
+            for (auto* a : player_party.bank) {
+                if (a && a->type() == "hero" && !a->is_dead()) {
+                    a->cure_damage(9999, 1.0f);
+                }
+            }
+            inn_healed = true;
+        } else if (ch == '2' || ch == 27) {
+            state = GameState::INN;
         }
     } else if (state == GameState::COMBAT) {
         if (player_party.status == init || player_party.status == ongoing) {
@@ -491,6 +545,89 @@ void Game::render() {
                 }
                 
                 mvprintw(max_y - 3, 4, "Up/Down: Browse | Enter: Unequip Item | ESC/e: Back");
+            }
+            attroff(COLOR_PAIR(5));
+        }
+
+    } else if (state == GameState::INN || state == GameState::INN_DIALOG) {
+        int offset_y = (max_y - inn_zone.get_height()) / 2;
+        int offset_x = (max_x - inn_zone.get_width()) / 2;
+
+        for (int y = 0; y < inn_zone.get_height(); y++) {
+            for (int x = 0; x < inn_zone.get_width(); x++) {
+                ZoneTile t = inn_zone.get_tile(x, y);
+                int sy = offset_y + y;
+                int sx = offset_x + x;
+                if (sy >= 0 && sy < max_y && sx >= 0 && sx < max_x) {
+                    attron(COLOR_PAIR(t.color_pair));
+                    mvaddch(sy, sx, t.ch);
+                    attroff(COLOR_PAIR(t.color_pair));
+                }
+            }
+        }
+
+        int py = offset_y + inn_pos.y;
+        int px = offset_x + inn_pos.x;
+        if (py >= 0 && py < max_y && px >= 0 && px < max_x) {
+            attron(COLOR_PAIR(1) | A_BOLD);
+            mvaddch(py, px, '@');
+            attroff(COLOR_PAIR(1) | A_BOLD);
+        }
+
+        attron(COLOR_PAIR(5));
+        mvprintw(max_y - 1, 2, "Arrows: Move | h: Talk to Innkeeper | v: Leave Inn");
+        attroff(COLOR_PAIR(5));
+
+        int hp_col = 2;
+        int hp_row = offset_y - 2;
+        if (hp_row < 0) hp_row = 0;
+        attron(COLOR_PAIR(5));
+        mvprintw(hp_row, hp_col, "Party:");
+        for (size_t i = 0; i < player_party.bank.size(); i++) {
+            Actor* a = player_party.bank[i];
+            if (a && a->type() == "hero") {
+                int color = a->is_dead() ? 2 : 1;
+                attroff(COLOR_PAIR(5));
+                attron(COLOR_PAIR(color));
+                mvprintw(hp_row + 1 + (int)i, hp_col, "%s HP: %d", a->name().c_str(), a->hp());
+                attroff(COLOR_PAIR(color));
+                attron(COLOR_PAIR(5));
+            }
+        }
+        attroff(COLOR_PAIR(5));
+
+        if (state == GameState::INN_DIALOG) {
+            int dw = 40;
+            int dh = 10;
+            int dx = (max_x - dw) / 2;
+            int dy = (max_y - dh) / 2;
+
+            attron(COLOR_PAIR(4));
+            for (int y = dy; y < dy + dh; y++) {
+                mvhline(y, dx, ' ', dw);
+            }
+            mvprintw(dy, dx, "+");
+            mvhline(dy, dx + 1, '-', dw - 2);
+            mvprintw(dy, dx + dw - 1, "+");
+            mvprintw(dy + dh - 1, dx, "+");
+            mvhline(dy + dh - 1, dx + 1, '-', dw - 2);
+            mvprintw(dy + dh - 1, dx + dw - 1, "+");
+            for (int y = dy + 1; y < dy + dh - 1; y++) {
+                mvprintw(y, dx, "|");
+                mvprintw(y, dx + dw - 1, "|");
+            }
+
+            mvprintw(dy + 2, dx + 3, "Innkeeper:");
+            attroff(COLOR_PAIR(4));
+
+            attron(COLOR_PAIR(5));
+            if (inn_healed) {
+                mvprintw(dy + 4, dx + 3, "\"Your party looks well-rested!\"");
+                mvprintw(dy + 6, dx + 3, "[2] Goodbye");
+            } else {
+                mvprintw(dy + 4, dx + 3, "\"Weary traveler! Rest here?\"");
+                mvprintw(dy + 6, dx + 3, "[1] Rest here (Heal party)");
+                mvprintw(dy + 7, dx + 3, "[2] Nevermind");
             }
             attroff(COLOR_PAIR(5));
         }

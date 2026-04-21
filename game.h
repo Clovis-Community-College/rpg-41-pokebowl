@@ -6,9 +6,10 @@
 #include "weather.h"
 #include "inventory.h"
 #include "pokeitems.h"
+#include "zone.h"
 #include <ncurses.h>
 
-enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT };
+enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT, INN, INN_DIALOG };
 enum class InvSubState { BROWSE, EQUIP };
 enum class EquipSubState { SELECT_HERO, VIEW_HERO };
 
@@ -35,6 +36,11 @@ public:
     std::vector<Monster*> roaming_monsters;
     Monster* current_enemy;
     bool current_enemy_is_boss;
+
+    Zone inn_zone;
+    XY saved_overworld_pos;
+    XY inn_pos;
+    bool inn_healed;
     std::vector<Item> combat_loot;
 
     void spawn_monster(bool is_boss = false);

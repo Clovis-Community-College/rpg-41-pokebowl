@@ -18,50 +18,56 @@ static void initizialize_randomgen(){
 
 //NEED TO FINISH RANDOM ITEMS TO BE SLECTED 0-9
 static Item genrand_item(){
-	int roll = rand()% 21;
-	if (roll==0)
-		return Item("Pika's Lightning Rod","weapon",50,0,45,false);
-	else if (roll==1)
-		return Item("Blastoise's Water Spit","weapon",50,0,35,false);
-	else if (roll==2)
-		return Item("Small Healing Potion","heal",10,20,0,false);
-	else if (roll==3)
-		return Item("Big Healing Potion","heal",20,50,0,false);
-	else if (roll==4)
-		return Item("Charizard's Fireball","weapon",20,0,50,false);
-	else if (roll==5)
-		return Item("Mewtwo's Psychic Wand","weapon",15,0,40,false);
-	else if (roll==6)
-		return Item("Poke Berry","heal",5,10,0,false);
-	else if (roll==7)
-		return Item("Snorlax's Scratch","weapon",15,0,25,false);
-	else if (roll==8)
-		return Item("Bulbasaur's Vine Whip","weapon",15,0,25,false);
-	else if (roll==9)
+	int roll = rand() % 100;
+
+	if (roll < 12)
 		return Item("Meowth's Punch","weapon",5,0,5,false);
-	else if (roll==10)
+	else if (roll < 24)
+		return Item("Poke Berry","heal",5,10,0,false);
+	else if (roll < 34)
 		return Item("Poke banana","heal",5,15,0,false);
-	else if (roll==11)
-		return Item("Mega Heal", "heal",25,60,0,false);
-	else if (roll==12)
-		return Item("Gyrados's Water Tornado", "weapon",40,0,45,false);
-	else if (roll==13)
-		return Item("Lucario's Aura Punch", "weapon",70,0,65,false);
-	else if (roll==14)
-		return Item("Citrus Fruit", "heal",10,20,0,false);
-	else if (roll==15)
-		return Item("Healing Potion", "heal",15,35,0,false);
-	else if (roll==16)
-		return Item("Raichu's Thunder Strike", "weapon",50,0,50,false);
-	else if (roll==17)
-		return Item("Tyranitaur's Smash", "weapon",50,0,50,false);
-	else if (roll==18)
-		return Item("Greninja Water Shuriken", "weapon",25,0,30,false);
-	else if (roll==19)
-		return Item("Arcanine Flame Burst", "weapon",25,0,30,false);
-	else 
-		return Item("Dragonite Slam", "weapon",30,0,40,false);
-	
+	else if (roll < 44)
+		return Item("Small Healing Potion","heal",10,20,0,false);
+	else if (roll < 52)
+		return Item("Snorlax's Scratch","weapon",15,0,25,false);
+	else if (roll < 60)
+		return Item("Bulbasaur's Vine Whip","weapon",15,0,25,false);
+	else if (roll < 66)
+		return Item("Citrus Fruit","heal",10,20,0,false);
+	else if (roll < 72)
+		return Item("Greninja Water Shuriken","weapon",25,0,30,false);
+	else if (roll < 77)
+		return Item("Arcanine Flame Burst","weapon",25,0,30,false);
+	else if (roll < 81)
+		return Item("Healing Potion","heal",15,35,0,false);
+	else if (roll < 85)
+		return Item("Blastoise's Water Spit","weapon",50,0,35,false);
+	else if (roll < 88)
+		return Item("Dragonite Slam","weapon",30,0,40,false);
+	else if (roll < 91)
+		return Item("Mewtwo's Psychic Wand","weapon",15,0,40,false);
+	else if (roll < 93)
+		return Item("Big Healing Potion","heal",20,50,0,false);
+	else if (roll < 95)
+		return Item("Pika's Lightning Rod","weapon",50,0,45,false);
+	else if (roll < 97)
+		return Item("Gyrados's Water Tornado","weapon",40,0,45,false);
+	else if (roll < 98)
+		return Item("Charizard's Fireball","weapon",20,0,50,false);
+	else if (roll < 99)
+		return Item("Raichu's Thunder Strike","weapon",50,0,50,false);
+	else if (roll < 100)
+		return Item("Mega Heal","heal",25,60,0,false);
+	else
+		return Item("Lucario's Aura Punch","weapon",70,0,65,false);
+}
+
+static Item genrand_quest_item(){
+	int roll = rand() % 2;
+	if (roll == 0)
+		return Item("Monster Key","quest",0,0,0,true);
+	else
+		return Item("Ancient Eye","quest",0,0,0,true);
 }
 
 //WILL USE IN MONSTER CONSTRUCTORS EVENTUALLY
@@ -71,6 +77,9 @@ void Inventory::gen_rand_loot(int minitems,int maxitems){
 
 	for(int i=0;i<amount;i++)
 		insert(genrand_item());
+
+	if (rand() % 20 == 0)
+		insert(genrand_quest_item());
 }
 
 Inventory::Inventory() : root(nullptr), pokecoins(0), size(0) {}

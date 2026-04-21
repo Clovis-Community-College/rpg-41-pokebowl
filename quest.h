@@ -2,6 +2,7 @@
 #define QUEST_H
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include <ncurses.h>
 
@@ -16,6 +17,7 @@ class QuestSystem{
 		QuestSystem();
 
 		void boss_killed();
+		vector<string> check_items(class Inventory& inv);
 
 		void draw(int max_x);
 };

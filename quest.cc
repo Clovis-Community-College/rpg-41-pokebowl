@@ -1,13 +1,12 @@
 #include "quest.h"
+#include "inventory.h"
 #include <ncurses.h>
 
 QuestSystem::QuestSystem(){
-	//hash map quest QuestSystem
 	quests[1] = "Kill Monster, bring back the key..";
 	quests[2] = "Bring back the Eye..";
 	quests[3] = "TBA";
 
-	// default false and active
 	done[1] = false;
 	done[2] = false;
 	done[3] = false;
@@ -16,6 +15,21 @@ QuestSystem::QuestSystem(){
 void QuestSystem::boss_killed(){
 	done[1] = true;
 	done[2] = true;
+}
+
+vector<string> QuestSystem::check_items(Inventory& inv){
+	vector<string> completed;
+	if (!done[1] && inv.contains("Monster Key")) {
+		inv.remove("Monster Key");
+		done[1] = true;
+		completed.push_back(quests[1]);
+	}
+	if (!done[2] && inv.contains("Ancient Eye")) {
+		inv.remove("Ancient Eye");
+		done[2] = true;
+		completed.push_back(quests[2]);
+	}
+	return completed;
 }
 
 void QuestSystem::draw(int max_x){

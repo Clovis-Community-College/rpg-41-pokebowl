@@ -135,7 +135,14 @@ bool Actor::_subclass_good_to_attack(Actor* opponent) const {
 
 void Actor::_attack(Actor* opponent) {
 	HP hp_delta = attack_damage();
-	float external_damage_scale = weather_scale_damage() * 1; // 1 is placehoder for potion effect if have time
+	if (items.has_value()) {
+		std::vector<Item> equipped;
+		items->get_all_items(equipped);
+		for (auto& item : equipped) {
+			hp_delta += item.get_damage();
+		}
+	}
+	float external_damage_scale = weather_scale_damage() * 1;
 	opponent->take_damage(hp_delta, external_damage_scale);
 }
 

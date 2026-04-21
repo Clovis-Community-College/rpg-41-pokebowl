@@ -32,7 +32,12 @@ public:
     Dalet* h_dalet;
    
 	QuestSystem quests;
-    Foxtrot* boss_mob;
+    std::vector<Monster*> roaming_monsters;
+    Monster* current_enemy;
+    bool current_enemy_is_boss;
+    std::vector<Item> combat_loot;
+
+    void spawn_monster(bool is_boss = false);
 
     Game();
     ~Game();

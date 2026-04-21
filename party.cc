@@ -31,6 +31,13 @@ float Party::weather_scale(string weather) {
 	else return 1; //clear as a fallback
 }
 
+bool Party::side_dead(ActorType type) const {
+	for (auto actor : bank) {
+		if (actor && actor->type() == type && !actor->is_dead()) return false;
+	}
+	return true;
+}
+
 void Party::kill(Actor* actor, bool gen_drop = true) {
 	// container of the dead's assests
 	IOrphan orphaned_inv{};
@@ -94,18 +101,24 @@ void Party::inator() {
 }
 
 void Party::one_more_time() {
-	// if wins lose no more turn
 	if (status == hero_wins || status == monster_wins) return;
 
 	status = ongoing;
 
-	// get current actor (list auto-advance)
 	auto actor_pair = turn_order.current();
-	if (actor_pair.second) { /* cycle has lapsed */ }
 	Actor* actor = actor_pair.first;
 
-	// find first living opponent
+	if (!actor || actor->is_dead()) {
+		if (actor && actor->is_dead()) {
+			last_action = actor->name() + " is down...";
+		}
+		if (side_dead(ActorType("monster"))) status = hero_wins;
+		else if (side_dead(ActorType("hero"))) status = monster_wins;
+		return;
+	}
+
 	auto fightable = [&actor](Actor* opponent){
+		if (!opponent) return false;
 		bool both_alive = !actor->is_dead() && !opponent->is_dead();
 		bool monster_hits_hero = (actor->type() == "monster") && (opponent->type() == "hero");
 		bool hero_hits_monster = (actor->type() == "hero")    && (opponent->type() == "monster");
@@ -114,23 +127,25 @@ void Party::one_more_time() {
 
 	auto it = std::find_if(bank.begin(), bank.end(), fightable);
 
+	if (it == bank.end()) {
+		if (side_dead(ActorType("monster"))) status = hero_wins;
+		else if (side_dead(ActorType("hero"))) status = monster_wins;
+		return;
+	}
+
 	Actor* opponent = *it;
 
-	// One-turn attack
+	int hp_before = opponent->hp();
 	actor->attack(opponent);
+	int hp_after = opponent->hp();
+	int dmg = hp_before - hp_after;
 
-	// opponent might die, who knows
-	if (opponent->is_dead()) kill(opponent);
-
-	// find second opponent to determine state
-	// its o(N) anw
-	auto it_next = std::find_if(it, bank.end(), fightable);
-		
-	// check wining cond
-	if (it_next == bank.end()) {
-		// Make sure there r decent 
-		// None of that no-or-1-or-2 actors inside
-		if (actor->type() == "hero") status = hero_wins;
-		else if (actor->type() == "monster") status = monster_wins;
+	if (opponent->is_dead()) {
+		last_action = actor->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + " - DEFEATED!";
+	} else {
+		last_action = actor->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + " (" + std::to_string(hp_after) + " HP left)";
 	}
+
+	if (side_dead(ActorType("monster"))) status = hero_wins;
+	else if (side_dead(ActorType("hero"))) status = monster_wins;
 }

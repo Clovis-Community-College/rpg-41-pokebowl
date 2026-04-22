@@ -48,7 +48,8 @@ public:
     Game();
     ~Game();
     void run();
-
+	
+	void snapshot_combat();
 private:
     void handle_input(int ch);
     void render();

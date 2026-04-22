@@ -8,14 +8,6 @@
 using namespace bridges;
 using namespace std;
 
-void CLL::test_bridges() {
-	CLL testList;
-	//Monster m;
-	//testList.list_insert(&m);
-
-
-	output_bridges();
-}
 
 void CLL::mark_pointy() {
 	if (!bPointy) return;

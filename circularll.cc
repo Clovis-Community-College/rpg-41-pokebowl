@@ -33,7 +33,7 @@ void CLL::output_bridges() {
 
 void CLL::list_insert(Actor* a) {
 	stringstream NodeLabel;
-	NodeLabel << a->name() << " (" << a->type() << ") - SPEED " << dynamic_cast<HasInitiative*>(a)->get_speed();
+	NodeLabel << a->name() << " (" << a->type() << ") - SPEED " << static_cast<int>(dynamic_cast<HasInitiative*>(a)->get_speed());
 	if (!head) {
 		head = new Node{ a};
 		head->next = head;

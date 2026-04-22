@@ -97,6 +97,18 @@ void Game::spawn_monster(bool is_boss) {
     if (m) roaming_monsters.push_back(m);
 }
 
+void Game::snapshot_combat() {
+	def_prog_mode();
+	endwin();
+	player_party.turn_order.output_bridges();
+
+	std::cout << "\nPress ENTER to return to combat\n";
+	std::cin.get();
+
+	reset_prog_mode();
+	refresh();
+}
+
 void Game::handle_input(int ch) {
     if (state == GameState::MAP) {
         if (ch == 'i') {
@@ -273,7 +285,7 @@ void Game::handle_input(int ch) {
         if (player_party.status == init || player_party.status == ongoing) {
 			
 			if (ch == 'b') {
-				player_party.turn_order.output_bridges();
+				snapshot_combat();
 			}
 
 			if (ch == ' ') {

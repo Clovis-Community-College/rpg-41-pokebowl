@@ -31,16 +31,11 @@ float Party::weather_scale(string weather) {
 	else return 1; //clear as a fallback
 }
 
-/*
-bool Party::side_dead(ActorType type) const {
-	for (auto actor : bank) {
-		if (actor && actor->type() == type && !actor->is_dead()) return false;
-	}
-	return true;
-}
-*/
+// INDIVIDUAL dead only
+void Party::post_mortem(Actor* actor, bool gen_drop = true) {
+	// just-in-case™
+	if (!actor || !actor->is_dead()) return;
 
-void Party::kill(Actor* actor, bool gen_drop = true) {
 	// container of the dead's assests
 	IOrphan orphaned_inv{};
 	int orphaned_coins{};
@@ -54,16 +49,31 @@ void Party::kill(Actor* actor, bool gen_drop = true) {
 	// coords transfer
 	XY xy = actor->pos();
 
-	// delete actor from cll -> bank -> itself(?)
-	turn_order.list_delete(actor);
-	std::erase_if(bank, [actor](Actor* a){ return a == actor; });
-	delete actor;
-
 	if (!gen_drop) return;
 
 	// make drop corresponding to actor
 	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);
 	add_member(drop); // vector pushback != rendering !!!!!! latter UNimplemented?
+
+	
+	last_action += (actor->type() == "monster") ? " - DEFEATED!" : "";
+	last_action += (actor->type() == "hero") ? (actor->name() + " is down...") : "";
+
+	dead_count++;
+}
+
+void Party::corpse_incinerator() {
+	if (dead_count < 6) return;
+	
+	// CLL cleanup
+	turn_order.reset_current_to_start();
+	for (std::pair<Actor*, bool> actor_pair; (actor_pair = turn_order.current(), actor_pair.second == false);) {
+	        Actor* actor = actor_pair.first;
+		if (actor->is_dead()) turn_order.list_delete(actor);
+	}
+	
+	// vector clean-up
+	std::erase_if(bank, [](Actor *a){ return a->is_dead(); });
 }
 
 void Party::inator() {
@@ -107,23 +117,13 @@ void Party::one_more_time() {
 	// HAVE TO PROCESS TO MATCH INVARIANT B4 EXIT
 	if (status == hero_wins || status == monster_wins) return;
 
+	corpse_incinerator();
+
 	status = ongoing;
 
 	auto actor_pair = turn_order.current();
 	Actor* actor = actor_pair.first;
 
-	// tf is this
-	// "send" a msg when avtor is down.
-	// TODO: mgiht be move downward idk
-/*	if (!actor || actor->is_dead()) {
-		if (actor && actor->is_dead()) {
-			last_action = actor->name() + " is down...";
-		}
-		if (side_dead(ActorType("monster"))) status = hero_wins;
-		else if (side_dead(ActorType("hero"))) status = monster_wins;
-		return;
-	}
-*/
 	auto fightable = [&actor](Actor* opponent){
 		if (!opponent) return false;
 		bool both_alive = !actor->is_dead() && !opponent->is_dead();
@@ -137,27 +137,22 @@ void Party::one_more_time() {
 	
 	// unnecessary, checked above.
 	// TODO: handle it.end() code path
-
-/*	if (it == bank.end()) {
-		if (side_dead(ActorType("monster"))) status = hero_wins;
-		else if (side_dead(ActorType("hero"))) status = monster_wins;
-		return;
-	}
-*/
+	
+	if (it == bank.end()) { throw std::runtime_error("this should NOT happen"); }
 
 	Actor* opponent = *it;
 
-	int hp_before = opponent->hp();
-	actor->attack(opponent);
-	int hp_after = opponent->hp();
-	int dmg = hp_before - hp_after;
+	// do damage
+	//1 - health delta
+	HP dmg = actor->attack(opponent);
+	last_action = actor->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name();
 
-	if (opponent->is_dead()) {
-		last_action = actor->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + " - DEFEATED!";
-	} else {
-		last_action = actor->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + " (" + std::to_string(hp_after) + " HP left)";
-	}
+	// 2 - dead or living?
+	if (opponent->is_dead()) 
+		post_mortem(opponent);
+	else
+		last_action += " (" + std::to_string(opponent->hp()) + " HP left)";
 
-	if (side_dead(ActorType("monster"))) status = hero_wins;
-	else if (side_dead(ActorType("hero"))) status = monster_wins;
+//	if (side_dead(ActorType("monster"))) status = hero_wins;
+//	else if (side_dead(ActorType("hero"))) status = monster_wins;
 }

@@ -63,7 +63,7 @@ Game::~Game() {
 	// vector copy prevents iterator hell
 auto _bank = player_party.bank;
     for (const auto actor : _bank) 
-	player_party.kill(actor, false);
+	player_party.post_mortem(actor, false);
 
     for (auto m : roaming_monsters) {
         if (m) delete m;

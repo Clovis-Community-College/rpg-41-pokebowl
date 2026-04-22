@@ -76,7 +76,7 @@ void CLL::list_insert(Actor* a) {
 		return;
 	}
 	if (head != head->prev) {
-		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("orange");
+		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("white");
 
 		head->prev->next = new Node{ a , head, head->prev};
 		head->prev = head->prev->next;

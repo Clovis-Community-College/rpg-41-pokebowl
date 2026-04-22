@@ -55,7 +55,7 @@ void Party::post_mortem(Actor* actor, bool gen_drop = true) {
 	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);
 	add_member(drop); // vector pushback != rendering !!!!!! latter UNimplemented?
 
-	
+	last_action += "\n";	
 	last_action += (actor->type() == "monster") ? " - DEFEATED!" : "";
 	last_action += (actor->type() == "hero") ? (actor->name() + " is down...") : "";
 
@@ -63,7 +63,7 @@ void Party::post_mortem(Actor* actor, bool gen_drop = true) {
 }
 
 void Party::corpse_incinerator() {
-	if (dead_count < 6) return;
+	if (dead_count < 2) return;
 	
 	// CLL cleanup
 	turn_order.reset_current_to_start();
@@ -138,7 +138,11 @@ void Party::one_more_time() {
 	// unnecessary, checked above.
 	// TODO: handle it.end() code path
 	
-	if (it == bank.end()) { throw std::runtime_error("this should NOT happen"); }
+	if (it == bank.end()) { 
+		if (actor->type() == "monster") status = monster_wins;
+		else if (actor->type() == "hero") status = hero_wins;
+		return; // if hit Merchant, Drop, or other types, keep moving with current()
+	}
 
 	Actor* opponent = *it;
 
@@ -151,7 +155,7 @@ void Party::one_more_time() {
 	if (opponent->is_dead()) 
 		post_mortem(opponent);
 	else
-		last_action += " (" + std::to_string(opponent->hp()) + " HP left)";
+		last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.";
 
 //	if (side_dead(ActorType("monster"))) status = hero_wins;
 //	else if (side_dead(ActorType("hero"))) status = monster_wins;

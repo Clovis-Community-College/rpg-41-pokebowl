@@ -31,12 +31,14 @@ float Party::weather_scale(string weather) {
 	else return 1; //clear as a fallback
 }
 
+/*
 bool Party::side_dead(ActorType type) const {
 	for (auto actor : bank) {
 		if (actor && actor->type() == type && !actor->is_dead()) return false;
 	}
 	return true;
 }
+*/
 
 void Party::kill(Actor* actor, bool gen_drop = true) {
 	// container of the dead's assests
@@ -101,6 +103,8 @@ void Party::inator() {
 }
 
 void Party::one_more_time() {
+	// assumes bank r non-null and ALL LIVING. 
+	// HAVE TO PROCESS TO MATCH INVARIANT B4 EXIT
 	if (status == hero_wins || status == monster_wins) return;
 
 	status = ongoing;
@@ -108,7 +112,10 @@ void Party::one_more_time() {
 	auto actor_pair = turn_order.current();
 	Actor* actor = actor_pair.first;
 
-	if (!actor || actor->is_dead()) {
+	// tf is this
+	// "send" a msg when avtor is down.
+	// TODO: mgiht be move downward idk
+/*	if (!actor || actor->is_dead()) {
 		if (actor && actor->is_dead()) {
 			last_action = actor->name() + " is down...";
 		}
@@ -116,7 +123,7 @@ void Party::one_more_time() {
 		else if (side_dead(ActorType("hero"))) status = monster_wins;
 		return;
 	}
-
+*/
 	auto fightable = [&actor](Actor* opponent){
 		if (!opponent) return false;
 		bool both_alive = !actor->is_dead() && !opponent->is_dead();
@@ -125,13 +132,18 @@ void Party::one_more_time() {
 		return both_alive && (monster_hits_hero || hero_hits_monster);
 	};
 
+	// get opponent stage
 	auto it = std::find_if(bank.begin(), bank.end(), fightable);
+	
+	// unnecessary, checked above.
+	// TODO: handle it.end() code path
 
-	if (it == bank.end()) {
+/*	if (it == bank.end()) {
 		if (side_dead(ActorType("monster"))) status = hero_wins;
 		else if (side_dead(ActorType("hero"))) status = monster_wins;
 		return;
 	}
+*/
 
 	Actor* opponent = *it;
 

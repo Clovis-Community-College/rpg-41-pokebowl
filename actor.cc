@@ -99,8 +99,10 @@ void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 
 void Actor::move(Direction d) {}
 
-void Actor::attack(Actor* opponent) {
+HP Actor::attack(Actor* opponent) {
 	if (!opponent) return; // Null check. Just in case.
+
+	HP delta = opponent->hp();
 
 	// Condition check
 	bool gtg_general = _good_to_attack(opponent); // GENERAL conditions for attack
@@ -112,6 +114,9 @@ void Actor::attack(Actor* opponent) {
 	
 	// plug-in for custom attack behavior
 	_post_attack(opponent);
+
+	delta -= opponent->hp();
+	return delta;
 }
 
 bool Actor::_good_to_attack(Actor* opponent) const {

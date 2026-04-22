@@ -76,7 +76,7 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 - `🚧` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `💢` Screenshot of BRIDGES combat visualization embedded in README
+- `✅` Screenshot of BRIDGES combat visualization embedded in README
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling
@@ -117,9 +117,7 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 
 ### BRIDGES combat
 
-```
-[ unimplemented.png ]
-```
+![Bridges Combat](https://github.com/user-attachments/assets/f8091106-d59d-43d9-96ac-da315832c7f7)
 
 ### Class hierachy of `actor.h`
 - `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.

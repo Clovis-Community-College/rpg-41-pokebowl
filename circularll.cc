@@ -102,6 +102,8 @@ void CLL::reset_current_to_start() {
 }
 
 pair<Actor*, bool> CLL::current() {
+	// omg null chrcls galore
+	if (!pointy) return make_pair(nullptr, false);
 	Actor* tmpActor = pointy->actorPTR;
 	if (pointy == head->prev) {	
 		reset_current_to_start();

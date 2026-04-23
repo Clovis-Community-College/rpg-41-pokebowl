@@ -67,13 +67,31 @@ void Party::corpse_incinerator(bool forced = false) {
 	
 	// CLL cleanup
 	turn_order.reset_current_to_start();
-	for (std::pair<Actor*, bool> actor_pair; (actor_pair = turn_order.current(), actor_pair.second == false);) {
+	for (std::pair<Actor*, bool> actor_pair; (actor_pair = turn_order.current(), actor_pair.first && actor_pair.second == false);) {
 	        Actor* actor = actor_pair.first;
+		last_action += "\n[L CLL B4] ACTOR: " + actor->name() + " - TYPE: " + actor->type() + " - DEAD: " + std::to_string(actor->is_dead()); 
 		if (actor->is_dead()) turn_order.list_delete(actor);
 	}
-	
+
 	// vector clean-up
-	std::erase_if(bank, [](Actor *a){ return a->is_dead(); });
+	std::erase_if(bank, [&](Actor *actor){ 
+		last_action += "\n[V VEC B4] ACTOR: " + actor->name() + " - TYPE: " + actor->type() + " - DEAD: " + std::to_string(actor->is_dead()); 
+		return actor->is_dead(); 
+	});
+	
+	last_action += "\n--------------DEAD CLEANUP--------------";	
+		
+	// DEBUG CODE MUST CLEAR
+	turn_order.reset_current_to_start();
+	for (std::pair<Actor*, bool> actor_pair; (actor_pair = turn_order.current(), actor_pair.first && actor_pair.second == false);) {
+	        Actor* actor = actor_pair.first;
+		last_action += "\n[L CLL AF] ACTOR: " + actor->name() + " - TYPE: " + actor->type() + " - DEAD: " + std::to_string(actor->is_dead()); 
+	//	if (actor->is_dead()) turn_order.list_delete(actor);
+	}
+	for (auto it = bank.begin(); it != bank.end(); it++) {
+		Actor* actor = *it;
+		last_action += "\n[V VEC AF] ACTOR: " + actor->name() + " - TYPE: " + actor->type() + " - DEAD: " + std::to_string(actor->is_dead()); 
+	}
 }
 
 void Party::inator() {

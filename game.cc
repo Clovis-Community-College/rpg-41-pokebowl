@@ -701,7 +701,9 @@ void Game::render() {
             mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
         } else if (player_party.status == monster_wins) {
             mvprintw(max_y - 4, 4, "Monsters win... Press 'SPACE' to return to map.");
-        }
+        } else if (player_party.status == cycle_ends) {
+	    mvprintw(max_y - 4, 4, "Turns expired. Press 'SPACE' to return to map.");
+	}
     }
 
     refresh();

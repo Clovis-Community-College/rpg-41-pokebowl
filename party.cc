@@ -179,6 +179,13 @@ void Party::one_more_time() {
 	else
 		last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.";
 
+		turn_order.reset_current_to_start();
+		while (!actor_pair.second) {
+			actor_pair = turn_order.current();
+			Actor* a = actor_pair.first;
+			if (actor && actor->type() == "hero" && !actor->is_dead()) { status = hero_wins; break; }
+			else if (actor && actor->type() == "monster" && !actor->is_dead()) { status = monster_wins; break; }
+		} // if hit Merchant, Drop, or other types, keep moving with current()
 //	if (side_dead(ActorType("monster"))) status = hero_wins;
 //	else if (side_dead(ActorType("hero"))) status = monster_wins;
 }

@@ -79,7 +79,7 @@ void Party::post_mortem(Actor *actor, bool gen_drop = true) {
 
 	last_action += (actor->type() == "monster") ? " - DEFEATED!" : "";
 	last_action +=
-		(actor->type() == "hero") ? ("\n" + actor->name() + " is down...") : "";
+		(actor->type() == "hero") ? (actor->name() + " is down...") : "";
 
 	dead_count++;
 }
@@ -166,7 +166,7 @@ void Party::one_more_time() {
 		cycles_left--;
 	Actor *actor = actor_pair.first;
 
-	last_action += "\nSTATE: ";
+/*	last_action += "\nSTATE: ";
 	switch (status) {
 	case init:
 		last_action += "init";
@@ -183,11 +183,11 @@ void Party::one_more_time() {
 	case cycle_ends:
 		last_action += "cycle_ends";
 		break;
-	}
+	}*/
 //	last_action += "\nACTOR: " + actor->name() + " - TYPE: " + actor->type() +
 //				   " - CYCLE LEFT: " + std::to_string(cycles_left);
 
-	auto fightable = [&](Actor *opponent) {
+	auto fightable = [&actor](Actor *opponent) {
 		if (!opponent)
 			return false;
 		bool both_alive = !actor->is_dead() && !opponent->is_dead();
@@ -213,11 +213,11 @@ void Party::one_more_time() {
 		while (!actor_pair.second) {
 			actor_pair = turn_order.current();
 			Actor *a = actor_pair.first;
-			if (actor && actor->type() == "hero" && !actor->is_dead()) {
+			if (a && a->type() == "hero" && !a->is_dead()) {
 				status = hero_wins;
 				break;
-			} else if (actor && actor->type() == "monster" &&
-					   !actor->is_dead()) {
+			} else if (a && a->type() == "monster" &&
+					   !a->is_dead()) {
 				status = monster_wins;
 				break;
 			}
@@ -230,7 +230,7 @@ void Party::one_more_time() {
 	// do damage
 	// 1 - health delta
 	HP dmg = actor->attack(opponent);
-	last_action += "\n" + actor->name() + " dealt " + std::to_string(dmg) +
+	last_action += "\t" + actor->name() + " dealt " + std::to_string(dmg) +
 				   " dmg to " + opponent->name();
 
 	// 2 - dead or living?

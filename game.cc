@@ -4,7 +4,8 @@
 #include <cmath>
 
 Game::Game() {
-	for (int i = 0; i < 5; i++) {
+	int cnt = 0;
+	while (cnt < 6) {
 		int random = rand() % 8;
 		Hero* h;
 		XY pos = {100, 100};
@@ -37,21 +38,8 @@ Game::Game() {
 			h = new Zayin("Zayin", pos);
 			break;
 		}
-		if (!heroes.contains(random)) heroes.insert({random, h});
-		else i--;
-
-	} /*
-		 h_aleph = new Aleph("Aleph", {0, 1});
-		 h_main = new Bet("Bet", {100, 100});
-		 h_chet = new Chet("Chet", {101, 2});
-		 h_dalet = new Dalet("Dalet", {102, 3});
-		*/
-	while (true) {
-		int random = rand() % 5;
-		if (!heroes.contains(random)) continue;
-		h_main = heroes.at(random);
-		break;
-	}
+		heroes.insert({cnt++, h});
+	} 
 
 	current_enemy = nullptr;
 	current_enemy_is_boss = false;
@@ -63,8 +51,16 @@ Game::Game() {
 
 	world.generate();
 
-	for (auto ap : heroes)
-		player_party.add_member(ap.second);
+	int random = rand() % 6;
+	h_main = heroes.at(random);
+
+	// ONLY h_main GETS TO BE THE FIRST TO BE ADDED!!!!!!!!
+	// only the firts one gets to control the snake
+	// pls dont change or cthulu will arise
+	player_party.add_member(h_main);
+
+	for (auto& [index, ptr] : heroes)
+		if (index != random) player_party.add_member(heroes.at(index));
 
 	spawn_monster(true); // Spawn boss at north
 	for (int i = 0; i < 15; i++) {
@@ -223,6 +219,8 @@ void Game::handle_input(int ch) {
 			wants_to_move = true;
 			break;
 		}
+
+		mvprintw(0,0, "%d %d", h_main->pos().x, h_main->pos().y);
 
 		if (wants_to_move) {
 			bool entered_combat = false;
@@ -613,6 +611,10 @@ void Game::render() {
 			int py = player_party.bank[i]->pos().y - start_y;
 			if (px >= 0 && px < max_x && py >= 0 && py < max_y) {
 				int color = (i == 0) ? 1 : 4;
+				// who gets inserted first
+				// get to "control moevment"
+				// aka, only a[0] gonan be the snake leader!!!
+				// nasty bug made by mckay™ (no hate)
 				if (player_party.bank[i]->is_dead()) {
 					attron(COLOR_PAIR(1));
 					mvaddch(py, px, '.');

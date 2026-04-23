@@ -7,6 +7,7 @@ void Party::add_member(Actor* actor) {
 void Party::init_history(XY initial_pos) {
     history.clear();
     for (int i = 0; i < 6; i++) {
+//	if (bank[i]->type() != "hero") continue;
         history.push_back(initial_pos);
     }
 }
@@ -17,6 +18,7 @@ void Party::record_move(XY old_pos) {
         history.pop_back();
     }
     for (size_t i = 1; i < bank.size(); ++i) {
+	if (bank[i]->type() != "hero") continue;
         bank[i]->pos(history[i-1]);
     }
 }
@@ -49,7 +51,10 @@ void Party::post_mortem(Actor* actor, bool gen_drop = true) {
 	// coords transfer
 	XY xy = actor->pos();
 
-	if (!gen_drop) return;
+	if (!gen_drop) {
+		if (actor->type() == "drop" || actor->type() == "merchant" || actor->type() == "wall") delete actor;
+		return;
+	}
 
 	// make drop corresponding to actor
 	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);

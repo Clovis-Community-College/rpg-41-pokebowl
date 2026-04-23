@@ -7,7 +7,7 @@ Game::Game() {
     h_main = new Bet("Bet", {100, 100});
     h_chet = new Chet("Chet", {101, 2});
     h_dalet = new Dalet("Dalet", {102, 3});
-
+1+1;
     current_enemy = nullptr;
     current_enemy_is_boss = false;
 

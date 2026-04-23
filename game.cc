@@ -100,8 +100,8 @@ void Game::spawn_monster(bool is_boss) {
 void Game::snapshot_combat() {
 	def_prog_mode();
 	endwin();
+	system("clear");
 	player_party.turn_order.output_bridges();
-
 	std::cout << "\nPress ENTER to return to combat\n";
 	std::cin.get();
 

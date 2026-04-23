@@ -11,8 +11,17 @@ using namespace std;
 
 void CLL::mark_pointy() {
 	if (!bPointy) return;
-	bPointy->setColor("magenta");
-	bPointy->getLinkVisualizer(bPointy->getNext())->setColor("magenta");
+	if (pointy->prev->actorPTR->type() == "monster") {
+		bPointy->getPrev()->setColor("magenta");
+	} else {
+		bPointy->getPrev()->setColor("lime");
+	}
+	bPointy->getPrev()->getLinkVisualizer(bPointy)->setColor("grey");
+	bPointy->getPrev()->getLinkVisualizer(bPointy)->setThickness(1.0f);
+
+
+	bPointy->setColor("red");
+	bPointy->getLinkVisualizer(bPointy->getNext())->setColor("red");
 	bPointy->getLinkVisualizer(bPointy->getNext())->setThickness(2.0f);
 }
 
@@ -38,9 +47,12 @@ void CLL::list_insert(Actor* a) {
 		bPointy = bHead;
 		bHead->setSize(20);
 		
-		if (a->type() == "monster") bHead->setShape(SQUARE); 
-		bHead->setColor("lime");	
-
+		if (a->type() == "monster") {
+			bHead->setShape(SQUARE);
+			bHead->setColor("magenta");
+		} else {
+			bHead->setColor("lime");	
+		}
 		size = 1;
 		return;
 	}
@@ -57,13 +69,15 @@ void CLL::list_insert(Actor* a) {
 		
 		bHead->setNext(bHead->getPrev());
 
-		toLinkup->getLinkVisualizer(bHead)->setColor("lime");
+		toLinkup->getLinkVisualizer(bHead)->setColor("grey");
 		
 		if (a->type() == "monster") {
 			toLinkup->setShape(SQUARE);
-		} 
-		toLinkup->setColor("lime");
-		bHead->getLinkVisualizer(toLinkup)->setColor("lime");
+			toLinkup->setColor("magenta");
+		} else { 
+			toLinkup->setColor("lime");
+		}
+		bHead->getLinkVisualizer(toLinkup)->setColor("grey");
 		size++;
 		return;
 	}
@@ -84,13 +98,18 @@ void CLL::list_insert(Actor* a) {
 		bHead->getPrev()->setNext(toLinkup);
 		bHead->setPrev(bHead->getPrev()->getNext());
 
-		if (a->type() == "monster") toLinkup->setShape(SQUARE);
+		if (a->type() == "monster") {
+			toLinkup->setShape(SQUARE);
+			toLinkup->setColor("magenta");
+		} else {
+			toLinkup->setColor("lime");
+		}
 		
-		toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("lime");
-		toLinkup->setColor("lime");
+		toLinkup->getPrev()->getLinkVisualizer(toLinkup)->setColor("grey");
+		//toLinkup->setColor("lime");
 		
 		bHead->getLinkVisualizer(bHead->getPrev())->setColor("white");
-		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("lime");
+		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("grey");
 
 		size++;
 	}
@@ -141,7 +160,7 @@ if (head->actorPTR == a) {
 	bHead->getNext()->setPrev(bHead->getPrev());
 	bHead = bHead->getNext();
 
-	bHead->getPrev()->getLinkVisualizer(bHead)->setColor("lime");
+	bHead->getPrev()->getLinkVisualizer(bHead)->setColor("grey");
 
 	bHead->getLinkVisualizer(bHead->getPrev())->setColor("white");
 	bHead->setSize(20);
@@ -162,7 +181,7 @@ while (1) {
 		bTmp->getPrev()->setNext(bTmp->getNext());
 		bTmp->getNext()->setPrev(bTmp->getPrev());
 
-		bTmp->getPrev()->getLinkVisualizer(bTmp->getNext())->setColor("lime");
+		bTmp->getPrev()->getLinkVisualizer(bTmp->getNext())->setColor("grey");
 		bTmp->getNext()->getLinkVisualizer(bTmp->getPrev())->setColor("white");
 
 		if (tmp == pointy) {

@@ -7,6 +7,7 @@ void Party::add_member(Actor* actor) {
 void Party::init_history(XY initial_pos) {
     history.clear();
     for (int i = 0; i < 6; i++) {
+//	if (bank[i]->type() != "hero") continue;
         history.push_back(initial_pos);
     }
 }
@@ -17,6 +18,7 @@ void Party::record_move(XY old_pos) {
         history.pop_back();
     }
     for (size_t i = 1; i < bank.size(); ++i) {
+	if (bank[i]->type() != "hero") continue;
         bank[i]->pos(history[i-1]);
     }
 }
@@ -49,7 +51,10 @@ void Party::post_mortem(Actor* actor, bool gen_drop = true) {
 	// coords transfer
 	XY xy = actor->pos();
 
-	if (!gen_drop) return;
+	if (!gen_drop) {
+		if (actor->type() == "drop" || actor->type() == "merchant" || actor->type() == "wall") delete actor;
+		return;
+	}
 
 	// make drop corresponding to actor
 	Drop* drop = new Drop(xy, orphaned_inv, orphaned_coins);
@@ -180,6 +185,13 @@ void Party::one_more_time() {
 	else
 		last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.";
 
+		turn_order.reset_current_to_start();
+		while (!actor_pair.second) {
+			actor_pair = turn_order.current();
+			Actor* a = actor_pair.first;
+			if (actor && actor->type() == "hero" && !actor->is_dead()) { status = hero_wins; break; }
+			else if (actor && actor->type() == "monster" && !actor->is_dead()) { status = monster_wins; break; }
+		} // if hit Merchant, Drop, or other types, keep moving with current()
 //	if (side_dead(ActorType("monster"))) status = hero_wins;
 //	else if (side_dead(ActorType("hero"))) status = monster_wins;
 }

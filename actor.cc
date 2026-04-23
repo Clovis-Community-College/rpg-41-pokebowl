@@ -99,19 +99,26 @@ void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 
 void Actor::move(Direction d) {}
 
-void Actor::attack(Actor* opponent) {
-	if (!opponent) return; // Null check. Just in case.
+HP Actor::attack(Actor* opponent) {
+	if (!opponent) return 0; // Null check. Just in case.
+
+	HP delta = opponent->hp();
 
 	// Condition check
 	bool gtg_general = _good_to_attack(opponent); // GENERAL conditions for attack
 	bool gtg_specific = _subclass_good_to_attack(opponent); // SUBCLASS-SPECIFIC conditions for attack
-	if (!gtg_general || !gtg_specific) return;
+	if (!gtg_general || !gtg_specific) return 0;
 
 	// now opponent ALWAYS lives and not itself
 	_attack(opponent);
 	
 	// plug-in for custom attack behavior
 	_post_attack(opponent);
+
+	delta -= opponent->hp();
+	delta -= opponent->hp() == -1;
+
+	return delta;
 }
 
 bool Actor::_good_to_attack(Actor* opponent) const {

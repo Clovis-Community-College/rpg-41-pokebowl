@@ -74,10 +74,10 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it
 - `✅` On combat start: roll d20 + speed, sort fastest-first into circular linked list
 - `✅` Circular linked list for turn order: advance on turn end, wrap at tail, remove on death
-- `🚧` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
+- `✅` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `💢` Screenshot of BRIDGES combat visualization embedded in README
+- `✅` Screenshot of BRIDGES combat visualization embedded in README
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling
@@ -118,9 +118,7 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 
 ### BRIDGES combat
 
-```
-[ unimplemented.png ]
-```
+<img width="617" height="415" alt="Screenshot 2026-04-22 120839" src="https://github.com/user-attachments/assets/0ec9b102-a559-41e2-9ef3-f4cb9d1fe656" />
 
 ### Class hierachy of `actor.h`
 - `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.

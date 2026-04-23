@@ -2,9 +2,12 @@
 #include <CircDLelement.h>
 #include <CircSLelement.h>
 #include <sstream>
+#include "game.h"
+#include "actor.h"
 
 using namespace bridges;
 using namespace std;
+
 
 void CLL::mark_pointy() {
 	if (!bPointy) return;
@@ -22,7 +25,7 @@ void CLL::output_bridges() {
 
 void CLL::list_insert(Actor* a) {
 	stringstream NodeLabel;
-	NodeLabel << a->name() << " {" << a->type() << ") - SPEED " << dynamic_cast<HasInitiative*>(a)->get_speed();
+	NodeLabel << a->name() << " (" << a->type() << ") - SPEED " << static_cast<int>(dynamic_cast<HasInitiative*>(a)->get_speed());
 	if (!head) {
 		head = new Node{ a};
 		head->next = head;
@@ -65,7 +68,7 @@ void CLL::list_insert(Actor* a) {
 		return;
 	}
 	if (head != head->prev) {
-		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("orange");
+		bHead->getPrev()->getLinkVisualizer(bHead)->setColor("white");
 
 		head->prev->next = new Node{ a , head, head->prev};
 		head->prev = head->prev->next;
@@ -99,6 +102,8 @@ void CLL::reset_current_to_start() {
 }
 
 pair<Actor*, bool> CLL::current() {
+	// omg null chrcls galore
+	if (!pointy) return make_pair(nullptr, false);
 	Actor* tmpActor = pointy->actorPTR;
 	if (pointy == head->prev) {	
 		reset_current_to_start();

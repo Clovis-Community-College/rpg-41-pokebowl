@@ -78,6 +78,7 @@ class CLL {
 		void list_delete(Actor* a);
 		void output_bridges(); //generates bridges link to view in browser
 		void mark_pointy(); //marks current node pointy points to as red in Bridges visualization
+		//void test_bridges();
 		bridges::CircDLelement<string>* get_bHead() {return bHead;}
 
 		~CLL();	

@@ -18,7 +18,6 @@
 </p>
 </div>
 
-
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 
 ## What's this game about?
@@ -38,6 +37,11 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 | `i` | Open inventory |
 | `e` | Open equipment table |
 | `q` | Quit game |
+
+### 🎶 Music
+PokéPlayers, enjoy our one and only **custom-made theme song**!
+
+[![🎶 PokéBowl theme music](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DUc0DoiE9-hQ)](https://www.youtube.com/watch?v=Uc0DoiE9-hQ)
 
 ## Checklist, 1 2 3
  

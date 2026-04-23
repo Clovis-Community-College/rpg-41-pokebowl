@@ -617,13 +617,13 @@ void Game::render() {
 				// aka, only a[0] gonan be the snake leader!!!
 				// nasty bug made by mckay™ (no hate)
 				if (player_party.bank[i]->is_dead()) {
-					attron(COLOR_PAIR(1));
+					attron(COLOR_PAIR(color) | A_DIM);
 					mvaddch(py, px, '.');
-					attroff(COLOR_PAIR(1));
+					attroff(COLOR_PAIR(color) | A_DIM);
 				} else {
-					attron(COLOR_PAIR(color));
+					attron(COLOR_PAIR(color) | ((i==0)?A_BLINK:0));
 					mvaddch(py, px, p_chars[i]);
-					attroff(COLOR_PAIR(color));
+					attroff(COLOR_PAIR(color)| ((i==0)?A_BLINK:0));
 				}
 			}
 		}
@@ -878,6 +878,7 @@ void Game::render() {
 		if (player_party.status == init || player_party.status == ongoing) {
 			mvprintw(max_y - 4, 4,
 					 "Press 'SPACE' to next turn, or 'r' to Run.");
+			player_party.last_action.clear();
 		} else if (player_party.status == hero_wins) {
 			int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;
 			mvprintw(loot_start, 4, "Victory! Loot collected:");

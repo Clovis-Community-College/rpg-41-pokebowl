@@ -223,8 +223,6 @@ void Game::handle_input(int ch) {
 			break;
 		}
 
-		mvprintw(0,0, "%d %d", h_main->pos().x, h_main->pos().y);
-
 		if (wants_to_move) {
 			bool entered_combat = false;
 			for (auto it = roaming_monsters.begin();

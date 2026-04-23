@@ -19,8 +19,9 @@ enum CombatState {
 
 class Party {
 	WeatherSystem weather(); // tbd: WHEN to change weather? either way Orcs will crawll weathersystem THEN applies it to each Actor.
-	int8_t dead_count = 0;
+	uint8_t dead_count = 0;
 	uint8_t cycles_left = 2;
+	uint8_t monsters = 0, heroes = 0;
 public:
 	// party.bank for the actor vector
 	Bank bank;

@@ -13,12 +13,14 @@ enum CombatState {
 	init,
 	ongoing,
 	hero_wins,
+	cycle_ends,
 	monster_wins
 };
 
 class Party {
 	WeatherSystem weather(); // tbd: WHEN to change weather? either way Orcs will crawll weathersystem THEN applies it to each Actor.
 	int8_t dead_count = 0;
+	uint8_t cycles_left = 2;
 public:
 	// party.bank for the actor vector
 	Bank bank;
@@ -37,7 +39,7 @@ public:
 
 //	bool side_dead(ActorType type) const;
 	static float weather_scale(string weather); // no need to import weather, as the used thing is only a string!
-	void corpse_incinerator();
+	void corpse_incinerator(bool forced);
 
 	// the one ultimate
 	// Party-inator

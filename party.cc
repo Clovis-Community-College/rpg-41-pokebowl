@@ -62,8 +62,8 @@ void Party::post_mortem(Actor* actor, bool gen_drop = true) {
 	dead_count++;
 }
 
-void Party::corpse_incinerator() {
-	if (dead_count < 2) return;
+void Party::corpse_incinerator(bool forced = false) {
+	if (dead_count < 2 && !forced) return;
 	
 	// CLL cleanup
 	turn_order.reset_current_to_start();
@@ -81,7 +81,9 @@ void Party::inator() {
 	// be damned
 	// im gassed
 
+	corpse_incinerator();
 	status = init;
+	cycles_left = 2;
 
 	// for god sake dont pass null in here
 	auto interactable = [&](const Actor* actor){
@@ -115,13 +117,12 @@ void Party::inator() {
 void Party::one_more_time() {
 	// assumes bank r non-null and ALL LIVING. 
 	// HAVE TO PROCESS TO MATCH INVARIANT B4 EXIT
-	if (status == hero_wins || status == monster_wins) return;
-
+	status = (cycles_left && status != hero_wins && status != monster_wins) ? ongoing : cycle_ends;
+	if (status == hero_wins || status == monster_wins || status == cycle_ends) return;
 	corpse_incinerator();
 
-	status = ongoing;
-
 	auto actor_pair = turn_order.current();
+	if (actor_pair.second) cycles_left--;
 	Actor* actor = actor_pair.first;
 
 	auto fightable = [&actor](Actor* opponent){

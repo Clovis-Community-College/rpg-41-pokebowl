@@ -522,7 +522,8 @@ void Game::render() {
             if (equip_sub == EquipSubState::SELECT_HERO) {
                 mvprintw(2, 4, "=== EQUIPMENT: SELECT HERO ===");
                 for (size_t i = 0; i < player_party.bank.size(); ++i) {
-                    mvprintw(4 + i, 6, "[%ld] %s", i + 1, player_party.bank[i]->name().c_str());
+                       if (player_party.bank[i]->type() == "hero")
+			mvprintw(4 + i, 6, "[%ld] %s", i + 1, player_party.bank[i]->name().c_str());
                 }
                 mvprintw(max_y - 3, 4, "Press number to select, or 'e'/ESC to close.");
             } else if (equip_sub == EquipSubState::VIEW_HERO) {

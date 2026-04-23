@@ -116,6 +116,8 @@ HP Actor::attack(Actor* opponent) {
 	_post_attack(opponent);
 
 	delta -= opponent->hp();
+	delta -= opponent->hp() == -1;
+
 	return delta;
 }
 

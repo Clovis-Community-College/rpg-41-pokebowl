@@ -328,7 +328,7 @@ Echo::Echo(string _name_, XY _pos_) : Monster(_name_, _pos_, 300, Traits(100, 1,
 	// Ditto
 }
 
-Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 3000, Traits(200, 0.5, 14, 3000, 1)) {
+Foxtrot::Foxtrot(string _name_, XY _pos_) : Monster(_name_, _pos_, 1500, Traits(200, 0.5, 14, 3000, 1)) {
 	// BOSS - mewtwo
 }
 

@@ -184,8 +184,8 @@ void Party::one_more_time() {
 		last_action += "cycle_ends";
 		break;
 	}
-	last_action += "\nACTOR: " + actor->name() + " - TYPE: " + actor->type() +
-				   " - CYCLE LEFT: " + std::to_string(cycles_left);
+//	last_action += "\nACTOR: " + actor->name() + " - TYPE: " + actor->type() +
+//				   " - CYCLE LEFT: " + std::to_string(cycles_left);
 
 	auto fightable = [&](Actor *opponent) {
 		if (!opponent)
@@ -196,10 +196,10 @@ void Party::one_more_time() {
 		bool hero_hits_monster =
 			(actor->type() == "hero") && (opponent->type() == "monster");
 		bool fight = both_alive && (monster_hits_hero || hero_hits_monster);
-		string t = ((fight) ? "OK" : "STALL");
-		last_action += "\n[VEC] OPPONENT " + t + ": " + opponent->name() +
-					   " - TYPE: " + opponent->type() +
-					   " - cycles_left: " + std::to_string(cycles_left);
+//		string t = ((fight) ? "OK" : "STALL");
+//		last_action += "\n[VEC] OPPONENT " + t + ": " + opponent->name() +
+//					   " - TYPE: " + opponent->type() +
+//					   " - cycles_left: " + std::to_string(cycles_left);
 		return fight;
 	};
 

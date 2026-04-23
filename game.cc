@@ -76,6 +76,12 @@ Game::Game() {
 		Item("Potion", "Consume", 50, 50, 0, false));
 	player_party.shared_inventory.insert(
 		Item("Sword", "Weapon", 500, 0, 20, false));
+	player_party.shared_inventory.add_pokecoins(500);
+
+	merchant_inventory.insert(Item("Mega Heal", "heal", 60, 60, 0, false));
+	merchant_inventory.insert(Item("Big Healing Potion", "heal", 50, 50, 0, false));
+	merchant_inventory.insert(Item("Steel Sword", "weapon", 250, 0, 40, false));
+	merchant_inventory.insert(Item("Magic Wand", "weapon", 300, 0, 45, false));
 
 	state = GameState::MAP;
 	inv_sub = InvSubState::BROWSE;
@@ -347,6 +353,10 @@ void Game::handle_input(int ch) {
 			state = GameState::MAP;
 			return;
 		}
+		if (ch == 'm' || ch == 'M') {
+			state = GameState::MERCHANT_DIALOG;
+			return;
+		}
 
 		int tx = inn_pos.x;
 		int ty = inn_pos.y;
@@ -389,6 +399,60 @@ void Game::handle_input(int ch) {
 			inn_healed = true;
 		} else if (ch == '2' || ch == 27) {
 			state = GameState::INN;
+		}
+	} else if (state == GameState::MERCHANT_DIALOG) {
+		if (ch == '1') {
+			state = GameState::MERCHANT_SHOP;
+			shop_sub = ShopSubState::SELECT_MODE;
+			shop_cursor = 0;
+		} else if (ch == '2' || ch == 27 || ch == 'm' || ch == 'M') {
+			state = GameState::INN;
+		}
+	} else if (state == GameState::MERCHANT_SHOP) {
+		if (shop_sub == ShopSubState::SELECT_MODE) {
+			if (ch == 'b' || ch == 'B') {
+				shop_sub = ShopSubState::BUY;
+				shop_cursor = 0;
+			} else if (ch == 's' || ch == 'S') {
+				shop_sub = ShopSubState::SELL;
+				shop_cursor = 0;
+			} else if (ch == 27 || ch == 'm' || ch == 'M') {
+				state = GameState::MERCHANT_DIALOG;
+			}
+		} else if (shop_sub == ShopSubState::BUY) {
+			std::vector<Item> items;
+			merchant_inventory.get_all_items(items);
+			if (ch == 27 || ch == 'm' || ch == 'M' || ch == 'b' || ch == 'B') {
+				shop_sub = ShopSubState::SELECT_MODE;
+			} else if (ch == KEY_UP && shop_cursor > 0) {
+				shop_cursor--;
+			} else if (ch == KEY_DOWN && shop_cursor < (int)items.size() - 1) {
+				shop_cursor++;
+			} else if (ch == '\n' || ch == KEY_ENTER || ch == '\r') {
+				if (!items.empty() && shop_cursor < (int)items.size()) {
+					player_party.shared_inventory.buy(merchant_inventory, items[shop_cursor].get_name());
+					if (shop_cursor > 0 && shop_cursor >= merchant_inventory.get_size()) {
+						shop_cursor--;
+					}
+				}
+			}
+		} else if (shop_sub == ShopSubState::SELL) {
+			std::vector<Item> items;
+			player_party.shared_inventory.get_all_items(items);
+			if (ch == 27 || ch == 'm' || ch == 'M' || ch == 's' || ch == 'S') {
+				shop_sub = ShopSubState::SELECT_MODE;
+			} else if (ch == KEY_UP && shop_cursor > 0) {
+				shop_cursor--;
+			} else if (ch == KEY_DOWN && shop_cursor < (int)items.size() - 1) {
+				shop_cursor++;
+			} else if (ch == '\n' || ch == KEY_ENTER || ch == '\r') {
+				if (!items.empty() && shop_cursor < (int)items.size()) {
+					player_party.shared_inventory.sell(merchant_inventory, items[shop_cursor].get_name());
+					if (shop_cursor > 0 && shop_cursor >= player_party.shared_inventory.get_size()) {
+						shop_cursor--;
+					}
+				}
+			}
 		}
 	} else if (state == GameState::COMBAT) {
 		if (player_party.status == init || player_party.status == ongoing) {
@@ -750,7 +814,7 @@ void Game::render() {
 			attroff(COLOR_PAIR(5));
 		}
 
-	} else if (state == GameState::INN || state == GameState::INN_DIALOG) {
+	} else if (state == GameState::INN || state == GameState::INN_DIALOG || state == GameState::MERCHANT_DIALOG || state == GameState::MERCHANT_SHOP) {
 		int offset_y = (max_y - inn_zone.get_height()) / 2;
 		int offset_x = (max_x - inn_zone.get_width()) / 2;
 
@@ -776,8 +840,13 @@ void Game::render() {
 		}
 
 		attron(COLOR_PAIR(5));
-		mvprintw(max_y - 1, 2,
-				 "Arrows: Move | h: Talk to Innkeeper | v: Leave Inn");
+		if (state == GameState::MERCHANT_SHOP) {
+			mvprintw(max_y - 1, 2,
+					 "Arrows: Browse | Enter: Confirm | b: Buy | s: Sell | ESC/m: Exit Shop");
+		} else {
+			mvprintw(max_y - 1, 2,
+					 "Arrows: Move | h: Innkeeper | m: Merchant | v: Leave Inn");
+		}
 		attroff(COLOR_PAIR(5));
 
 		int hp_col = 2;
@@ -832,6 +901,101 @@ void Game::render() {
 				mvprintw(dy + 4, dx + 3, "\"Weary traveler! Rest here?\"");
 				mvprintw(dy + 6, dx + 3, "[1] Rest here (Heal party)");
 				mvprintw(dy + 7, dx + 3, "[2] Nevermind");
+			}
+			attroff(COLOR_PAIR(5));
+		} else if (state == GameState::MERCHANT_DIALOG) {
+			int dw = 40;
+			int dh = 10;
+			int dx = (max_x - dw) / 2;
+			int dy = (max_y - dh) / 2;
+
+			attron(COLOR_PAIR(4));
+			for (int y = dy; y < dy + dh; y++) {
+				mvhline(y, dx, ' ', dw);
+			}
+			mvprintw(dy, dx, "+");
+			mvhline(dy, dx + 1, '-', dw - 2);
+			mvprintw(dy, dx + dw - 1, "+");
+			mvprintw(dy + dh - 1, dx, "+");
+			mvhline(dy + dh - 1, dx + 1, '-', dw - 2);
+			mvprintw(dy + dh - 1, dx + dw - 1, "+");
+			for (int y = dy + 1; y < dy + dh - 1; y++) {
+				mvprintw(y, dx, "|");
+				mvprintw(y, dx + dw - 1, "|");
+			}
+
+			mvprintw(dy + 2, dx + 3, "Merchant:");
+			attroff(COLOR_PAIR(4));
+
+			attron(COLOR_PAIR(5));
+			mvprintw(dy + 4, dx + 3, "\"Looking for supplies?\"");
+			mvprintw(dy + 6, dx + 3, "[1] See wares (Buy/Sell)");
+			mvprintw(dy + 7, dx + 3, "[2] Nevermind");
+			attroff(COLOR_PAIR(5));
+		} else if (state == GameState::MERCHANT_SHOP) {
+			int dw = 60;
+			int dh = 20;
+			int dx = (max_x - dw) / 2;
+			int dy = (max_y - dh) / 2;
+
+			attron(COLOR_PAIR(4));
+			for (int y = dy; y < dy + dh; y++) {
+				mvhline(y, dx, ' ', dw);
+			}
+			mvprintw(dy, dx, "+");
+			mvhline(dy, dx + 1, '-', dw - 2);
+			mvprintw(dy, dx + dw - 1, "+");
+			mvprintw(dy + dh - 1, dx, "+");
+			mvhline(dy + dh - 1, dx + 1, '-', dw - 2);
+			mvprintw(dy + dh - 1, dx + dw - 1, "+");
+			for (int y = dy + 1; y < dy + dh - 1; y++) {
+				mvprintw(y, dx, "|");
+				mvprintw(y, dx + dw - 1, "|");
+			}
+			attroff(COLOR_PAIR(4));
+
+			attron(COLOR_PAIR(5));
+			mvprintw(dy + 1, dx + 2, "=== MERCHANT SHOP ===");
+			mvprintw(dy + 2, dx + 2, "Party Pokecoins: %d", player_party.shared_inventory.get_coins());
+
+			if (shop_sub == ShopSubState::SELECT_MODE) {
+				mvprintw(dy + 5, dx + 4, "What would you like to do?");
+				mvprintw(dy + 7, dx + 6, "[b] Buy items");
+				mvprintw(dy + 8, dx + 6, "[s] Sell items");
+			} else if (shop_sub == ShopSubState::BUY) {
+				mvprintw(dy + 4, dx + 2, "--- BUYING ---");
+				std::vector<Item> items;
+				merchant_inventory.get_all_items(items);
+				if (items.empty()) {
+					mvprintw(dy + 6, dx + 4, "Sold out!");
+				} else {
+					for (size_t k = 0; k < items.size() && k < 12; ++k) {
+						if ((int)k == shop_cursor)
+							attron(A_REVERSE);
+						mvprintw(dy + 6 + k, dx + 4, "%-20s (Cost: %d)",
+								 items[k].get_name().c_str(),
+								 items[k].get_cost());
+						if ((int)k == shop_cursor)
+							attroff(A_REVERSE);
+					}
+				}
+			} else if (shop_sub == ShopSubState::SELL) {
+				mvprintw(dy + 4, dx + 2, "--- SELLING ---");
+				std::vector<Item> items;
+				player_party.shared_inventory.get_all_items(items);
+				if (items.empty()) {
+					mvprintw(dy + 6, dx + 4, "You have nothing to sell!");
+				} else {
+					for (size_t k = 0; k < items.size() && k < 12; ++k) {
+						if ((int)k == shop_cursor)
+							attron(A_REVERSE);
+						mvprintw(dy + 6 + k, dx + 4, "%-20s (Value: %d)",
+								 items[k].get_name().c_str(),
+								 items[k].get_cost());
+						if ((int)k == shop_cursor)
+							attroff(A_REVERSE);
+					}
+				}
 			}
 			attroff(COLOR_PAIR(5));
 		}

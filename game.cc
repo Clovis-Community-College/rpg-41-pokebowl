@@ -63,7 +63,7 @@ Game::~Game() {
 	// vector copy prevents iterator hell
 auto _bank = player_party.bank;
     for (const auto actor : _bank) 
-	player_party.kill(actor, false);
+	player_party.post_mortem(actor, false);
 
     for (auto m : roaming_monsters) {
         if (m) delete m;
@@ -460,8 +460,10 @@ void Game::render() {
 			quests.draw(max_x);
         }
 
-        char p_chars[] = {'@', 'A', 'B', 'C', 'D', 'E'};
+        char p_chars[] = {'@', '+', '+', '+', '+', '+', '+', '+', '+'};
         for (int i = (int)player_party.bank.size() - 1; i >= 0; i--) {
+		if (!player_party.bank[i]) continue;
+		else if (player_party.bank[i]->type() != "hero") continue;
             int px = player_party.bank[i]->pos().x - start_x;
             int py = player_party.bank[i]->pos().y - start_y;
             if (px >= 0 && px < max_x && py >= 0 && py < max_y) {
@@ -522,7 +524,8 @@ void Game::render() {
             if (equip_sub == EquipSubState::SELECT_HERO) {
                 mvprintw(2, 4, "=== EQUIPMENT: SELECT HERO ===");
                 for (size_t i = 0; i < player_party.bank.size(); ++i) {
-                    mvprintw(4 + i, 6, "[%ld] %s", i + 1, player_party.bank[i]->name().c_str());
+                       if (player_party.bank[i]->type() == "hero")
+			mvprintw(4 + i, 6, "[%ld] %s", i + 1, player_party.bank[i]->name().c_str());
                 }
                 mvprintw(max_y - 3, 4, "Press number to select, or 'e'/ESC to close.");
             } else if (equip_sub == EquipSubState::VIEW_HERO) {
@@ -700,7 +703,9 @@ void Game::render() {
             mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
         } else if (player_party.status == monster_wins) {
             mvprintw(max_y - 4, 4, "Monsters win... Press 'SPACE' to return to map.");
-        }
+        } else if (player_party.status == cycle_ends) {
+	    mvprintw(max_y - 4, 4, "Turns expired. Press 'SPACE' to return to map.");
+	}
     }
 
     refresh();

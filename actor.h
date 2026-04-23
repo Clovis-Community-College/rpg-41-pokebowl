@@ -146,7 +146,8 @@ public:
 
 	// The dreaded dispatch hell
 	// if opponent die during attack, opponent cant attk actor.
-	void attack(Actor* opponent);
+	// Return OPPONENT delta (negative-base, 10 meant 10 HP subtracted)
+	HP attack(Actor* opponent);
 
 protected:
 	bool _good_to_attack(Actor* opponent) const;
@@ -328,7 +329,5 @@ public:
 	Hotel(string _name_, XY _pos_);
 	void subclass_special(Bank& bank) override;
 };
-
-// TODO: diagram with links to code snippets
 
 #endif

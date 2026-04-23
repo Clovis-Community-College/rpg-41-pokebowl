@@ -460,8 +460,10 @@ void Game::render() {
 			quests.draw(max_x);
         }
 
-        char p_chars[] = {'@', 'A', 'B', 'C', 'D', 'E'};
+        char p_chars[] = {'@', '+', '+', '+', '+', '+', '+', '+', '+'};
         for (int i = (int)player_party.bank.size() - 1; i >= 0; i--) {
+		if (!player_party.bank[i]) continue;
+		else if (player_party.bank[i]->type() != "hero") continue;
             int px = player_party.bank[i]->pos().x - start_x;
             int py = player_party.bank[i]->pos().y - start_y;
             if (px >= 0 && px < max_x && py >= 0 && py < max_y) {

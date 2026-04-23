@@ -38,7 +38,7 @@ Game::Game() {
 			h = new Zayin("Zayin", pos);
 			break;
 		}
-		heroes.insert({cnt++, h});
+		if (!heroes.contains(random)) { heroes.insert({random, h}); cnt++; }
 	} 
 
 	current_enemy = nullptr;
@@ -51,8 +51,11 @@ Game::Game() {
 
 	world.generate();
 
-	int random = rand() % 6;
-	h_main = heroes.at(random);
+	int random;
+	while (true) {
+		random = rand()%8;
+		if (heroes.contains(random)) { h_main = heroes.at(random); break; }
+	}
 
 	// ONLY h_main GETS TO BE THE FIRST TO BE ADDED!!!!!!!!
 	// only the firts one gets to control the snake
@@ -219,8 +222,6 @@ void Game::handle_input(int ch) {
 			wants_to_move = true;
 			break;
 		}
-
-		mvprintw(0,0, "%d %d", h_main->pos().x, h_main->pos().y);
 
 		if (wants_to_move) {
 			bool entered_combat = false;

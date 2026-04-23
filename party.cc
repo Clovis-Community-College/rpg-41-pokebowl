@@ -166,6 +166,12 @@ void Party::one_more_time() {
 		return;
 	}
 
+	if (it == bank.end()) {
+		if (side_dead(ActorType("monster"))) status = hero_wins;
+		else if (side_dead(ActorType("hero"))) status = monster_wins;
+		return;
+	}
+
 	Actor* opponent = *it;
 
 	// do damage

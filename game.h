@@ -9,9 +9,10 @@
 #include "zone.h"
 #include <ncurses.h>
 
-enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT, INN, INN_DIALOG };
+enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT, INN, INN_DIALOG, MERCHANT_DIALOG, MERCHANT_SHOP };
 enum class InvSubState { BROWSE, EQUIP };
 enum class EquipSubState { SELECT_HERO, VIEW_HERO };
+enum class ShopSubState { SELECT_MODE, BUY, SELL };
 
 class Game {
 public:
@@ -22,6 +23,10 @@ public:
 	int equip_cursor;
 	int equip_hero_idx;
 	Item selected_item;
+	
+	Inventory merchant_inventory;
+	ShopSubState shop_sub;
+	int shop_cursor;
 
 	Map world;
 	WeatherSystem weather;

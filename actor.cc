@@ -46,6 +46,9 @@ decltype(Actor::_traits.starting_speed) Actor::starting_speed() const {
 decltype(Actor::_traits.attack_damage) Actor::attack_damage() const {
 	return _traits.attack_damage;
 }
+decltype(Actor::_traits.hp_max) Actor::hp_max() const {
+	return _traits.hp_max;
+}
 // decltype(Actor::items) Actor::items() const { return items; }
 decltype(Actor::_traits.weather_scale_damage)
 Actor::weather_scale_damage() const {
@@ -68,7 +71,7 @@ void Actor::weather_scale_damage(WeatherScale wsd) {
 }
 
 void Actor::hp(HP hp_delta, float external_scale,
-			   const function<float(float, float)> &op) {
+				   const function<float(float, float)> &op) {
 	if (hp_delta < 0) {
 		std::cerr << "hp_delta less than 0";
 		exit(EXIT_FAILURE);
@@ -311,22 +314,35 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
-	for (Actor *opponent : bank) {
-		// workin with ptrs here
-		if (!opponent || opponent == exclude)
-			continue;
-		if (opponent->type() != "hero")
-			continue;
+	// find min opponent to heal
+	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return (!a->is_dead() && a->type() == "hero"); 
+	});
 
-		// do damage
-		// 1 - health delta
-		HP dmg = 0;// this->attack(opponent);
-		last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
-					   std::to_string(dmg) + " dmg to " + opponent->name();
+	auto it = std::min_element(it_, bank.end(), [exclude](const Actor* a, const Actor* b){
+                // workin with ptrs here
+                if (!a || !b) return false;
+                bool b0 = a != exclude && b != exclude;
+                bool b1 = (a->type() == "hero") && (b->type() == "hero");
+                bool b2 = (a->hp()) < (b->hp());
+		bool b3 = !a->is_dead() && !b->is_dead();
+		return b0 && b1 && b2 && b3;
+        });
 
-		last_action += ". " + opponent->name() + " now has " +
-					   std::to_string(opponent->hp()) + " HP.";
-	}
+	if (it == bank.end()) return;
+
+	// do damage
+	// 1 - health delta
+	float heal_scale = log(20.0 / (((float)(*it)->hp() / (float)(*it)->hp_max()) + 2) - 6.25);
+	HP dmg = round(heal_scale * (*it)->hp_max());
+	(*it)->cure_damage(dmg);
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " boosted " +
+				   std::to_string(dmg) + " HP to " + (*it)->name();
+
+	last_action += ". " + (*it)->name() + " now has " +
+				   std::to_string((*it)->hp()) + " HP.";
+
 }
 
 bool Dalet::_subclass_good_to_attack(Actor *opponent) const {

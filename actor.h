@@ -124,6 +124,7 @@ public:
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
+	decltype(_traits.hp_max) hp_max() const;
 
 	// set weather scale
 	decltype(_traits.weather_scale_damage) weather_scale_damage() const;

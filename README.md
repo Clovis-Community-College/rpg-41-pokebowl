@@ -63,8 +63,8 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
 
 #### Consistency of work
-- `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/main/README.md#game-state-at-week-1) — *Tony*
-- `🚧` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/main/README.md#commit-log) — *Tony*
+- `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/README.md#game-state-at-week-1) — *Tony*
+- `🚧` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/README.md#commit-log) — *Tony*
  
 ### Individual
  
@@ -83,7 +83,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `✅` [Screenshot of BRIDGES combat visualization embedded in README](https://github.com/Clovis-Community-College/rpg-41-pokebowl/main/README.md#bridges-combat)
+- `✅` [Screenshot of BRIDGES combat visualization embedded in README](https://github.com/Clovis-Community-College/rpg-41-pokebowl/README.md#bridges-combat)
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling

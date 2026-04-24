@@ -380,7 +380,42 @@ void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& 
 				   std::to_string((*it)->hp()) + " HP.\n";
 
 }
-void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+
+void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// find max opponent to double_punch
+	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return (!a->is_dead() && a->type() == "monster"); 
+	});
+
+	auto it = std::max_element(it_, bank.end(), [exclude](const Actor* a, const Actor* b){
+                // workin with ptrs here
+                if (!a || !b) return false;
+          //      bool b0 = a != exclude && b != exclude;
+                bool b1 = (a->type() == "monster") && (b->type() == "monster");
+                bool b2 = (a->hp()) < (b->hp());
+		bool b3 = !a->is_dead() && !b->is_dead();
+		return b1 && b2 && b3;
+        });
+
+	if (it == bank.end()) return;
+
+	Actor* opponent = *it;
+
+	// do damage
+	// 1 - health delta
+	HP dmg = this->attack(opponent);
+	dmg = this->attack(opponent); // double attack
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
+
+	// 3 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
+	else
+		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+
+}
+
 void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 

@@ -28,7 +28,7 @@
 *Defeat Foxtrot the Boss, kill all monsters* to win and conquer the Poké-verse!
 
 ### Quick start
-Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
+Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe. No command argument needed.
 
 ### Key commands
 | Key | Action |
@@ -58,7 +58,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` **E)** Combat — *McKay & Tony*
   
 #### Documentation
-- `✅` **A)** README describes game: directions to win, key commands — *Tony*
+- `✅` **A)** README describes game: directions to win, key commands, CLI params — *Tony*
 - `✅` **B)** README uses Markdown: bullet points, colors, embedded logo image — *Tony*
 - `✅` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
 

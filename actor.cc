@@ -306,9 +306,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			hitlist.add(this, opponent, dmg);
-		else
-			last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.";
+			hitlist.shove(this, opponent, dmg);
 	}
 }
 
@@ -439,7 +437,7 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			hitlist.add(this, opponent, dmg);
+			hitlist.shove(this, opponent, dmg);
 		else
 			last_action += ". " + opponent->name() + " has " +
 						   std::to_string(opponent->hp()) + " HP left.";

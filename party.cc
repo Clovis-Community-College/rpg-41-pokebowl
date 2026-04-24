@@ -166,27 +166,6 @@ void Party::one_more_time() {
 		cycles_left--;
 	Actor *actor = actor_pair.first;
 
-/*	last_action += "\nSTATE: ";
-	switch (status) {
-	case init:
-		last_action += "init";
-		break;
-	case ongoing:
-		last_action += "ongoing";
-		break;
-	case hero_wins:
-		last_action += "hero_wins";
-		break;
-	case monster_wins:
-		last_action += "monster_wins";
-		break;
-	case cycle_ends:
-		last_action += "cycle_ends";
-		break;
-	}*/
-//	last_action += "\nACTOR: " + actor->name() + " - TYPE: " + actor->type() +
-//				   " - CYCLE LEFT: " + std::to_string(cycles_left);
-
 	auto fightable = [&actor](Actor *opponent) {
 		if (!opponent)
 			return false;
@@ -196,10 +175,6 @@ void Party::one_more_time() {
 		bool hero_hits_monster =
 			(actor->type() == "hero") && (opponent->type() == "monster");
 		bool fight = both_alive && (monster_hits_hero || hero_hits_monster);
-//		string t = ((fight) ? "OK" : "STALL");
-//		last_action += "\n[VEC] OPPONENT " + t + ": " + opponent->name() +
-//					   " - TYPE: " + opponent->type() +
-//					   " - cycles_left: " + std::to_string(cycles_left);
 		return fight;
 	};
 
@@ -229,24 +204,27 @@ void Party::one_more_time() {
 
 	// do damage
 	// 1 - health delta
-	HP dmg = actor->attack(opponent);
-	last_action += "\t" + actor->name() + " dealt " + std::to_string(dmg) +
-				   " dmg to " + opponent->name();
+	HP o_dmg = actor->attack(opponent);
 
 	// 2 - (arbitarily) special effects
 	NonWall* nw = dynamic_cast<NonWall*>(actor);
 	nw->special(bank, hitlist, opponent, last_action);
-//	std::transform(bank.start(), bank.end()
 
 	// 3 - dead or living?
 	if (opponent->is_dead())
-		post_mortem(opponent);
-	else
-		last_action += ". " + opponent->name() + " has " +
-					   std::to_string(opponent->hp()) + " HP left.";
+		hitlist.shove(actor, opponent, o_dmg);
 
+	// 4 - process corpse post_mortem
+	while (!hitlist.none()) {
+		auto [executor, victim, dmg] = hitlist.pop_top();
+		last_action += "\t" + executor->name() + " dealt " + std::to_string(dmg) +
+                                   " dmg to " + victim->name();
+		last_action += ". " + victim->name() + " has " +
+					   std::to_string(victim->hp()) + " HP left.\n";
+		post_mortem(victim);
+	}
+
+	// 5 - check back invariants monster, hero. just-in-case
 	if (!monsters) status = hero_wins;
 	else if (!heroes) status = monster_wins;
-	//	if (side_dead(ActorType("monster"))) status = hero_wins;
-	//	else if (side_dead(ActorType("hero"))) status = monster_wins;
 }

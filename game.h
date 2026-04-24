@@ -8,6 +8,7 @@
 #include "pokeitems.h"
 #include "zone.h"
 #include <ncurses.h>
+#include <sstream>
 
 enum class GameState { MAP, COMBAT, INVENTORY, EQUIPMENT, INN, INN_DIALOG, MERCHANT_DIALOG, MERCHANT_SHOP };
 enum class InvSubState { BROWSE, EQUIP };
@@ -59,6 +60,7 @@ public:
 	void snapshot_combat();
 
 private:
+	void splash();
 	void handle_input(int ch);
 	void render();
 };

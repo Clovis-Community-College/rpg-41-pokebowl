@@ -3,8 +3,70 @@
 #include <cstdlib>
 #include <cmath>
 
+void Game::splash() {
+		string splash = R"(
+      ____        __        ____                __
+     / __ \____  / /_____  / __ )____ _      __/ /
+   / /_/ / __ \/ //_/ _ \/ __  / __ \ | /| / / /
+ / ____/ /_/ / ,< /  __/ /_/ / /_/ / |/ |/ / /
+/_/    \____/_/|_|\___/_____/\____/|__/|__/_/
+
+)";
+
+	string line;
+	string prompt = "Greetings, PokeKerney! Press [SPACE] to start.";
+	string credit0 = "Made with ", credit1 = "<3", credit2 = " by Tony, McKay, George, Jovanni, and Dillion.";
+	int y, x, x_prompt, x_credit0, x_credit1, x_credit2, y_credit;
+	getmaxyx(stdscr, y, x);
+
+	y = (y - 10) / 2;
+	x_prompt = (x - prompt.length())/2;
+	x_credit0 = (x - (credit0 + credit1 + credit2).length())/2;
+	x_credit1 = x_credit0 + credit0.length();
+	x_credit2 = x_credit1 + credit1.length();
+	
+	y_credit = y*2 + 8;
+
+	// splash screen cuz why not
+	nodelay(stdscr, TRUE);
+	for (int i = 0; getch() != ' ' ; i++) {
+		int lc = 0;		
+		std::istringstream iss(splash);
+
+		while (getline(iss, line)) {
+			int random = rand() % 4 + 1;
+			attron(COLOR_PAIR(random) | A_BOLD);
+			mvprintw(y + lc++, (x - line.length())/2, line.c_str());
+			attroff(COLOR_PAIR(random) | A_BOLD);
+			line.clear();
+		}
+
+		mvprintw(y + (++lc), x_prompt, prompt.c_str());	
+
+		attron(A_DIM);
+		mvprintw(y_credit, x_credit0, credit0.c_str());	
+		attron(COLOR_PAIR(2) | A_BLINK);
+		mvprintw(y_credit, x_credit1, credit1.c_str());	
+		attroff(COLOR_PAIR(2) | A_BLINK);
+		mvprintw(y_credit, x_credit2, credit2.c_str());	
+		attroff(A_DIM);
+
+		napms(100);
+		refresh();
+
+		while (lc-- >= 0) {
+			move(y + lc, x);
+			clrtoeol();  
+		}
+	}
+
+	nodelay(stdscr, FALSE);
+	clear();
+}
+
 Game::Game() {
 	int cnt = 0;
+
 	while (cnt < 6) {
 		int random = rand() % 8;
 		Hero *h;
@@ -1124,7 +1186,8 @@ void Game::render() {
 }
 
 void Game::run() {
-	atexit([]{ endwin(); });
+	atexit([]{ endwin(); }); // no mess up screen on exit
+	splash();
 	int ch = 0;
 	while (ch != 'q') {
 		render();

@@ -1,5 +1,5 @@
 <div align="center">
-<img width="5000" height="5000" alt="pokebowl" src="https://github.com/user-attachments/assets/113b1ec8-2252-41f4-8e13-df23c2dadada" />
+<img width="5000" height="5000" alt="pokebowl1" src="https://github.com/user-attachments/assets/ab1e2844-4de8-46c8-bcee-0f4ebbd28a88" />
   <h1 style="font-size: 28px; margin: 10px 0;">PokéBowl©</h1>
   <p><em>A Pokémon-inspired, terminal-native RPG. Powered by Kerney's server, C++, and calories.</em></p>
 </div>

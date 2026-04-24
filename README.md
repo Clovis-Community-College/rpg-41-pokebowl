@@ -63,8 +63,8 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
 
 #### Consistency of work
-- `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#game-state-at-week-1) — *Tony*
-- `✅` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#commit-log) — *Tony*
+- `✅` **A)** [Screenshot of game state, 1 week](#game-state-at-week-1) — *Tony*
+- `✅` **B)** [Screenshot of GitHub commit log showing consistent commits over time](#commit-log) — *Tony*
  
 ### Individual
  
@@ -74,8 +74,8 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` `Hero` class with 4+ subclasses.
 - `✅` `Monster` class with 5+ subclasses  including a **Boss**
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
-- `✅` README: ![description of class hierarchy](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#actor-class) + ![diagram showing class relationships](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#class-diagram) + ![code snapshots](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#code-snapshots)
- 
+- `✅` README: ![description of class hierarchy](#actor-class) + ![diagram showing class relationships](#class-diagram) + ![Actor-related code snapshots](#code-snippet-snapshots-scrollable)
+
 #### B — "BRIDGEngineer" (George)
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it
 - `✅` On combat start: roll d20 + speed, sort fastest-first into circular linked list
@@ -83,7 +83,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `✅` [Screenshot of BRIDGES combat visualization embedded in README](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#bridges-combat)
+- `✅` [Screenshot of BRIDGES combat visualization embedded in README](#bridges-combat)
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling

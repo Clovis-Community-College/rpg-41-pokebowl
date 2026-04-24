@@ -174,7 +174,7 @@ void Game::spawn_monster(bool is_boss) {
 			m = new Echo("Echo", {x, y});
 			break;
 		case 5:
-			m = new Echo("Foxtrot", {x, y});
+			m = new Echo("Echo", {x, y});
 			break;
 		case 6:
 			m = new Golf("Golf", {x, y});

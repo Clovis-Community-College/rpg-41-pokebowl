@@ -15,6 +15,7 @@
 <a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
 </a>
+
 </p>
 </div>
 
@@ -136,8 +137,9 @@ https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b
 ![Game state](https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/Screenshot_20260412_204949_Termux.png)
 
 ### BRIDGES combat
-
-<img width="683" height="582" alt="BRIDGEScombat" src="https://github.com/user-attachments/assets/8cd035cf-ad82-464e-a401-2c740f02f63c" />
+<div align="center">
+<img width="895" height="574" alt="BRIDGEScombat" src="https://github.com/user-attachments/assets/5c1d0bdd-428b-40c2-adb3-911f088ad473" />
+</div>
 
 ### Class hierachy of `actor.h`
 - `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.

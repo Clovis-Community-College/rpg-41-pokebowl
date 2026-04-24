@@ -138,16 +138,14 @@ void Game::spawn_monster(bool is_boss) {
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)
 		return;
 
-	auto prob = [&]() -> float { 
-		float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		return (0.09 / rand_norm) - 0.09;
+	auto prob = [&]() -> int { 
+		double rand_norm = 0.375 + 6.0 / (1.0+pow(2.7128,5*(0.6-rand())));
+		return (int)round(std::clamp(rand_norm, 1.0, 6.0));
 	};
-
-	float herd = prob();
 
 	Monster *m = nullptr;
 
-	for (int i = 0; i < std::round(herd * 6); i++) {
+	for (int i = 0; i < prob(); i++) {
 		int type = rand() % 8;
 		switch (type) {
 		case 0:
@@ -264,11 +262,8 @@ void Game::handle_input(int ch) {
 				if (h_main->pos().x != old_pos.x ||
 					h_main->pos().y != old_pos.y) {
 					player_party.record_move(old_pos);
-					auto prob = [&]() -> float { 
-						float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-						return (0.09 / rand_norm) - 0.07;
-					};
-					if (prob() < 0.025 && roaming_monsters.size() < 25) {
+					float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+					if (rand_norm < 0.04 && roaming_monsters.size() < 25) {
 						spawn_monster(false);
 					}
 

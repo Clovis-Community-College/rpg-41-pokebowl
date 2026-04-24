@@ -201,13 +201,14 @@ public:
 protected:
 	bool _subclass_good_to_attack(Actor* opponent) const override;
 
+	// Special abilities. TBI by subclasses.
+	virtual void subclass_special(Bank& bank) = 0;
+
+public:
 	// SHARED special-related functionalities
 	// Applies one actor's "special functions" 
 	// on MULTIPLE actor
 	void special(Bank& bank);
-
-	// Special abilities. TBI by subclasses.
-	virtual void subclass_special(Bank& bank) = 0;
 };
 
 class Hero : public NonWall, public HasInitiative {

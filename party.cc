@@ -233,7 +233,11 @@ void Party::one_more_time() {
 	last_action += "\t" + actor->name() + " dealt " + std::to_string(dmg) +
 				   " dmg to " + opponent->name();
 
-	// 2 - dead or living?
+	// 2 - (arbitarily) special effects
+	NonWall* nw = dynamic_cast<NonWall*>(actor);
+	nw->special(bank);
+
+	// 3 - dead or living?
 	if (opponent->is_dead())
 		post_mortem(opponent);
 	else

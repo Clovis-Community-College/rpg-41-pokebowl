@@ -179,6 +179,6 @@ classDiagram
 
 #### Code snippet snapshots (scrollable)
 
-https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.h#L1-L334
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/fd7d663ba1c1438278978bee77c4ccb368df05b5/actor.h#L1-L333
 
 https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/75d291e5ec1c21728fb204fb634450ebc78f4722/actor.cc#L1-L350

@@ -15,7 +15,7 @@ class Hitlist {
 	using Bank = std::deque<Who>;
 	Bank _zyklon{};
 public:
-	void shove(Actor* executor, Actor* victim, char dmg) {
+	void shove(Actor* executor, Actor* victim, short dmg) {
 		Who who = {executor, victim, dmg};
 		_zyklon.push_back(who);
 	}

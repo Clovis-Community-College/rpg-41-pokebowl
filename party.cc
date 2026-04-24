@@ -210,7 +210,7 @@ void Party::one_more_time() {
 
 	// 2 - (arbitarily) special effects
 	NonWall* nw = dynamic_cast<NonWall*>(actor);
-	nw->special(bank, hitlist, opponent, last_action);
+	nw->special(bank, hitlist, opponent, last_action); // opponent param EXCLUDES double shoving
 
 	// 3 - dead or living?
 	if (opponent->is_dead())

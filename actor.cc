@@ -455,15 +455,15 @@ void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	int random = rand() % 2;
 
 	// decrease defense by 10%, OR decrease attk damage by 15%
-	if (random) opponent->hurt_scale(hurt_scale() * 1.1);
-	else opponent->attack_damage(attack_damage() * 0.85f);
+	if (random) opponent->hurt_scale(opponent->hurt_scale() * 1.1);
+	else opponent->attack_damage(opponent->attack_damage() * 0.85f);
 
 	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + "has debuffed " + opponent->name() + "! " + opponent->name() + "'s";
 
 	string scale;
 
 	if (random) {
-		scale = std::format("${:.2f}", hurt_scale());
+		scale = std::format("${:.2f}", opponent->hurt_scale());
 		last_action += "defense is only " + scale + "x as strong!";
 	}
 	else

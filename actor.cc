@@ -256,7 +256,7 @@ void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last
 		    last_action += "watched Kerney rambling in-class with Minecraft parkour overlay, brain short-circuited, and alt-f4'd.";
 		    break;
 		default:
-		   last_action += "unalived itself. (also hi Rosas, i see u on VSCode!)";
+		   last_action += "unalived itself. (also hi Rosas, i see u have /homework/ on VSCode!)";
 		    break;
 	}
 
@@ -351,7 +351,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
@@ -478,13 +478,13 @@ void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string&
 	// 1 - health delta
 	HP dmg = this->attack(opponent);
 	dmg += this->attack(opponent); // double attack
-	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt double attack! Dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name() + ".\n\t\t\t\t";
 
 	// 3 - dead or living?
 	if (opponent->is_dead())
 		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
 	else
-		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+		last_action += opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
 
 }
 
@@ -674,7 +674,6 @@ void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
 				   std::to_string((*it)->hp()) + " HP.\n";
 
-
 }
 
 void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
@@ -684,8 +683,32 @@ void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " lost armor!";
 }
 
-void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	int random = rand() % 125;
+	if (!random) return;
+	cure_damage(random);
+}
+
+void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	if (!exclude) return;
+	if (exclude->is_dead()) return;
+
+	Actor*& opponent = exclude;
+
+	// do damage
+	// 1 - health delta
+	HP dmg = this->attack(opponent);
+	dmg += this->attack(opponent); // double attack
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
+
+	// 3 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
+	else
+		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+
+}
+
 void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	for (Actor *opponent : bank) {
 		// workin with ptrs here
@@ -697,7 +720,7 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name();
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
@@ -707,5 +730,27 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 						   std::to_string(opponent->hp()) + " HP left.\n\n";
 	}
 }
+
 void Golf::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Hotel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+
+void Hotel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	if (!exclude) return;
+	if (exclude->is_dead() || exclude->hp() >= (0.4 * exclude->hp_max())) return;
+
+	Actor*& opponent = exclude;
+
+	// do damage
+	// 1 - health delta
+	decltype(attack_damage()) oad = attack_damage();
+	attack_damage(oad * 0.3);
+
+	HP dmg = this->attack(opponent);
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " bullied " + opponent->name() +  "! Dealt extra " + std::to_string(dmg) + " dmg pts to " + opponent->name();
+	attack_damage(oad);
+
+	// 3 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
+	else
+		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+}

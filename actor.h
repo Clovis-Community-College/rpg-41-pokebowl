@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <format>
 #include <optional>
 
 using std::string, std::cout, std::cin, std::vector, std::optional, std::function;
@@ -88,7 +89,7 @@ private:
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
-
+	virtual float _custom_scale() const;
 public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
 	optional<Inventory> items{};
@@ -237,6 +238,7 @@ public:
 class Bet : public Hero {
 public:
 	Bet(string _name_, XY _pos_);
+	float _custom_scale() const override;
 	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 

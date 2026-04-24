@@ -155,6 +155,8 @@ bool Actor::_subclass_good_to_attack(Actor *opponent) const {
 	return true;
 }
 
+float Actor::_custom_scale() const { return 1.0;}
+
 void Actor::_attack(Actor *opponent) {
 	HP hp_delta = attack_damage();
 	if (items.has_value()) {
@@ -164,7 +166,7 @@ void Actor::_attack(Actor *opponent) {
 			hp_delta += item.get_damage();
 		}
 	}
-	float external_damage_scale = weather_scale_damage() * 1;
+	float external_damage_scale = weather_scale_damage() * _custom_scale();
 	opponent->take_damage(hp_delta, external_damage_scale);
 }
 
@@ -314,7 +316,17 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	}
 }
 
-void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	if (_custom_scale() > 1.5) {
+		const string scale = std::format("${:.2f}", _custom_scale());
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " just BOOSTED atck pwr by " + scale + "!\n\t\t\t\t";
+	}
+}
+
+float Bet::_custom_scale() const {
+	return log(hp_max()/(hp()+0.5))+1.5;
+}
+
 void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	// find min ally to heal
 	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
@@ -363,7 +375,7 @@ void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& 
 	// find ded ally
 	auto it = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
 		if (!a) return false;
-		else return a->is_dead(); 
+		else return (a->is_dead() && a->type() == "hero"); 
 	});
 
 	if (it == bank.end()) return;

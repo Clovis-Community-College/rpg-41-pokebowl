@@ -4,10 +4,12 @@
 #include <vector>
 #include <deque>
 #include <stdexcept>
+
 #include "actor.h"
 #include "inventory.h"
 #include "circularll.h"
 #include "weather.h"
+#include "hitlist.h"
 
 enum CombatState {
 	init,
@@ -22,6 +24,7 @@ class Party {
 	uint8_t dead_count = 0;
 	uint8_t cycles_left = 2;
 	uint8_t monsters = 0, heroes = 0;
+	Hitlist hitlist;
 public:
 	// party.bank for the actor vector
 	Bank bank;

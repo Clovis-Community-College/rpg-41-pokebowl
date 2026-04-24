@@ -4,12 +4,14 @@
 #include "llbridges.h"
 #include "inventory.h"
 #include "pokeitems.h"
+#include "hitlist.h"
 
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <format>
 #include <optional>
 
 using std::string, std::cout, std::cin, std::vector, std::optional, std::function;
@@ -21,6 +23,8 @@ using WeatherScale = float;
 using ActorType = string;
 using Bank = vector<Actor*>;
 using IOrphan = vector<Item>;
+
+class Party; // forward declare for special()
 
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
@@ -49,7 +53,7 @@ struct Traits {
 	WeatherScale weather_scale_damage;
 
 	// Hurt scale/modulator.
-	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
+	// 1 correspond 100% of hp_delta APPLIED, 0.5 is 50% of hp_delta applied and so on.
 	// Defaults to 1
 	// In "defense" terms: 1/ids = defense pts.
 	InversedDefenseScale hurt_scale;
@@ -85,7 +89,7 @@ private:
 
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
-
+	virtual float _custom_scale() const;
 public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
 	optional<Inventory> items{};
@@ -121,10 +125,14 @@ public:
 	//Get for traits
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
-
-	// set weather scale
+	decltype(_traits.hp_max) hp_max() const;
+	decltype(_traits.hurt_scale) hurt_scale() const;
 	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
+
+	// set for traits
 	void weather_scale_damage(WeatherScale wsd);
+	void hurt_scale(decltype(_traits.hurt_scale) hs);
+	void attack_damage(decltype(_traits.attack_damage) ad);
 
 	bool is_dead() const;
 	bool is_self_with(const Actor *other) const;
@@ -201,13 +209,14 @@ public:
 protected:
 	bool _subclass_good_to_attack(Actor* opponent) const override;
 
+	// Special abilities. TBI by subclasses.
+	virtual void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) = 0;
+
+public:
 	// SHARED special-related functionalities
 	// Applies one actor's "special functions" 
 	// on MULTIPLE actor
-	void special(Bank& bank);
-
-	// Special abilities. TBI by subclasses.
-	virtual void subclass_special(Bank& bank) = 0;
+	void special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action);
 };
 
 class Hero : public NonWall, public HasInitiative {
@@ -226,50 +235,52 @@ public:
 class Aleph : public Hero {
 public:
 	Aleph(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Bet : public Hero {
 public:
 	Bet(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	float _custom_scale() const override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Gimel : public Hero {
 public:
 	Gimel(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Dalet : public Hero {
 public:
 	Dalet(string _name_, XY _pos_);
 	bool _subclass_good_to_attack(Actor* opponent) const override final;
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class He : public Hero {
 public:
 	He(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Vav : public Hero {
 public:
 	Vav(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Zayin : public Hero {
 public:
 	Zayin(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Chet : public Hero {
 public:
 	Chet(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	float _custom_scale() const override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 // Monster - Military
@@ -284,50 +295,50 @@ public:
 class Alpha : public Monster {
 public:
 	Alpha(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Bravo : public Monster {
 public:
 	Bravo(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Charlie : public Monster {
 public:
 	Charlie(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Delta : public Monster {
 public:
 	Delta(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Echo : public Monster {
 public:
 	Echo(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Foxtrot : public Monster {
 public:
 	Foxtrot(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 	bool is_boss() const override;
 };
 
 class Golf : public Monster {
 public:
 	Golf(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 class Hotel : public Monster {
 public:
 	Hotel(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 
 #endif

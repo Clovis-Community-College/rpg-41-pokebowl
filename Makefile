@@ -1,4 +1,4 @@
-LIBS = -Ilibs/include -lncurses -lcurl 
+LIBS = -Ilibs/include -lncursesw -lcurl 
 CCFLAGS = -Wno-sign-compare -std=c++26 -O3 -w
 SRCS := $(filter-out $(wildcard _*.cc), $(wildcard *.cc))
 OBJS = $(SRCS:.cc=.o)

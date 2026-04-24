@@ -1,5 +1,4 @@
 #include "actor.h"
-#include "llbridges.h"
 
 // Traits
 Traits::Traits(AttackHP _do, InversedDefenseScale _hs, Speed _ss, HP _hpm,
@@ -213,7 +212,7 @@ ActorType Drop::type() const { return "drop"; }
 
 // template method not useless
 // prevention - in case actor subgroup can be refactored
-void NonWall::special(Party* party, Actor *exclude) { subclass_special(party, exclude); }
+void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { subclass_special(bank, hitlist, exclude, last_action); }
 
 bool NonWall::_subclass_good_to_attack(Actor *opponent) const {
 	// no attack of same type - can be overriden
@@ -290,8 +289,8 @@ Chet::Chet(string _name_, XY _pos_)
 	// Assasin
 }
 
-void Aleph::subclass_special(Party* party, Actor *exclude) {
-	for (Actor *opponent : party->bank) {
+void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	for (Actor *opponent : bank) {
 		// workin with ptrs here
 		if (!opponent || opponent == exclude)
 			continue;
@@ -301,21 +300,18 @@ void Aleph::subclass_special(Party* party, Actor *exclude) {
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		party->last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
-					   std::to_string(dmg) + " dmg to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			party->post_mortem(opponent);
+			hitlist.add(this, opponent, dmg);
 		else
-			party->last_action += ". " + opponent->name() + " has " +
-						   std::to_string(opponent->hp()) + " HP left.";
+			last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.";
 	}
 }
 
-void Bet::subclass_special(Party* party, Actor *exclude) {}
-void Gimel::subclass_special(Party* party, Actor *exclude) {
-	for (Actor *opponent : party->bank) {
+void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	for (Actor *opponent : bank) {
 		// workin with ptrs here
 		if (!opponent || opponent == exclude)
 			continue;
@@ -324,12 +320,12 @@ void Gimel::subclass_special(Party* party, Actor *exclude) {
 
 		// do damage
 		// 1 - health delta
-		HP dmg = this->attack(opponent);
-		party->last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
+		HP dmg = 0;// this->attack(opponent);
+		last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
 					   std::to_string(dmg) + " dmg to " + opponent->name();
 
-		party->last_action += ". " + opponent->name() + " has " +
-					   std::to_string(opponent->hp()) + " HP left.";
+		last_action += ". " + opponent->name() + " now has " +
+					   std::to_string(opponent->hp()) + " HP.";
 	}
 }
 
@@ -341,11 +337,11 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 		   is_hero; // logically always true, but semantically makes sense
 }
 
-void Dalet::subclass_special(Party* party, Actor *exclude) {}
-void He::subclass_special(Party* party, Actor *exclude) {}
-void Vav::subclass_special(Party* party, Actor *exclude) {}
-void Zayin::subclass_special(Party* party, Actor *exclude) {}
-void Chet::subclass_special(Party* party, Actor *exclude) {}
+void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 
 // Monster
 ActorType Monster::type() const { return "monster"; }
@@ -406,13 +402,13 @@ Hotel::Hotel(string _name_, XY _pos_)
 	// Persian
 }
 
-void Alpha::subclass_special(Party* party, Actor *exclude) {}
-void Bravo::subclass_special(Party* party, Actor *exclude) {}
-void Charlie::subclass_special(Party* party, Actor *exclude) {}
-void Delta::subclass_special(Party* party, Actor *exclude) {}
-void Echo::subclass_special(Party* party, Actor *exclude) {}
-void Foxtrot::subclass_special(Party* party, Actor *exclude) {
-	for (Actor *opponent : party->bank) {
+void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	for (Actor *opponent : bank) {
 		// workin with ptrs here
 		if (!opponent || opponent == exclude)
 			continue;
@@ -422,16 +418,16 @@ void Foxtrot::subclass_special(Party* party, Actor *exclude) {
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		party->last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
+		last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
 					   std::to_string(dmg) + " dmg to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			party->post_mortem(opponent);
+			hitlist.add(this, opponent, dmg);
 		else
-			party->last_action += ". " + opponent->name() + " has " +
+			last_action += ". " + opponent->name() + " has " +
 						   std::to_string(opponent->hp()) + " HP left.";
 	}
 }
-void Golf::subclass_special(Party* party, Actor *exclude) {}
-void Hotel::subclass_special(Party* party, Actor *exclude) {}
+void Golf::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Hotel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}

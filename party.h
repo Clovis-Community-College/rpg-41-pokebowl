@@ -4,10 +4,12 @@
 #include <vector>
 #include <deque>
 #include <stdexcept>
+
 #include "actor.h"
 #include "inventory.h"
 #include "circularll.h"
 #include "weather.h"
+#include "hitlist.h"
 
 enum CombatState {
 	init,
@@ -22,6 +24,7 @@ class Party {
 	uint8_t dead_count = 0;
 	uint8_t cycles_left = 2;
 	uint8_t monsters = 0, heroes = 0;
+	Hitlist hitlist;
 public:
 	// party.bank for the actor vector
 	Bank bank;
@@ -36,7 +39,7 @@ public:
 	void init_history(XY initial_pos);
 	void record_move(XY old_pos);
 
-	void post_mortem(Actor* actor, bool gen_drop = true);
+	void post_mortem(Actor* actor, bool gen_drop);
 
 //	bool side_dead(ActorType type) const;
 	static float weather_scale(string weather); // no need to import weather, as the used thing is only a string!

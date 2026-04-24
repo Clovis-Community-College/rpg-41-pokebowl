@@ -1,5 +1,5 @@
 <div align="center">
-<img width="5000" height="5000" alt="pokebowl1" src="https://github.com/user-attachments/assets/ab1e2844-4de8-46c8-bcee-0f4ebbd28a88" />
+<img width="800" alt="pokebowl1" src="https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/ab1e2844-4de8-46c8-bcee-0f4ebbd28a88.webp" />
   <h1 style="font-size: 28px; margin: 10px 0;">PokéBowl©</h1>
   <p><em>A Pokémon-inspired, terminal-native RPG. Powered by Kerney's server, C++, and calories.</em></p>
 </div>

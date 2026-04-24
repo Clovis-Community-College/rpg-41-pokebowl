@@ -138,40 +138,50 @@ void Game::spawn_monster(bool is_boss) {
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)
 		return;
 
-	int type = rand() % 8;
-	Monster *m = nullptr;
-	switch (type) {
-	case 0:
-		m = new Alpha("Alpha", {x, y});
-		break;
-	case 1:
-		m = new Bravo("Bravo", {x, y});
-		break;
-	case 2:
-		m = new Charlie("Charlie", {x, y});
-		break;
-	case 3:
-		m = new Delta("Delta", {x, y});
-		break;
-	case 4:
-		m = new Echo("Echo", {x, y});
-		break;
-	case 5:
-		m = new Echo("Foxtrot", {x, y});
-		break;
-	case 6:
-		m = new Golf("Golf", {x, y});
-		break;
-	case 7:
-		m = new Hotel("Hotel", {x, y});
-		break;
-	default:
-		m = new Alpha("Alpha", {x, y});
-		break;
-	}
+	auto prob = [&]() -> float { 
+		float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		return (0.09 / rand_norm) - 0.09;
+	};
 
-	if (m)
-		roaming_monsters.push_back(m);
+	float herd = prob();
+
+	Monster *m = nullptr;
+
+	for (int i = 0; i < std::round(herd * 6); i++) {
+		int type = rand() % 8;
+		switch (type) {
+		case 0:
+			m = new Alpha("Alpha", {x, y});
+			break;
+		case 1:
+			m = new Bravo("Bravo", {x, y});
+			break;
+		case 2:
+			m = new Charlie("Charlie", {x, y});
+			break;
+		case 3:
+			m = new Delta("Delta", {x, y});
+			break;
+		case 4:
+			m = new Echo("Echo", {x, y});
+			break;
+		case 5:
+			m = new Echo("Foxtrot", {x, y});
+			break;
+		case 6:
+			m = new Golf("Golf", {x, y});
+			break;
+		case 7:
+			m = new Hotel("Hotel", {x, y});
+			break;
+		default:
+			m = new Alpha("Alpha", {x, y});
+			break;
+		}
+
+		if (m)
+			roaming_monsters.push_back(m);
+	}
 }
 
 void Game::snapshot_combat() {
@@ -236,15 +246,15 @@ void Game::handle_input(int ch) {
 				if ((*it)->pos().x == target_x && (*it)->pos().y == target_y) {
 					current_enemy = *it;
 					current_enemy_is_boss = current_enemy->is_boss();
-					roaming_monsters.erase(it);
+					*it = nullptr;
 					player_party.add_member(current_enemy);
 					state = GameState::COMBAT;
 					player_party.last_action.clear();
 					player_party.inator();
 					entered_combat = true;
-					break;
 				}
 			}
+			std::erase_if(roaming_monsters, [](const Actor* a){ return !a; });
 			if (!entered_combat && target_x >= 0 && target_y >= 0 &&
 				target_x < world.get_width() && target_y < world.get_height() &&
 				world.is_passable(target_x, target_y, *h_main)) {
@@ -254,7 +264,11 @@ void Game::handle_input(int ch) {
 				if (h_main->pos().x != old_pos.x ||
 					h_main->pos().y != old_pos.y) {
 					player_party.record_move(old_pos);
-					if (rand() % 20 == 0 && roaming_monsters.size() < 25) {
+					auto prob = [&]() -> float { 
+						float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+						return (0.09 / rand_norm) - 0.07;
+					};
+					if (prob() < 0.025 && roaming_monsters.size() < 25) {
 						spawn_monster(false);
 					}
 
@@ -1002,7 +1016,6 @@ void Game::render() {
 
 	} else if (state == GameState::COMBAT) {
 		mvprintw(2, max_x / 2 - 11, "=== BATTLE OVERVIEW ===");
-
 		int hero_y = 6;
 		for (size_t i = 0; i < player_party.bank.size(); ++i) {
 			if (player_party.bank[i] &&
@@ -1034,7 +1047,7 @@ void Game::render() {
 				monster_y += 2;
 			}
 		}
-
+//		player_party.last_action.clear();
 		if (!player_party.last_action.empty()) {
 			mvprintw(max_y / 2, 4, "> %s", player_party.last_action.c_str());
 		}
@@ -1045,6 +1058,8 @@ void Game::render() {
 			player_party.last_action.clear();
 		} else if (player_party.status == hero_wins) {
 			int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;
+			player_party.last_action.clear();
+			loot_start +=3;
 			mvprintw(loot_start, 4, "Victory! Loot collected:");
 			if (combat_loot.empty()) {
 				mvprintw(loot_start + 1, 6, "(no items)");
@@ -1064,9 +1079,11 @@ void Game::render() {
 			}
 			mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
 		} else if (player_party.status == monster_wins) {
+			player_party.last_action.clear();
 			mvprintw(max_y - 4, 4,
 					 "Monsters win... Press 'SPACE' to return to map.");
 		} else if (player_party.status == cycle_ends) {
+			player_party.last_action.clear();
 			mvprintw(max_y - 4, 4,
 					 "Turns expired. Press 'SPACE' to return to map.");
 		}

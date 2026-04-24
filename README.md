@@ -64,7 +64,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 
 #### Consistency of work
 - `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#game-state-at-week-1) — *Tony*
-- `🚧` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#commit-log) — *Tony*
+- `✅` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#commit-log) — *Tony*
  
 ### Individual
  
@@ -111,12 +111,25 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `🚧` Quest system (quest 3 incomplete)
 - `✅` Hash table implemented and used as part of the system
 
-## Screenshots
+## Screenshots/snapshots
 
 ### Commit log
+> [!NOTE]
+> These are all **permalinks**.
 
-![w1 log](https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/Screenshot_20260412_000553_Termux.png)
-<em>Week 1 commit log</em>
+> [!NOTE]
+> - `Forzalab` == `ho_1041841` == Tony
+> - `ScytheSlayin` == `??` == Dillion
+> - `mediumsomething` == `laura_1002948` == George
+> - `robles_0965625` == Jovanni
+> - `MckaySea` == `McKay Seamons` == McKay
+
+##### Week 1
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week1.txt#L1-L93
+##### Week 2
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week2.txt#L1-L128
+##### Week 3
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week3.txt#L1-L144
 
 ### Game state at week 1
 

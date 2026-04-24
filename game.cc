@@ -187,8 +187,8 @@ void Game::spawn_monster(bool is_boss) {
 void Game::snapshot_combat() {
 	def_prog_mode();
 	endwin();
+	system("clear");
 	player_party.turn_order.output_bridges();
-
 	std::cout << "\nPress ENTER to return to combat\n";
 	std::cin.get();
 
@@ -1054,7 +1054,7 @@ void Game::render() {
 
 		if (player_party.status == init || player_party.status == ongoing) {
 			mvprintw(max_y - 4, 4,
-					 "Press 'SPACE' to next turn, or 'r' to Run.");
+					 "Press 'SPACE' to next turn, 'b' to visualize in BRIDGES, or 'r' to Run.");
 			player_party.last_action.clear();
 		} else if (player_party.status == hero_wins) {
 			int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;

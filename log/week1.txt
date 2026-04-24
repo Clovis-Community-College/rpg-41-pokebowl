@@ -1,0 +1,93 @@
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 laura_1002948: tests on bridges circular list elements
+2026-04-12 ??: ncurses approach to draw weather icons
+2026-04-12 laura_1002948: Circular list head pointer for bridges
+2026-04-12 laura_1002948: Size updates on insert
+2026-04-12 laura_1002948: added Bridges visualize function
+2026-04-12 laura_1002948: added insert function for circular linked list
+2026-04-12 ??: updated weather to display on player
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Delete Screenshot_20260411_192807_Termux.png
+2026-04-12 Forzalab: Add files via upload
+2026-04-12 laura_1002948: Bridges project setup
+2026-04-12 laura_1002948: new CLL list for combat and bridges visualization
+2026-04-12 McKay Seamons: moved lake closer to town for screenshot purposes
+2026-04-12 Forzalab: Delete Screenshot_20260411_193922_Termux.png
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Add files via upload
+2026-04-11 robles_0965625: Finished class builds for inventory and items, still need to work on implementing
+2026-04-11 ho_1041841: feat: type()
+2026-04-11 ho_1041841: feat: cmt forbPatty
+2026-04-11 Forzalab: Update README.md
+2026-04-11 Forzalab: Update README.md
+2026-04-11 Forzalab: Update README.md
+2026-04-11 Forzalab: Add files via upload
+2026-04-11 Forzalab: Update README.md
+2026-04-11 Forzalab: Update README.md
+2026-04-11 ho_1041841: chore: traits for Monsters
+2026-04-11 ho_1041841: chore: stats fill-in for heroes
+2026-04-11 Forzalab: Update party.h
+2026-04-11 ho_1041841: fix: add incl guard shit i forgo
+2026-04-11 McKay Seamons: refactored code to be cleaner
+2026-04-11 McKay Seamons: clarification
+2026-04-11 ho_1041841: feat: barebone party.h
+2026-04-11 McKay Seamons: added collisions, fixed some errors in items/pokeitems, system in place for sstarting monster fights too
+2026-04-11 ho_1041841: feat: basic traits for Bet Gimel
+2026-04-11 ho_1041841: chore: re-open main.cc
+2026-04-11 ho_1041841: feat: basic traits for Bet Gimel
+2026-04-11 ho_1041841: chore: re-open main.cc
+2026-04-11 ho_1041841: feat: add heal() for funsies
+2026-04-11 Forzalab: Update README.md
+2026-04-11 ho_1041841: feat: getter attack_damage() for combat guy
+2026-04-11 ho_1041841: fix: wall immutability logic
+2026-04-11 ho_1041841: feat: add is_dead()
+2026-04-11 ho_1041841: fix: rule of five guys
+2026-04-11 ho_1041841: fix: reinterface starting_speed
+2026-04-11 ho_1041841: fix: optional cstor hell
+2026-04-11 ho_1041841: chore: [NOT WORKING] param swapping
+2026-04-11 ho_1041841: fix: virtual dstor
+2026-04-11 ho_1041841: fix: vritual dstor
+2026-04-11 ??: cycle based weather system
+2026-04-11 ??: cycle based weather system - wip
+2026-04-11 ??: added weather.h and weather.cc
+2026-04-10 McKay Seamons: added dynamic world map with a town, lake, and tracking as the hero moves, made the grid enviroment 200x200.. we dynamically change worldview depending on terminalk size now too
+2026-04-10 McKay Seamons: integrated actor movement logic and added colored  ncurses rendering
+2026-04-10 McKay Seamons: initalized raw full screen ncurses, i added -lncurses to makefile, setup ncurses in main.cc
+2026-04-09 robles_0965625: Created item and inventory files. Need to finish up inventory.cc
+2026-04-09 laura_1002948: updated to starting_speed and added check_speed() method
+2026-04-09 ho_1041841: feat: attack points
+2026-04-09 ho_1041841: feat: cmt for Snorlax and more stuff
+2026-04-09 laura_1002948: reset_speed() method added
+2026-04-09 laura_1002948: seeded rand() for d20 rolls
+2026-04-09 laura_1002948: speed() update with actor->start_speed()
+2026-04-09 ho_1041841: fix: clarify cmt in llbridges
+2026-04-09 ho_1041841: feat, fix: start_speed for llbridges class, const-ify member var, and that's it really
+2026-04-09 ho_1041841: fix: optional param not taken in when calling Hero()
+2026-04-09 ho_1041841: feat: damage modulator for Actor
+2026-04-09 ho_1041841: fix: float round and HP_MAX removal
+2026-04-09 ho_1041841: feat, chore: Aleph (appearing name tbd), cstor hell, clean-ups, ???
+2026-04-09 Forzalab: Update llbridges.h
+2026-04-09 ho_1041841: feat: add is_boss trait
+2026-04-09 Forzalab: docs: fix spelling and clarify
+2026-04-09 ho_1041841: fix: vtable hell
+2026-04-08 ho_1041841: feat, fix: add H&M subclasses scaffold, clarify get-set
+2026-04-08 ho_1041841: fix: cstor, and cstor sharing. tbd: virtual fill-in
+2026-04-08 ho_1041841: feat: populate basic impl of Actor class
+2026-04-08 ho_1041841: fix: own-an-obj to inheritance
+2026-04-07 ho_1041841: feat: forward-declare speed for hero and monster
+2026-04-07 ho_1041841: fix: compiler whine about pseudo code
+2026-04-07 Forzalab: Update README.md
+2026-04-07 Forzalab: Update README.md
+2026-04-07 Forzalab: Update README.md
+2026-04-07 Forzalab: fix: Update README.md
+2026-04-07 Forzalab: fix: Update README.md
+2026-04-07 ho_1041841: feat: README stubs
+2026-04-07 ho_1041841: feat: .gitignore
+2026-04-07 ho_1041841: feat, fix: hide Makefile cmd line + add prompt to run a.out
+2026-04-07 ho_1041841: feat: add Makefile
+2026-04-07 ho_1041841: (NOT WORKING) feat: Actor.h embryo
+2026-04-06 ho_1041841: Init
+2026-04-06 github-classroom[bot]: add deadline

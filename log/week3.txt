@@ -1,0 +1,144 @@
+2026-04-24 ho_1041841: feat: splash screen
+2026-04-24 Forzalab: Update README.md
+2026-04-24 Forzalab: Update README.md
+2026-04-24 Forzalab: Update README.md
+2026-04-24 Forzalab: Update README.md
+2026-04-24 Forzalab: Update README.md
+2026-04-24 ho_1041841: feat, fix: prob fucntion for monster spawn, Hotel (and Golf, omitted) added functionality
+2026-04-24 ho_1041841: feat: Charlie random armor break+ meme random stroke
+2026-04-24 ho_1041841: feat: alpha monster can buff itself now
+2026-04-24 ho_1041841: fix: naming inconsistency
+2026-04-24 ho_1041841: feat: Dalet steals hp
+2026-04-24 ho_1041841: fix: buff read logic err
+2026-04-24 ho_1041841: feat: zayin debuff
+2026-04-24 ho_1041841: feat: Chet spread dma to 2nd monster
+2026-04-24 ho_1041841: feat, fix: Bet scale dmg based on health, and fix He reviving logic
+2026-04-24 ho_1041841: feat: Vav double damage + He resurrect hero
+2026-04-24 ho_1041841: fix: foxtrot limit, and boost heroes
+2026-04-24 Forzalab: Update README.md
+2026-04-24 ho_1041841: feat, fix: ascii end when monster win, exit flow, more stuff and fixes
+2026-04-24 ho_1041841: fix: 1 hero 1 monster -> win screen bug
+2026-04-24 ho_1041841: fix: let last_action be modifiable in hitlist class
+2026-04-24 ho_1041841: fix: random mechanism for spawn_monster, text formatting
+2026-04-23 ho_1041841: fix: minor
+2026-04-23 ho_1041841: fix: null check and char -> short
+2026-04-23 ho_1041841: feat: add hitlist.h msising file
+2026-04-23 ho_1041841: chore: refactor one_more_time() to use hitlist
+2026-04-23 mediumsomething: another small update to the cover art
+2026-04-23 ho_1041841: feat: Gimel heal the weakest
+2026-04-23 mediumsomething: small cover art update
+2026-04-23 mediumsomething: Readded BRIDGES UI tip
+2026-04-23 mediumsomething: BRIDGES combat gif added
+2026-04-23 ho_1041841: feat: wiring up hitlist class
+2026-04-23 mediumsomething: Finished cover art added
+2026-04-23 ho_1041841: fix {pending, forward declare hell}
+2026-04-23 laura_1002948: Bridges command prompt on combat
+2026-04-23 ho_1041841: chore: wire up special()
+2026-04-23 mediumsomething: Cover Art update
+2026-04-23 Forzalab: Update README.md
+2026-04-23 Forzalab: Update README.md
+2026-04-23 ho_1041841: feat: inception of randomized monster bunches
+2026-04-23 MckaySea: added merchant logic and merchant ui
+2026-04-23 ho_1041841: feat: random bunch of monster
+2026-04-23 ho_1041841: chore: add warning for makefiel
+2026-04-23 ho_1041841: perf: miselaneous stuff
+2026-04-23 Forzalab: Update README.md
+2026-04-23 ho_1041841: fix: win/lsoe check using coutner invariant
+2026-04-23 ho_1041841: feat: no duplicate heroes
+2026-04-23 ho_1041841: fix: random heroes rendering freeze, my lord its glorious
+2026-04-23 Forzalab: Update README.md
+2026-04-23 ho_1041841: feat: randomized heroes. also 5 heroes now
+2026-04-22 ho_1041841: fix: heap use after free after 3 4th mknster encounter
+2026-04-22 ho_1041841: fix: 1 g1v3 up
+2026-04-22 ho_1041841: fix: progressmakemake!
+2026-04-22 laura_1002948: Changes to node visuals
+2026-04-22 ho_1041841: stubborn bug pt2
+2026-04-22 ho_1041841: test code RESCIND THIS CONMIT B4 MERGE MAIN
+2026-04-22 ho_1041841: fix: tie condition?
+2026-04-22 ho_1041841: fix: add win lose cond
+2026-04-22 mediumsomething: Updated my progress for BRIDGEngineer
+2026-04-22 mediumsomething: Added Bridges combat screenshot
+2026-04-22 laura_1002948: Removed test function
+2026-04-22 laura_1002948: Bridges snapshot command fix
+2026-04-22 laura_1002948: Arrow color change
+2026-04-22 laura_1002948: Bridges snapshot command added
+2026-04-22 ho_1041841: fix: dewonkify the one_more_time logic
+2026-04-22 ho_1041841: feat: attack() returns damage delta of opponent
+2026-04-20 MckaySea: added inn/new zone in town, when players walk on the I they get teleported to the inn where they can heal their party up
+2026-04-20 MckaySea: Added combat and fixed combat use-after-free crashes, added combat log with per-turn damage display, implemented loot collection and weighted item rarity drops, madee equipped items boost hero stats, and added quest item drops with a completion popup, and much more
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 ??: added eye to quests
+2026-04-20 ??: fixed logic , no flciker on weather.draw()
+2026-04-20 ??: fixed weather system (needs tweaks)
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 robles_0965625: fixed item type string in game.cc, we just need a merchant state do do operations, UI, etc for game.cc
+2026-04-19 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 robles_0965625: Made random inventory generate every merchant interaction
+2026-04-22 mediumsomething: Updated my progress for BRIDGEngineer
+2026-04-22 mediumsomething: Added Bridges combat screenshot
+2026-04-22 laura_1002948: Removed test function
+2026-04-22 laura_1002948: Bridges snapshot command fix
+2026-04-22 laura_1002948: Arrow color change
+2026-04-22 laura_1002948: Bridges snapshot command added
+2026-04-21 mediumsomething: Bridges Temp Screenshot
+2026-04-21 ScytheSlayin: added music to readme
+2026-04-20 MckaySea: added inn/new zone in town, when players walk on the I they get teleported to the inn where they can heal their party up
+2026-04-20 ho_1041841: fix: stale cmt
+2026-04-20 MckaySea: Added combat and fixed combat use-after-free crashes, added combat log with per-turn damage display, implemented loot collection and weighted item rarity drops, madee equipped items boost hero stats, and added quest item drops with a completion popup, and much more
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 ??: slight weather tweak
+2026-04-20 Forzalab: Update README.md
+2026-04-20 ??: added eye to quests
+2026-04-20 ??: fixed logic , no flciker on weather.draw()
+2026-04-20 ??: fixed weather system (needs tweaks)
+2026-04-20 robles_0965625: fixed item type string in game.cc, we just need a merchant state do do operations, UI, etc for game.cc
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 robles_0965625: Made random inventory generate every merchant interaction
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Delete libs/include directory
+2026-04-19 robles_0965625: Fixed leak, needed = operator)
+2026-04-19 ho_1041841: index on spauly: 54c4f4d feat: add inator() calls ite for game mockup
+2026-04-19 Forzalab: Delete libs/include directory
+2026-04-19 Forzalab: Update README.md
+2026-04-19 laura_1002948: Destructor added to prevent memory leaks
+2026-04-19 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 ho_1041841: feat: add inator() calls ite for game mockup
+2026-04-19 ho_1041841: feat: boss key and boss add
+2026-04-19 robles_0965625: Simple error fix
+2026-04-19 robles_0965625: Updated buy and sell to deal with  merchant inventory
+2026-04-19 ho_1041841: feat: monster rand loot
+2026-04-19 ho_1041841: feat: integrate BRIDGES into Makefile an ddynamic download
+2026-04-19 robles_0965625: Simple error fix
+2026-04-19 robles_0965625: Updated buy and sell to deal with  merchant inventory
+2026-04-19 laura_1002948: Bridges support for list_delete()
+2026-04-19 laura_1002948: Bridges support for current()
+2026-04-19 laura_1002948: Bridges support for list_insert()

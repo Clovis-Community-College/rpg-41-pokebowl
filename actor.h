@@ -53,7 +53,7 @@ struct Traits {
 	WeatherScale weather_scale_damage;
 
 	// Hurt scale/modulator.
-	// 1 correspond 100% of hp_delta, 0.5 is 50% of hp_delta and so on.
+	// 1 correspond 100% of hp_delta APPLIED, 0.5 is 50% of hp_delta applied and so on.
 	// Defaults to 1
 	// In "defense" terms: 1/ids = defense pts.
 	InversedDefenseScale hurt_scale;
@@ -126,10 +126,13 @@ public:
 	decltype(_traits.starting_speed) starting_speed() const;
 	decltype(_traits.attack_damage) attack_damage() const;
 	decltype(_traits.hp_max) hp_max() const;
-
-	// set weather scale
+	decltype(_traits.hurt_scale) hurt_scale() const;
 	decltype(_traits.weather_scale_damage) weather_scale_damage() const;
+
+	// set for traits
 	void weather_scale_damage(WeatherScale wsd);
+	void hurt_scale(decltype(_traits.hurt_scale) hs);
+	void attack_damage(decltype(_traits.attack_damage) ad);
 
 	bool is_dead() const;
 	bool is_self_with(const Actor *other) const;

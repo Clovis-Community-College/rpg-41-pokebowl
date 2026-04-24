@@ -54,6 +54,9 @@ decltype(Actor::_traits.weather_scale_damage)
 Actor::weather_scale_damage() const {
 	return _traits.weather_scale_damage;
 }
+decltype(Actor::_traits.hurt_scale) Actor::hurt_scale() const {
+	return _traits.hurt_scale;
+}
 
 bool Actor::is_dead() const { return (_hp <= 0); }
 
@@ -68,6 +71,14 @@ void Actor::pos(XY _pos_) { _pos = _pos_; }
 
 void Actor::weather_scale_damage(WeatherScale wsd) {
 	_traits.weather_scale_damage = wsd;
+}
+
+void Actor::attack_damage(decltype(Actor::_traits.attack_damage) ad) {
+	_traits.attack_damage = ad;
+}
+
+void Actor::hurt_scale(decltype(Actor::_traits.hurt_scale) hs) {
+	_traits.hurt_scale = hs;
 }
 
 void Actor::hp(HP hp_delta, float external_scale,
@@ -417,7 +428,7 @@ void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string&
 	// do damage
 	// 1 - health delta
 	HP dmg = this->attack(opponent);
-	dmg = this->attack(opponent); // double attack
+	dmg += this->attack(opponent); // double attack
 	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
 
 	// 3 - dead or living?
@@ -428,7 +439,39 @@ void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string&
 
 }
 
-void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// debuff enemy 12.5%
+	// find a RANDOM enemy to debuff
+	auto it = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		int random = rand() % 8;
+		if (!a) return false;
+		else return (!a->is_dead() && a->type() == "monster" && random == 0); 
+	});
+
+	if (it == bank.end()) return;
+
+	Actor* opponent = *it;
+
+	int random = rand() % 2;
+
+	// decrease defense by 10%, OR decrease attk damage by 15%
+	if (random) opponent->hurt_scale(hurt_scale() * 1.1);
+	else opponent->attack_damage(attack_damage() * 0.85f);
+
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + "has debuffed " + opponent->name() + "! " + opponent->name() + "'s";
+
+	string scale;
+
+	if (random) {
+		scale = std::format("${:.2f}", hurt_scale());
+		last_action += "defense is only " + scale + "x as strong!";
+	}
+	else
+		last_action += "attack is 15% weaker than before!";
+
+	last_action += "\n\t\t\t\t";
+}
+
 void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	// find opponent in bank
 	auto it_ = std::find_if(bank.begin(), bank.end(), [exclude](const Actor* a){ 

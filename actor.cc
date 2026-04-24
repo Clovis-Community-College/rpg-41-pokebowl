@@ -228,7 +228,42 @@ ActorType Drop::type() const { return "drop"; }
 
 // template method not useless
 // prevention - in case actor subgroup can be refactored
-void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { subclass_special(bank, hitlist, exclude, last_action); }
+void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { 
+	subclass_special(bank, hitlist, exclude, last_action);
+	int random = rand() % 20; // super rare
+	
+	if (random) return;
+	
+	random = rand() % 6;
+	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " ";
+	switch (random) {
+		case 0:
+		    last_action += "saw Mencarelli worshipping Tralalelo Tralala, suffered immediate pump failure, and unalived itself.";
+		    break;
+		case 1:
+		    last_action += "witnessed Ting Tung Tung Sahur's poster inside Guzman's bedroom, heart flatlined, and disconnected.";
+		    break;
+		case 2:
+		    last_action += "checked the 2026 inflation rates, had a stroke and die.";
+		    break;
+		case 3:
+		    last_action += "saw Claude Mythos start a family with 20 Olympic pools, then decided to logged off.";
+		    break;
+		case 4:
+		    last_action += "saw the electricity bill for your 5090 Ti, bought 5 more for you, then joined the void.";
+		    break;
+		case 5:
+		    last_action += "watched Kerney rambling in-class with Minecraft parkour overlay, brain short-circuited, and alt-f4'd.";
+		    break;
+		default:
+		   last_action += "unalived itself. (also hi Rosas, i see u have /homework/ on VSCode!)";
+		    break;
+	}
+
+	last_action += "\n";
+
+	hitlist.shove(this, this, hp(), this->type(), this->name(), last_action);
+}
 
 bool NonWall::_subclass_good_to_attack(Actor *opponent) const {
 	// no attack of same type - can be overriden
@@ -316,7 +351,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
@@ -380,7 +415,21 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 		   is_hero; // logically always true, but semantically makes sense
 }
 
-void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	HP cure_hp = round(attack_damage() * hurt_scale());
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " stole " +
+				   std::to_string(cure_hp) + " HP from " + exclude->name() + " to itself!";
+
+	last_action += ". \n\t\t\t\t" + this->name() + " now has " +
+				   std::to_string(this->hp()) + " HP.\n";
+}
+
+void Dalet::_post_attack(Actor* opponent) {
+	// lifesteal. ignore wetaher condition.
+	HP cure_hp = round(attack_damage() * hurt_scale());
+	cure_damage(cure_hp);
+}
+
 void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	// ressurect
 	// find ded ally
@@ -429,13 +478,13 @@ void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string&
 	// 1 - health delta
 	HP dmg = this->attack(opponent);
 	dmg += this->attack(opponent); // double attack
-	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt double attack! Dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name() + ".\n\t\t\t\t";
 
 	// 3 - dead or living?
 	if (opponent->is_dead())
 		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
 	else
-		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+		last_action += opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
 
 }
 
@@ -455,15 +504,15 @@ void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	int random = rand() % 2;
 
 	// decrease defense by 10%, OR decrease attk damage by 15%
-	if (random) opponent->hurt_scale(hurt_scale() * 1.1);
-	else opponent->attack_damage(attack_damage() * 0.85f);
+	if (random) opponent->hurt_scale(opponent->hurt_scale() * 1.1);
+	else opponent->attack_damage(opponent->attack_damage() * 0.85f);
 
 	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + "has debuffed " + opponent->name() + "! " + opponent->name() + "'s";
 
 	string scale;
 
 	if (random) {
-		scale = std::format("${:.2f}", hurt_scale());
+		scale = std::format("${:.2f}", opponent->hurt_scale());
 		last_action += "defense is only " + scale + "x as strong!";
 	}
 	else
@@ -570,7 +619,29 @@ Hotel::Hotel(string _name_, XY _pos_)
 	// Persian
 }
 
-void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// ape together strong
+	// count mobstera
+	char count = std::count_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return (a->is_dead() && a->type() == "monster"); 
+	});
+
+	// boost damge. due to logic, will apply to NEXT turn.
+	// only activates when its ALPHA turn.
+	decltype(attack_damage()) oad = attack_damage();
+
+	// only boost when 3+ monsters
+	if (count < 3) {
+		attack_damage((float)oad / 3.0f);
+		return;
+	}
+
+	attack_damage((float)oad * 3.0f);
+
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " triple-buffed attack! ";
+}
+
 void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	// find min opponent to heal
 	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
@@ -603,11 +674,41 @@ void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
 				   std::to_string((*it)->hp()) + " HP.\n";
 
+}
+
+void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	int random = rand() % 16; // super rare
+	if (random) return;
+	hurt_scale(1); // break armor
+	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " lost armor!";
+}
+
+void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	int random = rand() % 125;
+	if (!random) return;
+	cure_damage(random);
+}
+
+void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	if (!exclude) return;
+	if (exclude->is_dead()) return;
+
+	Actor*& opponent = exclude;
+
+	// do damage
+	// 1 - health delta
+	HP dmg = this->attack(opponent);
+	dmg += this->attack(opponent); // double attack
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt a double attack! Dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
+
+	// 3 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
+	else
+		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
 
 }
-void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+
 void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	for (Actor *opponent : bank) {
 		// workin with ptrs here
@@ -619,7 +720,7 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name();
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg pts to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
@@ -629,5 +730,27 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 						   std::to_string(opponent->hp()) + " HP left.\n\n";
 	}
 }
+
 void Golf::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Hotel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+
+void Hotel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	if (!exclude) return;
+	if (exclude->is_dead() || exclude->hp() >= (0.4 * exclude->hp_max())) return;
+
+	Actor*& opponent = exclude;
+
+	// do damage
+	// 1 - health delta
+	decltype(attack_damage()) oad = attack_damage();
+	attack_damage(oad * 0.3);
+
+	HP dmg = this->attack(opponent);
+	last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " bullied " + opponent->name() +  "! Dealt extra " + std::to_string(dmg) + " dmg pts to " + opponent->name();
+	attack_damage(oad);
+
+	// 3 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
+	else
+		last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
+}

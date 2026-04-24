@@ -77,11 +77,6 @@ void Party::post_mortem(Actor *actor, bool gen_drop = true) {
 	add_member(
 		drop); // vector pushback != rendering !!!!!! latter UNimplemented?
 
-	last_action += "\n";
-	last_action += (actor->type() == "monster") ? " - DEFEATED!" : "";
-	last_action +=
-		(actor->type() == "hero") ? (actor->name() + " is down...") : "";
-
 	dead_count++;
 }
 
@@ -212,7 +207,7 @@ void Party::one_more_time() {
 
 	// 2 - dead or living?
 	if (opponent->is_dead())
-		hitlist.shove(actor, opponent, o_dmg);
+		hitlist.shove(actor, opponent, o_dmg, opponent->type(), opponent->name(), last_action);
 	else 
 		last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n";
 		

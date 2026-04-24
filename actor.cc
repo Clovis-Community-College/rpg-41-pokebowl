@@ -307,9 +307,9 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			hitlist.shove(this, opponent, dmg);
+			hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
 		else
-			last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n";
+			last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n\n";
 
 	}
 }
@@ -345,7 +345,7 @@ void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 				   std::to_string(dmg) + " HP to " + (*it)->name();
 
 	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
-				   std::to_string((*it)->hp()) + " HP.";
+				   std::to_string((*it)->hp()) + " HP.\n";
 
 }
 
@@ -442,10 +442,10 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
-			hitlist.shove(this, opponent, dmg);
+			hitlist.shove(this, opponent, dmg, opponent->type(), opponent->name(), last_action);
 		else
 			last_action += ". \n\t\t\t\t" + opponent->name() + " has " +
-						   std::to_string(opponent->hp()) + " HP left.";
+						   std::to_string(opponent->hp()) + " HP left.\n\n";
 	}
 }
 void Golf::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}

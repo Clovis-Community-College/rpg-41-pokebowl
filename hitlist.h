@@ -15,7 +15,11 @@ class Hitlist {
 	using Bank = std::deque<Who>;
 	Bank _zyklon{};
 public:
-	void shove(Actor* executor, Actor* victim, short dmg) {
+	void shove(Actor* executor, Actor* victim, short dmg, string victim_type, string victim_name, string& last_action) {
+		last_action += "\n\t\t\t";
+		last_action += (victim_type == "monster") ? " - DEFEATED!" : "";
+		last_action += (victim_type == "hero") ? (victim_name + " is down...") : "";	
+		last_action += "\n\n";
 		Who who = {executor, victim, dmg};
 		_zyklon.push_back(who);
 	}

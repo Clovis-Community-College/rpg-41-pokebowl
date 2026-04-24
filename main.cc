@@ -1,7 +1,10 @@
 #include "game.h"
 
 int main() {
-    Game g;
-    g.run();
-    return 0;
+//	cout << "pls make clean everything, makefile updated!";
+
+	srand(time(NULL));
+	Game g;
+	g.run();
+	return 0;
 }

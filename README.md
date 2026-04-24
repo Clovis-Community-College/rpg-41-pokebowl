@@ -19,7 +19,6 @@
 </p>
 </div>
 
-
 > *Nintendo, please don't sue us. Go sue Kerney for greenlitting the idea of "PokeBowl" instead.*
 
 ## What's this game about?
@@ -39,6 +38,11 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 | `i` | Open inventory |
 | `e` | Open equipment table |
 | `q` | Quit game |
+
+### 🎶 Music
+PokéPlayers, enjoy our one and only **custom-made theme song**!
+
+[![🎶 PokéBowl theme music](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DUc0DoiE9-hQ)](https://www.youtube.com/watch?v=Uc0DoiE9-hQ)
 
 ## Checklist, 1 2 3
  
@@ -176,6 +180,6 @@ classDiagram
 
 #### Code snippet snapshots (scrollable)
 
-https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.h#L1-L334
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/fd7d663ba1c1438278978bee77c4ccb368df05b5/actor.h#L1-L333
 
-https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6236090369d2f0ee958df19724e527a4e8da4ed1/actor.cc#L1-L326
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/75d291e5ec1c21728fb204fb634450ebc78f4722/actor.cc#L1-L350

@@ -1,5 +1,5 @@
-BRIDGES = -Ilibs/include
-CCFLAGS = $(BRIDGES) -lncurses -lcurl -Wno-sign-compare -fsanitize=undefined -fsanitize=address -std=c++26 -O3 -w
+LIBS = -Ilibs/include -lncurses -lcurl 
+CCFLAGS = -Wno-sign-compare -std=c++26 -O3 -w
 SRCS := $(filter-out $(wildcard _*.cc), $(wildcard *.cc))
 OBJS = $(SRCS:.cc=.o)
 DEPS = $(OBJS:.o=.d)
@@ -28,7 +28,7 @@ a.out: $(OBJS) | libs
 	@echo
 
 	@ # Equivalent to: g++ {flags} a.o b.o ... -o a.out
-	@g++ $(CCFLAGS) $(OBJS) -o $@
+	@g++ $(CCFLAGS) $(OBJS) -o $@ $(LIBS)
 
 	@echo -ne "$(CLEAR_LINE)"
 
@@ -56,7 +56,7 @@ a.out: $(OBJS) | libs
 	@ #
 	
 	@echo -ne "Compiling '$<'...\n"
-	@g++ $(CCFLAGS) -MMD -MP -c $< -o $@
+	@g++ $(CCFLAGS) -MMD -MP -c $< -o $@ $(LIBS)
 
 	@echo -ne "$(MOVE_UP)$(CLEAR_LINE)"
 

@@ -256,17 +256,17 @@ Aleph::Aleph(string _name_, XY _pos_)
 }
 
 Bet::Bet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 100, Traits(200, 1.75, 8, 100, 1)) {
+	: Hero(_name_, _pos_, 530, Traits(200, 1.75, 8, 500, 1)) {
 	// glass cannon
 }
 
 Gimel::Gimel(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 200, Traits(60, 1, 19, 200, 1)) {
+	: Hero(_name_, _pos_, 400, Traits(60, 1, 19, 400, 1)) {
 	// speedster - but "speed"-first not speed-first
 }
 
 Dalet::Dalet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 400, Traits(20, 0.75, 10, 400, 1)) {
+	: Hero(_name_, _pos_, 800, Traits(20, 0.75, 10, 800, 1)) {
 	// tbd: healer
 }
 
@@ -276,19 +276,19 @@ He::He(string _name_, XY _pos_)
 }
 
 Vav::Vav(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 250, Traits(150, 1.3, 12, 250, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(170, 1.3, 12, 250, 1)) {
 	// berserker
 	// with great attack comes great fragility
 }
 
 Zayin::Zayin(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 750, Traits(20, 0.4, 3, 750, 1)) {
+	: Hero(_name_, _pos_, 1000, Traits(20, 0.4, 3, 1000, 1)) {
 	// Shuckle
 	// movable wall basically
 }
 
 Chet::Chet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 180, Traits(180, 1.2, 16, 180, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(180, 1.2, 16, 250, 1)) {
 	// Assasin
 }
 
@@ -316,7 +316,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
-	// find min opponent to heal
+	// find min ally to heal
 	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
 		if (!a) return false;
 		else return (!a->is_dead() && a->type() == "hero"); 
@@ -358,7 +358,28 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 }
 
 void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void He::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// ressurect
+	// find ded ally
+	auto it = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return a->is_dead(); 
+	});
+
+	if (it == bank.end()) return;
+
+	// do damage
+	// 1 - health delta
+	HP dmg = round(0.25 * (float)(*it)->hp_max());
+
+	if (dmg <= 0) return;
+	(*it)->cure_damage(dmg);
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " revived " + (*it)->name();
+
+	last_action += " \n\t\t\t\t" + (*it)->name() + " now has " +
+				   std::to_string((*it)->hp()) + " HP.\n";
+
+}
 void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
@@ -408,7 +429,7 @@ Echo::Echo(string _name_, XY _pos_)
 }
 
 Foxtrot::Foxtrot(string _name_, XY _pos_)
-	: Monster(_name_, _pos_, 1500, Traits(200, 0.5, 14, 3000, 1)) {
+	: Monster(_name_, _pos_, 1500, Traits(150, 0.5, 14, 2500, 1)) {
 	// BOSS - mewtwo
 }
 
@@ -423,7 +444,40 @@ Hotel::Hotel(string _name_, XY _pos_)
 }
 
 void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// find min opponent to heal
+	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return (!a->is_dead() && a->type() == "monster"); 
+	});
+
+	auto it = std::min_element(it_, bank.end(), [exclude](const Actor* a, const Actor* b){
+                // workin with ptrs here
+                if (!a || !b) return false;
+                bool b0 = a != exclude && b != exclude;
+                bool b1 = (a->type() == "monster") && (b->type() == "monster");
+                bool b2 = (a->hp()) < (b->hp());
+		bool b3 = !a->is_dead() && !b->is_dead();
+		return b0 && b1 && b2 && b3;
+        });
+
+	if (it == bank.end()) return;
+
+	// do damage
+	// 1 - health delta
+	float heal_scale = log(20.0 / (((float)(*it)->hp() / (float)(*it)->hp_max()) + 2) - 6.25);
+	HP dmg = round(std::clamp(heal_scale, 0.0f, 1.0f) * (*it)->hp_max());
+
+	if (dmg <= 0) return;
+	(*it)->cure_damage(dmg);
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " boosted " +
+				   std::to_string(dmg) + " HP to " + (*it)->name();
+
+	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
+				   std::to_string((*it)->hp()) + " HP.\n";
+
+
+}
 void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}

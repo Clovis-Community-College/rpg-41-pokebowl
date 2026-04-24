@@ -1,0 +1,128 @@
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-20 ??: slight weather tweak
+2026-04-20 Forzalab: Update README.md
+2026-04-20 ??: added eye to quests
+2026-04-20 ??: fixed logic , no flciker on weather.draw()
+2026-04-20 ??: fixed weather system (needs tweaks)
+2026-04-20 robles_0965625: fixed item type string in game.cc, we just need a merchant state do do operations, UI, etc for game.cc
+2026-04-20 Forzalab: Update README.md
+2026-04-20 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 robles_0965625: Made random inventory generate every merchant interaction
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Update .gitignore
+2026-04-19 Forzalab: Delete libs/include directory
+2026-04-19 robles_0965625: Fixed leak, needed = operator)
+2026-04-19 ho_1041841: index on spauly: 54c4f4d feat: add inator() calls ite for game mockup
+2026-04-19 Forzalab: Delete libs/include directory
+2026-04-19 Forzalab: Update README.md
+2026-04-19 laura_1002948: Destructor added to prevent memory leaks
+2026-04-19 Forzalab: Update README.md
+2026-04-19 Forzalab: Update README.md
+2026-04-19 ho_1041841: feat: add inator() calls ite for game mockup
+2026-04-19 ho_1041841: feat: boss key and boss add
+2026-04-19 robles_0965625: Simple error fix
+2026-04-19 robles_0965625: Updated buy and sell to deal with  merchant inventory
+2026-04-19 ho_1041841: feat: monster rand loot
+2026-04-19 ho_1041841: feat: integrate BRIDGES into Makefile an ddynamic download
+2026-04-19 robles_0965625: Simple error fix
+2026-04-19 robles_0965625: Updated buy and sell to deal with  merchant inventory
+2026-04-19 laura_1002948: Bridges support for list_delete()
+2026-04-19 laura_1002948: Bridges support for current()
+2026-04-19 laura_1002948: Bridges support for list_insert()
+2026-04-19 ho_1041841: fix: clean-up render skeleton + cmt clean
+2026-04-19 ho_1041841: feat: win/lose dectection
+2026-04-19 ho_1041841: fix: speed fill and Game dstor rework
+2026-04-19 ho_1041841: fix: null deref and double delete fix
+2026-04-19 ??: hashmap implementation for quest system
+2026-04-19 ho_1041841: feat: attack-y
+2026-04-19 laura_1002948: Edits to node behavior
+2026-04-19 ho_1041841: fix: dupl insertion
+2026-04-19 ho_1041841: feat: drop stuff on kill()
+2026-04-18 ho_1041841: feat: primitive kill()
+2026-04-18 laura_1002948: changes to list_insert()
+2026-04-18 laura_1002948: return statement on output_bridges()
+2026-04-18 laura_1002948: added mark_pointy() for bridges visualization
+2026-04-18 laura_1002948: CircDLelement objects initialized with string
+2026-04-18 ho_1041841: fix: workaround for no cpy ctor
+2026-04-18 robles_0965625: FInished items to be generated
+2026-04-18 ho_1041841: chore: bug fixes and formalize inator and loop
+2026-04-18 ho_1041841: fix: compiler err post-merge
+2026-04-18 ho_1041841: fix: lambda logic fix
+2026-04-18 ho_1041841: chore: merge hell
+2026-04-18 ho_1041841: chore: merge hell
+2026-04-17 ho_1041841: fix: type casting Drop
+2026-04-17 ho_1041841: feat: shell for Drop
+2026-04-18 ho_1041841: chore: merge hell
+2026-04-18 McKay Seamons: added dialogue box showing exp and items gained from killing monster
+2026-04-18 McKay Seamons: cleaned up code base, added a multitude of ui stuff, see more in pr
+2026-04-17 ho_1041841: feat: weather_scale()
+2026-04-17 ho_1041841: feat: side_dead()
+2026-04-17 Forzalab: Update README.md
+2026-04-17 Forzalab: Update README.md
+2026-04-17 Forzalab: Update README.md
+2026-04-17 ho_1041841: fix: recook Aleph attack logic
+2026-04-17 ho_1041841: chore, feat: refactor classes and add attack() behaviours
+2026-04-17 ho_1041841: feat: Merchant type (he's a Wall) (real)
+2026-04-17 robles_0965625: fixed PR comment
+2026-04-17 robles_0965625: moved randomized loot to inventory file
+2026-04-17 robles_0965625: Added helper functions in inventory.cc for dropping all, started on random gen for monsters in actor.cc
+2026-04-16 ho_1041841: fix: items now public for map rendering and stuff
+2026-04-16 ho_1041841: feat: call hookup for special() -> subclass_special()
+2026-04-16 ho_1041841: fix: clumsy syntax error
+2026-04-16 ho_1041841: chore: rename and refactor class hierachy
+2026-04-16 laura_1002948: begin_combat sorts from fastest to slowest
+2026-04-16 laura_1002948: Switched to using unique_ptr to preserve CLL outside of begin_combat()
+2026-04-16 laura_1002948: CLL default constructor
+2026-04-16 laura_1002948: Node default constructor
+2026-04-15 laura_1002948: Lambda comparison fix
+2026-04-15 laura_1002948: lambda comparison changes
+2026-04-15 laura_1002948: Removed test variables
+2026-04-15 laura_1002948: begin_combat() inserts sorted vector elements into a CLL, returns CLL*
+2026-04-15 laura_1002948: Proposed changes to speed access
+2026-04-15 ho_1041841: chore: add special() shell
+2026-04-15 laura_1002948: new_speed variable added to access in begin_combat() sort
+2026-04-15 laura_1002948: begin_combat() _speed sort WIP
+2026-04-15 ho_1041841: feat: add inventory to Actors
+2026-04-15 laura_1002948: Delete function fix
+2026-04-15 laura_1002948: Added current() function
+2026-04-15 laura_1002948: Added reset_current_to_start()
+2026-04-15 laura_1002948: Delete function updates *pointy
+2026-04-15 laura_1002948: CLL delete update
+2026-04-15 laura_1002948: CLL updates
+2026-04-15 ho_1041841: perf: speed up compiling
+2026-04-15 mediumsomething: Update circularll.h
+2026-04-15 mediumsomething: Update circularll.h
+2026-04-15 mediumsomething: Update circularll.cc
+2026-04-15 ho_1041841: fix: Echo traits inconsistency
+2026-04-15 ho_1041841: fix: copy cstor
+2026-04-15 ho_1041841: chore: separate take_damage into take and cure functionality
+2026-04-15 ho_1041841: feat: renamefor migration heal -> cure_damage
+2026-04-14 laura_1002948: Combat system WIP
+2026-04-14 laura_1002948: CLL (tested) list_delete()
+2026-04-14 laura_1002948: adding delete function for CLL
+2026-04-13 laura_1002948: testing sort methods for circular linked list
+2026-04-13 laura_1002948: remade begin_combat() using type() for vector sorting
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Update README.md
+2026-04-12 laura_1002948: tests on bridges circular list elements
+2026-04-12 ??: ncurses approach to draw weather icons
+2026-04-12 laura_1002948: Circular list head pointer for bridges
+2026-04-12 laura_1002948: Size updates on insert
+2026-04-12 laura_1002948: added Bridges visualize function
+2026-04-12 laura_1002948: added insert function for circular linked list
+2026-04-12 ??: updated weather to display on player
+2026-04-12 Forzalab: Update README.md
+2026-04-12 Forzalab: Delete Screenshot_20260411_192807_Termux.png
+2026-04-12 Forzalab: Add files via upload
+2026-04-12 laura_1002948: Bridges project setup
+2026-04-12 laura_1002948: new CLL list for combat and bridges visualization
+2026-04-12 McKay Seamons: moved lake closer to town for screenshot purposes

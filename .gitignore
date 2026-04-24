@@ -7,4 +7,3 @@ _*
 !.gitignore
 libs/
 libs/**
-!logs

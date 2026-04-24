@@ -255,6 +255,7 @@ class Dalet : public Hero {
 public:
 	Dalet(string _name_, XY _pos_);
 	bool _subclass_good_to_attack(Actor* opponent) const override final;
+	void _post_attack(Actor* opponent);
 	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 

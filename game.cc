@@ -139,7 +139,8 @@ void Game::spawn_monster(bool is_boss) {
 		return;
 
 	auto prob = [&]() -> int { 
-		double rand_norm = 0.375 + 6.0 / (1.0+pow(2.7128,5*(0.6-rand())));
+		double rand_01 = ((double)rand() / RAND_MAX);
+		double rand_norm = 0.375 + 6.0 / (1.0+pow(2.7128,5*(0.8-rand_01)));
 		return (int)round(std::clamp(rand_norm, 1.0, 6.0));
 	};
 

@@ -303,10 +303,14 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name() + "\n\t\t\t\t";
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
 			hitlist.shove(this, opponent, dmg);
+		else
+			last_action += ". \n\t\t\t\t" + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n";
+
 	}
 }
 
@@ -333,12 +337,14 @@ void Gimel::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	// do damage
 	// 1 - health delta
 	float heal_scale = log(20.0 / (((float)(*it)->hp() / (float)(*it)->hp_max()) + 2) - 6.25);
-	HP dmg = round(heal_scale * (*it)->hp_max());
+	HP dmg = round(std::clamp(heal_scale, 0.0f, 1.0f) * (*it)->hp_max());
+
+	if (dmg <= 0) return;
 	(*it)->cure_damage(dmg);
 	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " boosted " +
 				   std::to_string(dmg) + " HP to " + (*it)->name();
 
-	last_action += ". " + (*it)->name() + " now has " +
+	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
 				   std::to_string((*it)->hp()) + " HP.";
 
 }
@@ -432,14 +438,13 @@ void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 		// do damage
 		// 1 - health delta
 		HP dmg = this->attack(opponent);
-		last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " dealt " +
-					   std::to_string(dmg) + " dmg to " + opponent->name();
+		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " dealt " + std::to_string(dmg) + " dmg to " + opponent->name();
 
 		// 3 - dead or living?
 		if (opponent->is_dead())
 			hitlist.shove(this, opponent, dmg);
 		else
-			last_action += ". " + opponent->name() + " has " +
+			last_action += ". \n\t\t\t\t" + opponent->name() + " has " +
 						   std::to_string(opponent->hp()) + " HP left.";
 	}
 }

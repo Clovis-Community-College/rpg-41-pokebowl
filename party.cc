@@ -77,6 +77,7 @@ void Party::post_mortem(Actor *actor, bool gen_drop = true) {
 	add_member(
 		drop); // vector pushback != rendering !!!!!! latter UNimplemented?
 
+	last_action += "\n";
 	last_action += (actor->type() == "monster") ? " - DEFEATED!" : "";
 	last_action +=
 		(actor->type() == "hero") ? (actor->name() + " is down...") : "";
@@ -207,26 +208,26 @@ void Party::one_more_time() {
 	// do damage
 	// 1 - health delta
 	HP o_dmg = actor->attack(opponent);
+	last_action += "\t" + actor->name() + " dealt " + std::to_string(o_dmg) + " dmg to " + opponent->name();
 
-	// 2 - (arbitarily) special effects
+	// 2 - dead or living?
+	if (opponent->is_dead())
+		hitlist.shove(actor, opponent, o_dmg);
+	else 
+		last_action += ". " + opponent->name() + " has " + std::to_string(opponent->hp()) + " HP left.\n";
+		
+	// 3 - (arbitarily) special effects
 	NonWall* nw = dynamic_cast<NonWall*>(actor);
 	nw->special(bank, hitlist, opponent, last_action); // opponent param EXCLUDES double shoving
 
-	// 3 - dead or living?
-	if (opponent->is_dead())
-		hitlist.shove(actor, opponent, o_dmg);
-
 	// 4 - process corpse post_mortem
 	while (!hitlist.none()) {
+//		throw runtime_error("reached! dbg last_action and hp delta negative!");
 		auto [executor, victim, dmg] = hitlist.pop_top();
-		last_action += "\t" + executor->name() + " dealt " + std::to_string(dmg) +
-                                   " dmg to " + victim->name();
-		last_action += ". " + victim->name() + " has " +
-					   std::to_string(victim->hp()) + " HP left.\n";
-		post_mortem(victim);
+	        post_mortem(victim);
 	}
 
 	// 5 - check back invariants monster, hero. just-in-case
-	if (!monsters) status = hero_wins;
-	else if (!heroes) status = monster_wins;
+//	if (!monsters) status = hero_wins;
+//	else if (!heroes) status = monster_wins;
 }

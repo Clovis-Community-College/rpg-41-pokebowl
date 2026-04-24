@@ -228,7 +228,42 @@ ActorType Drop::type() const { return "drop"; }
 
 // template method not useless
 // prevention - in case actor subgroup can be refactored
-void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { subclass_special(bank, hitlist, exclude, last_action); }
+void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { 
+	subclass_special(bank, hitlist, exclude, last_action);
+	int random = rand() % 20; // super rare
+	
+	if (random) return;
+	
+	random = rand() % 6;
+	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " ";
+	switch (random) {
+		case 0:
+		    last_action += "saw Mencarelli worshipping Tralalelo Tralala, suffered immediate pump failure, and unalived itself.";
+		    break;
+		case 1:
+		    last_action += "witnessed Ting Tung Tung Sahur's poster inside Guzman's bedroom, heart flatlined, and disconnected.";
+		    break;
+		case 2:
+		    last_action += "checked the 2026 inflation rates, had a stroke and die.";
+		    break;
+		case 3:
+		    last_action += "saw Claude Mythos start a family with 20 Olympic pools, then decided to logged off.";
+		    break;
+		case 4:
+		    last_action += "saw the electricity bill for your 5090 Ti, bought 5 more for you, then joined the void.";
+		    break;
+		case 5:
+		    last_action += "watched Kerney rambling in-class with Minecraft parkour overlay, brain short-circuited, and alt-f4'd.";
+		    break;
+		default:
+		   last_action += "unalived itself. (also hi Rosas, i see u on VSCode!)";
+		    break;
+	}
+
+	last_action += "\n";
+
+	hitlist.shove(this, this, hp(), this->type(), this->name(), last_action);
+}
 
 bool NonWall::_subclass_good_to_attack(Actor *opponent) const {
 	// no attack of same type - can be overriden
@@ -641,7 +676,14 @@ void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 
 }
-void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+
+void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	int random = rand() % 16; // super rare
+	if (random) return;
+	hurt_scale(1); // break armor
+	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " lost armor!";
+}
+
 void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
 void Foxtrot::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {

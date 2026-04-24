@@ -181,10 +181,22 @@ void Party::one_more_time() {
 
 	if (it == bank.end()) {
 		// tally side state. who wins?
+		// trusts the CLL
 		std::pair<Actor *, bool> actor_pair;
+
+		// STARTS checking on start of the "clock"
+		// this preserves the flip up down logic
+		// as we dont use CLL anw, reset is fine
 		turn_order.reset_current_to_start();
-		while (!actor_pair.second) {
+
+		bool flip_up = false, flip_down = false;
+		while (!flip_down) {
 			actor_pair = turn_order.current();
+
+			// Check for TRUE loopback on 2 elements
+			flip_up = actor_pair.second;
+			flip_down = (flip_up && !actor_pair.second);
+
 			Actor *a = actor_pair.first;
 			if (a && a->type() == "hero" && !a->is_dead()) {
 				status = hero_wins;

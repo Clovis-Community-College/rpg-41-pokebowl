@@ -36,7 +36,7 @@ public:
 	void init_history(XY initial_pos);
 	void record_move(XY old_pos);
 
-	void post_mortem(Actor* actor, bool gen_drop);
+	void post_mortem(Actor* actor, bool gen_drop = true);
 
 //	bool side_dead(ActorType type) const;
 	static float weather_scale(string weather); // no need to import weather, as the used thing is only a string!

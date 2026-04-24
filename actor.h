@@ -22,6 +22,8 @@ using ActorType = string;
 using Bank = vector<Actor*>;
 using IOrphan = vector<Item>;
 
+class Party; // forward declare for special()
+
 // Map could have positive coords or negative-positive coords
 // int32_t for flexibility
 struct XY {
@@ -202,13 +204,13 @@ protected:
 	bool _subclass_good_to_attack(Actor* opponent) const override;
 
 	// Special abilities. TBI by subclasses.
-	virtual void subclass_special(Bank& bank) = 0;
+	virtual void subclass_special(Party* party, Actor* exclusion) = 0;
 
 public:
 	// SHARED special-related functionalities
 	// Applies one actor's "special functions" 
 	// on MULTIPLE actor
-	void special(Bank& bank);
+	void special(Party* party, Actor* exclusion);
 };
 
 class Hero : public NonWall, public HasInitiative {
@@ -227,50 +229,50 @@ public:
 class Aleph : public Hero {
 public:
 	Aleph(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Bet : public Hero {
 public:
 	Bet(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Gimel : public Hero {
 public:
 	Gimel(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Dalet : public Hero {
 public:
 	Dalet(string _name_, XY _pos_);
 	bool _subclass_good_to_attack(Actor* opponent) const override final;
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class He : public Hero {
 public:
 	He(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Vav : public Hero {
 public:
 	Vav(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Zayin : public Hero {
 public:
 	Zayin(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Chet : public Hero {
 public:
 	Chet(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 // Monster - Military
@@ -285,50 +287,50 @@ public:
 class Alpha : public Monster {
 public:
 	Alpha(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Bravo : public Monster {
 public:
 	Bravo(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Charlie : public Monster {
 public:
 	Charlie(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Delta : public Monster {
 public:
 	Delta(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Echo : public Monster {
 public:
 	Echo(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Foxtrot : public Monster {
 public:
 	Foxtrot(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 	bool is_boss() const override;
 };
 
 class Golf : public Monster {
 public:
 	Golf(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 class Hotel : public Monster {
 public:
 	Hotel(string _name_, XY _pos_);
-	void subclass_special(Bank& bank) override;
+	void subclass_special(Party* party, Actor* exclusion) override;
 };
 
 #endif

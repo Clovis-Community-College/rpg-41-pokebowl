@@ -234,8 +234,7 @@ void Party::one_more_time() {
 				   " dmg to " + opponent->name();
 
 	// 2 - (arbitarily) special effects
-	NonWall* nw = dynamic_cast<NonWall*>(actor);
-	nw->special(bank);
+	nw->special(*this, opponent);
 
 	// 3 - dead or living?
 	if (opponent->is_dead())

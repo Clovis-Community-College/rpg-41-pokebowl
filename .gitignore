@@ -7,4 +7,5 @@ _*
 !.gitignore
 libs/
 libs/**
-!logs
+!log/
+!log/**

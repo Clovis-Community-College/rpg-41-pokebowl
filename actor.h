@@ -276,6 +276,7 @@ public:
 class Chet : public Hero {
 public:
 	Chet(string _name_, XY _pos_);
+	float _custom_scale() const override;
 	void subclass_special(Bank& bank, Hitlist& hitlist, Actor* exclude, string& last_action) override;
 };
 

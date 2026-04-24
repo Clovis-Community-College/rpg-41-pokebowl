@@ -429,7 +429,44 @@ void Vav::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string&
 }
 
 void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
-void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Chet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// find opponent in bank
+	auto it_ = std::find_if(bank.begin(), bank.end(), [exclude](const Actor* a){ 
+		if (!a) return false;
+		else return (!a->is_dead() && a == exclude); 
+	});
+
+	// find NEXT opponent
+	auto it = std::find_if(it_, bank.end(), [exclude](const Actor* a){
+                // workin with ptrs here
+                if (!a) return false;
+                bool b0 = a != exclude;
+                bool b1 = (a->type() == "monster");
+                bool b2 = true;
+		bool b3 = !a->is_dead();
+		return b0 && b1 && b2 && b3;
+        });
+
+	if (it == bank.end()) return;
+
+	// do damage
+	HP dmg = round(_custom_scale() * attack_damage());
+
+	if (dmg <= 0) return;
+
+	// this wont take in EXTERNAL scale dmg bcs ehhhhhh
+	(*it)->take_damage(dmg);
+
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " spreaded 50% damage to " + (*it)->name() + "! " +
+				   std::to_string(dmg) + " HP to " + (*it)->name();
+
+	last_action += ". \n\t\t\t\t" + (*it)->name() + " now has " +
+				   std::to_string((*it)->hp()) + " HP.\n";
+}
+
+float Chet::_custom_scale() const {
+	return 0.5;
+}
 
 // Monster
 ActorType Monster::type() const { return "monster"; }

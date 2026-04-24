@@ -7,7 +7,7 @@ Game::Game() {
 	int cnt = 0;
 	while (cnt < 6) {
 		int random = rand() % 8;
-		Hero* h;
+		Hero *h;
 		XY pos = {100, 100};
 		switch (random) {
 		case 0:
@@ -38,8 +38,11 @@ Game::Game() {
 			h = new Zayin("Zayin", pos);
 			break;
 		}
-		if (!heroes.contains(random)) { heroes.insert({random, h}); cnt++; }
-	} 
+		if (!heroes.contains(random)) {
+			heroes.insert({random, h});
+			cnt++;
+		}
+	}
 
 	current_enemy = nullptr;
 	current_enemy_is_boss = false;
@@ -53,8 +56,11 @@ Game::Game() {
 
 	int random;
 	while (true) {
-		random = rand()%8;
-		if (heroes.contains(random)) { h_main = heroes.at(random); break; }
+		random = rand() % 8;
+		if (heroes.contains(random)) {
+			h_main = heroes.at(random);
+			break;
+		}
 	}
 
 	// ONLY h_main GETS TO BE THE FIRST TO BE ADDED!!!!!!!!
@@ -62,8 +68,9 @@ Game::Game() {
 	// pls dont change or cthulu will arise
 	player_party.add_member(h_main);
 
-	for (auto& [index, ptr] : heroes)
-		if (index != random) player_party.add_member(heroes.at(index));
+	for (auto &[index, ptr] : heroes)
+		if (index != random)
+			player_party.add_member(heroes.at(index));
 
 	spawn_monster(true); // Spawn boss at north
 	for (int i = 0; i < 15; i++) {
@@ -79,7 +86,8 @@ Game::Game() {
 	player_party.shared_inventory.add_pokecoins(500);
 
 	merchant_inventory.insert(Item("Mega Heal", "heal", 60, 60, 0, false));
-	merchant_inventory.insert(Item("Big Healing Potion", "heal", 50, 50, 0, false));
+	merchant_inventory.insert(
+		Item("Big Healing Potion", "heal", 50, 50, 0, false));
 	merchant_inventory.insert(Item("Steel Sword", "weapon", 250, 0, 40, false));
 	merchant_inventory.insert(Item("Magic Wand", "weapon", 300, 0, 45, false));
 
@@ -138,9 +146,10 @@ void Game::spawn_monster(bool is_boss) {
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)
 		return;
 
-	auto prob = [&]() -> int { 
+	auto prob = [&]() -> int {
 		double rand_01 = ((double)rand() / RAND_MAX);
-		double rand_norm = 0.375 + 6.0 / (1.0+pow(2.7128,5*(0.8-rand_01)));
+		double rand_norm =
+			0.375 + 6.0 / (1.0 + pow(2.7128, 5 * (0.8 - rand_01)));
 		return (int)round(std::clamp(rand_norm, 1.0, 6.0));
 	};
 
@@ -253,7 +262,7 @@ void Game::handle_input(int ch) {
 					entered_combat = true;
 				}
 			}
-			std::erase_if(roaming_monsters, [](const Actor* a){ return !a; });
+			std::erase_if(roaming_monsters, [](const Actor *a) { return !a; });
 			if (!entered_combat && target_x >= 0 && target_y >= 0 &&
 				target_x < world.get_width() && target_y < world.get_height() &&
 				world.is_passable(target_x, target_y, *h_main)) {
@@ -263,7 +272,8 @@ void Game::handle_input(int ch) {
 				if (h_main->pos().x != old_pos.x ||
 					h_main->pos().y != old_pos.y) {
 					player_party.record_move(old_pos);
-					float rand_norm = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+					float rand_norm = static_cast<float>(rand()) /
+									  static_cast<float>(RAND_MAX);
 					if (rand_norm < 0.04 && roaming_monsters.size() < 25) {
 						spawn_monster(false);
 					}
@@ -440,8 +450,10 @@ void Game::handle_input(int ch) {
 				shop_cursor++;
 			} else if (ch == '\n' || ch == KEY_ENTER || ch == '\r') {
 				if (!items.empty() && shop_cursor < (int)items.size()) {
-					player_party.shared_inventory.buy(merchant_inventory, items[shop_cursor].get_name());
-					if (shop_cursor > 0 && shop_cursor >= merchant_inventory.get_size()) {
+					player_party.shared_inventory.buy(
+						merchant_inventory, items[shop_cursor].get_name());
+					if (shop_cursor > 0 &&
+						shop_cursor >= merchant_inventory.get_size()) {
 						shop_cursor--;
 					}
 				}
@@ -457,8 +469,11 @@ void Game::handle_input(int ch) {
 				shop_cursor++;
 			} else if (ch == '\n' || ch == KEY_ENTER || ch == '\r') {
 				if (!items.empty() && shop_cursor < (int)items.size()) {
-					player_party.shared_inventory.sell(merchant_inventory, items[shop_cursor].get_name());
-					if (shop_cursor > 0 && shop_cursor >= player_party.shared_inventory.get_size()) {
+					player_party.shared_inventory.sell(
+						merchant_inventory, items[shop_cursor].get_name());
+					if (shop_cursor > 0 &&
+						shop_cursor >=
+							player_party.shared_inventory.get_size()) {
 						shop_cursor--;
 					}
 				}
@@ -590,8 +605,9 @@ void Game::handle_input(int ch) {
 				current_enemy = nullptr;
 				current_enemy_is_boss = false;
 			}
-		} else if (player_party.status == monster_wins ||
-				   player_party.status == cycle_ends) {
+		} else if (player_party.status == monster_wins) {
+			if (ch == ' ') exit(0);
+		} else if ( player_party.status == cycle_ends) {
 			if (ch == ' ') {
 				state = GameState::MAP;
 				for (auto it = player_party.bank.begin();
@@ -662,7 +678,7 @@ void Game::render() {
 			weather.Update(world, h_main->pos());
 			// changed grid
 			//	weather.draw(h_main->pos().x - start_x, h_main->pos().y -
-			//start_y, max_x, max_y);
+			// start_y, max_x, max_y);
 			weather.draw(max_x, max_y);
 			string msg = "The weather is now " + weather.getWeather() + "!";
 
@@ -695,9 +711,9 @@ void Game::render() {
 					mvaddch(py, px, '.');
 					attroff(COLOR_PAIR(color) | A_DIM);
 				} else {
-					attron(COLOR_PAIR(color) | ((i==0)?A_BLINK:0));
+					attron(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
 					mvaddch(py, px, p_chars[i]);
-					attroff(COLOR_PAIR(color)| ((i==0)?A_BLINK:0));
+					attroff(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
 				}
 			}
 		}
@@ -824,7 +840,9 @@ void Game::render() {
 			attroff(COLOR_PAIR(5));
 		}
 
-	} else if (state == GameState::INN || state == GameState::INN_DIALOG || state == GameState::MERCHANT_DIALOG || state == GameState::MERCHANT_SHOP) {
+	} else if (state == GameState::INN || state == GameState::INN_DIALOG ||
+			   state == GameState::MERCHANT_DIALOG ||
+			   state == GameState::MERCHANT_SHOP) {
 		int offset_y = (max_y - inn_zone.get_height()) / 2;
 		int offset_x = (max_x - inn_zone.get_width()) / 2;
 
@@ -852,10 +870,12 @@ void Game::render() {
 		attron(COLOR_PAIR(5));
 		if (state == GameState::MERCHANT_SHOP) {
 			mvprintw(max_y - 1, 2,
-					 "Arrows: Browse | Enter: Confirm | b: Buy | s: Sell | ESC/m: Exit Shop");
+					 "Arrows: Browse | Enter: Confirm | b: Buy | s: Sell | "
+					 "ESC/m: Exit Shop");
 		} else {
-			mvprintw(max_y - 1, 2,
-					 "Arrows: Move | h: Innkeeper | m: Merchant | v: Leave Inn");
+			mvprintw(
+				max_y - 1, 2,
+				"Arrows: Move | h: Innkeeper | m: Merchant | v: Leave Inn");
 		}
 		attroff(COLOR_PAIR(5));
 
@@ -966,7 +986,8 @@ void Game::render() {
 
 			attron(COLOR_PAIR(5));
 			mvprintw(dy + 1, dx + 2, "=== MERCHANT SHOP ===");
-			mvprintw(dy + 2, dx + 2, "Party Pokecoins: %d", player_party.shared_inventory.get_coins());
+			mvprintw(dy + 2, dx + 2, "Party Pokecoins: %d",
+					 player_party.shared_inventory.get_coins());
 
 			if (shop_sub == ShopSubState::SELECT_MODE) {
 				mvprintw(dy + 5, dx + 4, "What would you like to do?");
@@ -1043,7 +1064,7 @@ void Game::render() {
 				monster_y += 2;
 			}
 		}
-//		player_party.last_action.clear();
+		//		player_party.last_action.clear();
 		if (!player_party.last_action.empty()) {
 			mvprintw(max_y / 2, 4, "> %s", player_party.last_action.c_str());
 		}
@@ -1055,7 +1076,7 @@ void Game::render() {
 		} else if (player_party.status == hero_wins) {
 			int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;
 			player_party.last_action.clear();
-			loot_start +=3;
+			loot_start += 3;
 			mvprintw(loot_start, 4, "Victory! Loot collected:");
 			if (combat_loot.empty()) {
 				mvprintw(loot_start + 1, 6, "(no items)");
@@ -1076,8 +1097,22 @@ void Game::render() {
 			mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
 		} else if (player_party.status == monster_wins) {
 			player_party.last_action.clear();
-			mvprintw(max_y - 4, 4,
-					 "Monsters win... Press 'SPACE' to return to map.");
+			int max_y, max_x;
+			getmaxyx(stdscr, max_y, max_x);
+			int start_y = max_y - 25;
+			int start_x = 4;
+			mvprintw(start_y - 1, start_x, "Monsters win. Press 'q' or 'SPACE' to quit game.");
+			mvprintw(start_y, start_x, "(boo u loser)");
+			mvprintw(start_y + 1,  start_x, "   ___                       ___   ");
+			mvprintw(start_y + 2,  start_x, "  /   \\                     /   \\  ");
+			mvprintw(start_y + 3,  start_x, " /     \\___________________/     \\ ");
+			mvprintw(start_y + 4,  start_x, "|   _                       _     |");
+			mvprintw(start_y + 5,  start_x, "|  / \\                     / \\    |");
+			mvprintw(start_y + 6,  start_x, "| ( @ )       _____       ( @ )   |");
+			mvprintw(start_y + 7,  start_x, " \\ \\_/       /     \\       \\_/   / ");
+			mvprintw(start_y + 8,  start_x, "  \\         /       \\           /  ");
+			mvprintw(start_y + 9,  start_x, "   \\_______/         \\_________/   ");
+			mvprintw(start_y + 10, start_x, "           \\_________/             ");
 		} else if (player_party.status == cycle_ends) {
 			player_party.last_action.clear();
 			mvprintw(max_y - 4, 4,
@@ -1089,6 +1124,7 @@ void Game::render() {
 }
 
 void Game::run() {
+	atexit([]{ endwin(); });
 	int ch = 0;
 	while (ch != 'q') {
 		render();

@@ -118,7 +118,7 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 
 ### BRIDGES combat
 
-<img width="617" height="415" alt="Screenshot 2026-04-22 120839" src="https://github.com/user-attachments/assets/0ec9b102-a559-41e2-9ef3-f4cb9d1fe656" />
+<img width="683" height="582" alt="BRIDGEScombat" src="https://github.com/user-attachments/assets/8cd035cf-ad82-464e-a401-2c740f02f63c" />
 
 ### Class hierachy of `actor.h`
 - `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.

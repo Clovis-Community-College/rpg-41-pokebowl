@@ -1054,7 +1054,7 @@ void Game::render() {
 
 		if (player_party.status == init || player_party.status == ongoing) {
 			mvprintw(max_y - 4, 4,
-					 "Press 'SPACE' to next turn, or 'r' to Run.");
+					 "Press 'SPACE' to next turn, 'b' to visualize in BRIDGES, or 'r' to Run.");
 			player_party.last_action.clear();
 		} else if (player_party.status == hero_wins) {
 			int loot_start = (monster_y > hero_y ? monster_y : hero_y) + 1;

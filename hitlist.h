@@ -8,7 +8,7 @@ class Actor;
 struct Who {
 	Actor* executor;
 	Actor* victim;
-	char dmg;
+	short dmg;
 };
 
 class Hitlist {

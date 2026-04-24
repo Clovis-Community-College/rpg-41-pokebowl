@@ -166,6 +166,8 @@ void Party::one_more_time() {
 		cycles_left--;
 	Actor *actor = actor_pair.first;
 
+	if (!actor) return;
+
 	auto fightable = [&actor](Actor *opponent) {
 		if (!opponent)
 			return false;

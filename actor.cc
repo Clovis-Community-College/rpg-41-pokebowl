@@ -584,7 +584,29 @@ Hotel::Hotel(string _name_, XY _pos_)
 	// Persian
 }
 
-void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {}
+void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
+	// ape together strong
+	// count mobstera
+	char count = std::count_if(bank.begin(), bank.end(), [](const Actor* a){ 
+		if (!a) return false;
+		else return (a->is_dead() && a->type() == "monster"); 
+	});
+
+	// boost damge. due to logic, will apply to NEXT turn.
+	// only activates when its ALPHA turn.
+	decltype(attack_damage()) oad = attack_damage();
+
+	// only boost when 3+ monsters
+	if (count < 3) {
+		attack_damage((float)oad / 3.0f);
+		return;
+	}
+
+	attack_damage((float)oad * 3.0f);
+
+	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " triple-buffed attack! ";
+}
+
 void Bravo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	// find min opponent to heal
 	auto it_ = std::find_if(bank.begin(), bank.end(), [](const Actor* a){ 

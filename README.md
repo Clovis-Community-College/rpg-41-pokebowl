@@ -74,7 +74,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` `Hero` class with 4+ subclasses.
 - `✅` `Monster` class with 5+ subclasses  including a **Boss**
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
-- `✅` README: ![description of class hierarchy](#class-hierachy-of-actorh) + ![diagram showing class relationships](#class-diagram) + ![Actor-related code snapshots](#code-snippet-snapshots-scrollable)
+- `✅` README: ![description of class hierarchy + diagram showing class relationships + Actor-related code snapshots](#class-hierachy-of-actorh)
 
 #### B — "BRIDGEngineer" (George)
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it

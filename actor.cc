@@ -230,7 +230,7 @@ ActorType Drop::type() const { return "drop"; }
 // prevention - in case actor subgroup can be refactored
 void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { 
 	subclass_special(bank, hitlist, exclude, last_action);
-	int random = rand() % 20; // super rare
+	int random = rand() % 10; // super rare
 	
 	if (random) return;
 	

@@ -36,6 +36,9 @@ Hassle-free experience! Just clone our repo, `make`, run `a.out`, and be in awe.
 | `← ↑ ↓ →` | Move player |
 | `i` | Open inventory |
 | `e` | Open equipment table |
+| `[SPACE]` | (*Combat mode*) Next combat turn |
+| `r` | (*Combat mode*) Abort combat & return to map |
+| `b` | Screenshot game state into an URL in BRIDGES |
 | `q` | Quit game |
 
 ### 🎶 Music
@@ -48,20 +51,20 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 ### Group
 
 #### Quality
-- `🚧` **A)** Fun to play — *Everyone*
-- `🚧` **B)** Decent amount of content / take at least a little while to win — *Everyone*
-- `🚧` **C)** Has an interesting world map in color — *McKay*
-- `✅` **D)** Win and lose — *name*
-- `🚧` **E)** Combat — *name*
+- `✅` **A)** Fun to play — *Everyone*
+- `✅` **B)** Decent amount of content / take at least a little while to win — *Everyone*
+- `✅` **C)** Has an interesting world map in color — *McKay*
+- `✅` **D)** Win and lose — *McKay & Tony*
+- `✅` **E)** Combat — *McKay & Tony*
   
 #### Documentation
-- `🚧` **A)** README describes game: directions to win, key commands, CLI params — *Tony*
+- `✅` **A)** README describes game: directions to win, key commands — *Tony*
 - `✅` **B)** README uses Markdown: bullet points, colors, embedded logo image — *Tony*
-- `🚧` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
+- `✅` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
 
 #### Consistency of work
-- `✅` **A)** Screenshot of game state, 1 week (embedded below) — *Tony*
-- `🚧` **B)** Screenshot of GitHub commit log showing consistent commits over time (embedded below) — *Tony*
+- `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/edit/main/README.md#game-state-at-week-1) — *Tony*
+- `🚧` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/edit/main/README.md#commit-log) — *Tony*
  
 ### Individual
  
@@ -80,16 +83,16 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `✅` Screenshot of BRIDGES combat visualization embedded in README
+- `✅` [Screenshot of BRIDGES combat visualization embedded in README](https://github.com/Clovis-Community-College/rpg-41-pokebowl/edit/main/README.md#bridges-combat)
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling
 - `✅` Arrow key movement
 - `✅` Color
 - `✅` Scrollable world map with towns, lakes, and other features
-- `💢` Combat displayed on screen
+- `✅` Combat displayed on screen
 - `✅` Inventory displayed on screen
-- `🚧` Party moves on map when arrow keys pressed
+- `✅` Party moves on map when arrow keys pressed
 - `✅` Demonstrates reasonable ncurses proficiency
  
 #### D — "Sephiroth, Master of the Tree" (Jovanni)
@@ -105,7 +108,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
  
 #### E — "Scared Balloon" (Dillion)
 - `✅` Dynamic weather system
-- `🚧` Quest system
+- `🚧` Quest system (quest 3 incomplete)
 - `✅` Hash table implemented and used as part of the system
 
 ## Screenshots

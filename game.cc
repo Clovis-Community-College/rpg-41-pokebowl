@@ -224,7 +224,7 @@ void Game::spawn_monster(bool is_boss) {
 
 	Monster *m = nullptr;
 
-	for (int i = 0; i < prob(); i++) {
+	for (int i = 1; i < prob(); i++) {
 		int type = rand() % 8;
 		switch (type) {
 		case 0:
@@ -555,6 +555,13 @@ void Game::handle_input(int ch) {
 			if (!m) return false;
 			return (m->is_boss());
 		});
+		
+		auto hdit = count_if(bank.begin(), bank.end(), [](Actor* a){
+			Hero* h = dynamic_cast<Hero*>(a);
+			if (!h) return false;
+			return (!h->is_dead());
+		});
+		bool hdie = !hdit;
 		bool boss_present = mit != bank.end();
 		if (player_party.status == init || player_party.status == ongoing) {
 
@@ -681,7 +688,7 @@ void Game::handle_input(int ch) {
 				current_enemy = nullptr;
 				current_enemy_is_boss = false;
 			}
-		} else if (player_party.status == monster_wins && boss_present) {
+		} else if (player_party.status == monster_wins && (boss_present || hdie)) {
 			if (ch == ' ') exit(0);
 		} else if (player_party.status == monster_wins) {
 	            if (ch == ' ') {
@@ -702,27 +709,21 @@ void Game::handle_input(int ch) {
 	                    h_main->pos(player_party.history[0]);
 	                }
 		}
-            } else if ( player_party.status == cycle_ends) {
-			if (ch == ' ') {
-				state = GameState::MAP;
-				for (auto it = player_party.bank.begin();
-					 it != player_party.bank.end();) {
-					Actor *a = *it;
-					if (a && a->type() == "monster") {
-						player_party.turn_order.list_delete(a);
-						it = player_party.bank.erase(it);
-						delete a;
-					} else {
-						++it;
-					}
-				}
+	    } else if ( player_party.status == cycle_ends) {
+		
+			state = GameState::MAP;
+			if (current_enemy) {
+				auto &bank = player_party.bank;
+				bank.erase(
+					std::remove(bank.begin(), bank.end(), current_enemy),
+					bank.end());
+				roaming_monsters.push_back(current_enemy);
 				current_enemy = nullptr;
-				current_enemy_is_boss = false;
-				if (!player_party.history.empty()) {
-					h_main->pos(player_party.history[0]);
-				}
 			}
-		}
+			if (!player_party.history.empty()) {
+				h_main->pos(player_party.history[0]);
+			}
+	}
 	}
 }
 
@@ -1194,7 +1195,13 @@ void Game::render() {
 			if (!m) return false;
 			return (m->is_boss());
 		});
+		auto hdit = count_if(bank.begin(), bank.end(), [](Actor* a){
+			Hero* h = dynamic_cast<Hero*>(a);
+			if (!h) return false;
+			return (!h->is_dead());
+		});
 		bool boss_present = mit != bank.end();
+		bool hdie = !hdit;
 		if (!player_party.last_action.empty()) {
 			mvprintw(max_y / 2, 4, "> %s", player_party.last_action.c_str());
 		}
@@ -1225,14 +1232,14 @@ void Game::render() {
 				}
 			}
 			mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
-		} else if (player_party.status == monster_wins && boss_present) {
+		} else if (player_party.status == monster_wins && (boss_present || hdie)) {
 			player_party.last_action.clear();
 			int max_y, max_x;
 			getmaxyx(stdscr, max_y, max_x);
 			int start_y = max_y - 25;
 			int start_x = 4;
-			mvprintw(start_y - 1, start_x, "Boss win. Press 'q' or 'SPACE' to quit game.");
-			mvprintw(start_y, start_x, "(boo u loser)");
+			mvprintw(start_y - 1, start_x, "All heroes ded. Press 'q' or 'SPACE' to quit game.");
+			mvprintw(start_y, start_x, "(boo u Kerny)");
 			mvprintw(start_y + 1,  start_x, "   ___                       ___   ");
 			mvprintw(start_y + 2,  start_x, "  /   \\                     /   \\  ");
 			mvprintw(start_y + 3,  start_x, " /     \\___________________/     \\ ");

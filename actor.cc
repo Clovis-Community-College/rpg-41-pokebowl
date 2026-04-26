@@ -117,6 +117,8 @@ void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 	hp(hp_delta, external_heal_scale, op);
 }
 
+void Actor::kill() { hp(hp(), 0,[](float a,float b){return 0;}); }
+
 void Actor::move(Direction d) {}
 
 HP Actor::attack(Actor *opponent) {
@@ -169,7 +171,7 @@ bool Actor::_subclass_good_to_attack(Actor *opponent) const {
 float Actor::_custom_scale() const { return 1.0;}
 
 void Actor::_attack(Actor *opponent) {
-	HP hp_delta = attack_damage();
+	HP hp_delta = opponent->attack_damage();
 	if (items.has_value()) {
 		std::vector<Item> equipped;
 		items->get_all_items(equipped);
@@ -230,7 +232,10 @@ ActorType Drop::type() const { return "drop"; }
 // prevention - in case actor subgroup can be refactored
 void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { 
 	subclass_special(bank, hitlist, exclude, last_action);
-	int random = rand() % 10; // super rare
+
+	if (this->is_dead()) return;
+
+	int random = rand() % 8; // super rare
 	
 	if (random) return;
 	
@@ -261,7 +266,7 @@ void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last
 	}
 
 	last_action += "\n";
-
+	this->kill();
 	hitlist.shove(this, this, hp(), this->type(), this->name(), last_action);
 }
 
@@ -364,7 +369,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	if (_custom_scale() > 1.5) {
-		const string scale = std::format("${:.2f}", _custom_scale());
+		const string scale = std::format("{:.2f}x", _custom_scale());
 		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " just BOOSTED atck pwr by " + scale + "!\n\t\t\t\t";
 	}
 }
@@ -418,7 +423,7 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	HP cure_hp = round(attack_damage() * hurt_scale());
 	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " stole " +
-				   std::to_string(cure_hp) + " HP from a mosnter to itself!";
+				   std::to_string(cure_hp) + " HP from a monster to itself!";
 
 	last_action += ". \n\t\t\t\t" + this->name() + " now has " +
 				   std::to_string(this->hp()) + " HP.\n";
@@ -512,7 +517,7 @@ void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	string scale;
 
 	if (random) {
-		scale = std::format("${:.2f}", opponent->hurt_scale());
+		scale = std::format("{:.2f}", opponent->hurt_scale());
 		last_action += "defense is only " + scale + "x as strong!";
 	}
 	else
@@ -605,7 +610,7 @@ Echo::Echo(string _name_, XY _pos_)
 }
 
 Foxtrot::Foxtrot(string _name_, XY _pos_)
-	: Monster(_name_, _pos_, 1500, Traits(150, 0.5, 14, 2500, 1)) {
+	: Monster(_name_, _pos_, 1500, Traits(100, 0.5, 14, 1500, 1)) {
 	// BOSS - mewtwo
 }
 
@@ -687,7 +692,7 @@ void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	int random = rand() % 125;
 	if (!random) return;
 	cure_damage(random);
-	last_action += "\n\t{{ SPECIAL EFFECTS }} " + this->name() + " healed itself by " + + " HP!\n";
+	last_action += "\n\t{{ SPECIAL EFFECTS }} " + this->name() + " healed itself by " + to_string(random) + " HP!\n";
 }
 
 void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {

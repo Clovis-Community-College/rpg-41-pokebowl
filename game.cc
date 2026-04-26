@@ -73,36 +73,60 @@ Game::Game() {
 	int cnt = 0;
 
 	while (cnt < 6) {
-		int random = rand() % 8;
+		int random = rand() % 16;
 		Hero *h;
 		XY pos = {100, 100};
 		switch (random) {
 		case 0:
-			h = new Aleph("Aleph", pos);
+			h = new Aleph("Sleep Apnea-lax", pos);
 			break;
 		case 1:
-			h = new Bet("Bet", pos);
+			h = new Bet("Heradot", pos);
 			break;
 		case 2:
-			h = new Gimel("Gimel", pos);
+			h = new Gimel("Aloha-monola", pos);
 			break;
 		case 3:
-			h = new Dalet("Dalet", pos);
+			h = new Dalet("URanusaur", pos);
 			break;
 		case 4:
-			h = new He("He", pos);
+			h = new He("Pawn-mot", pos);
 			break;
 		case 5:
-			h = new Vav("Vav", pos);
+			h = new Vav("Garchonkk", pos);
 			break;
 		case 6:
-			h = new Zayin("Zayin", pos);
+			h = new Zayin("Shucked", pos);
 			break;
 		case 7:
-			h = new Chet("Chet", pos);
+			h = new Chet("Meh-ninja", pos);
 			break;
+                case 8:
+                        h = new Aleph("Snore-chella", pos);
+                        break;
+                case 9:
+                        h = new Bet("Here-a-loss", pos);
+                        break;
+                case 10:
+                        h = new Gimel("Alamos-la", pos);
+                        break;
+                case 11:
+                        h = new Dalet("Ve-no-sir", pos);
+                        break;
+                case 12:
+                        h = new He("Paw-mid", pos);
+                        break;
+                case 13:
+                        h = new Vav("Gaarrr-chump", pos);
+                        break;
+                case 14:
+                        h = new Zayin("Shuck-L", pos);
+                        break;
+                case 15:
+                        h = new Chet("Leaded-inja", pos);
+                        break;
 		default:
-			h = new Zayin("Zayin", pos);
+			h = new Zayin("Shucked", pos);
 			break;
 		}
 		if (!heroes.contains(random)) {
@@ -225,34 +249,58 @@ void Game::spawn_monster(bool is_boss) {
 	Monster *m = nullptr;
 
 	for (int i = 1; i < prob(); i++) {
-		int type = rand() % 8;
+		int type = rand() % 16;
 		switch (type) {
 		case 0:
-			m = new Alpha("Alpha", {x, y});
+			m = new Alpha("eRaticate", {x, y});
 			break;
 		case 1:
-			m = new Bravo("Bravo", {x, y});
+			m = new Bravo("Chrome-bat", {x, y});
 			break;
 		case 2:
-			m = new Charlie("Charlie", {x, y});
+			m = new Charlie("imMa-choke", {x, y});
 			break;
 		case 3:
-			m = new Delta("Delta", {x, y});
+			m = new Delta("Gen-grene", {x, y});
 			break;
 		case 4:
-			m = new Echo("Echo", {x, y});
+			m = new Echo("Am-pee-pom", {x, y});
 			break;
 		case 5:
-			m = new Echo("Echo", {x, y});
+			m = new Echo("Am-pee-pom", {x, y});
 			break;
 		case 6:
-			m = new Golf("Golf", {x, y});
+			m = new Golf("Bliss-you", {x, y});
 			break;
 		case 7:
-			m = new Hotel("Hotel", {x, y});
+			m = new Hotel("Pearl-sian", {x, y});
 			break;
+                case 8:
+                        m = new Alpha("Gas-ticate", {x, y});
+                        break;
+                case 9:
+                        m = new Bravo("Click-bat", {x, y});
+                        break;
+                case 10:
+                        m = new Charlie("Ma-woke", {x, y});
+                        break;
+                case 11:
+                        m = new Delta("Gen-alpha", {x, y});
+                        break;
+                case 12:
+                        m = new Echo("Eye-pom", {x, y});
+                        break;
+                case 13:
+                        m = new Echo("A-simp-om", {x, y});
+                        break;
+                case 14:
+                        m = new Golf("Glissey", {x, y});
+                        break;
+                case 15:
+                        m = new Hotel("Purr-sona", {x, y});
+                        break;
 		default:
-			m = new Alpha("Alpha", {x, y});
+			m = new Alpha("eRaticate", {x, y});
 			break;
 		}
 

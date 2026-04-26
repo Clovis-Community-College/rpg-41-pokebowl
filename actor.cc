@@ -418,7 +418,7 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	HP cure_hp = round(attack_damage() * hurt_scale());
 	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " stole " +
-				   std::to_string(cure_hp) + " HP from a mosnter to itself!";
+				   std::to_string(cure_hp) + " HP from a monster to itself!";
 
 	last_action += ". \n\t\t\t\t" + this->name() + " now has " +
 				   std::to_string(this->hp()) + " HP.\n";

@@ -34,14 +34,16 @@ void Game::splash() {
 		std::istringstream iss(splash);
 
 		while (getline(iss, line)) {
-			int random = rand() % 4 + 1;
+			int random = rand() % 5 + 1;
 			attron(COLOR_PAIR(random) | A_BOLD);
 			mvprintw(y + lc++, (x - line.length())/2, line.c_str());
 			attroff(COLOR_PAIR(random) | A_BOLD);
 			line.clear();
 		}
 
+		attron(COLOR_PAIR(7));
 		mvprintw(y + (++lc), x_prompt, prompt.c_str());	
+		attroff(COLOR_PAIR(7));
 
 		attron(A_DIM);
 		mvprintw(y_credit, x_credit0, credit0.c_str());	
@@ -173,6 +175,8 @@ Game::Game() {
 		init_pair(3, COLOR_BLUE, COLOR_BLACK);
 		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_WHITE, COLOR_BLACK);
+		init_pair(6, COLOR_WHITE, COLOR_BLUE);
+		init_pair(7, COLOR_BLACK, COLOR_WHITE);
 	}
 }
 

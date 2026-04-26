@@ -190,6 +190,7 @@ void Party::one_more_time() {
 		turn_order.reset_current_to_start();
 
 		bool flip_up = false, flip_down = false;
+		int htally{}, mtally{};
 		while (!flip_down) {
 			actor_pair = turn_order.current();
 
@@ -199,14 +200,15 @@ void Party::one_more_time() {
 
 			Actor *a = actor_pair.first;
 			if (a && a->type() == "hero" && !a->is_dead()) {
-				status = hero_wins;
-				break;
+				htally++;
 			} else if (a && a->type() == "monster" &&
 					   !a->is_dead()) {
-				status = monster_wins;
-				break;
+				mtally++;
 			}
 		} // if hit Merchant, Drop, or other types, keep moving with current()
+		if (!htally) status = monster_wins;
+		else if (!mtally) status = hero_wins;
+		else throw std::runtime_error("the rapture has happened");
 		return;
 	}
 

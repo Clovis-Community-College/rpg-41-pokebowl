@@ -418,7 +418,7 @@ bool Dalet::_subclass_good_to_attack(Actor *opponent) const {
 void Dalet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	HP cure_hp = round(attack_damage() * hurt_scale());
 	last_action += "\t{{ SPECIAL EFFECTS }} " + this->name() + " stole " +
-				   std::to_string(cure_hp) + " HP from " + exclude->name() + " to itself!";
+				   std::to_string(cure_hp) + " HP from a mosnter to itself!";
 
 	last_action += ". \n\t\t\t\t" + this->name() + " now has " +
 				   std::to_string(this->hp()) + " HP.\n";
@@ -624,7 +624,7 @@ void Alpha::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	// count mobstera
 	char count = std::count_if(bank.begin(), bank.end(), [](const Actor* a){ 
 		if (!a) return false;
-		else return (a->is_dead() && a->type() == "monster"); 
+		else return (!a->is_dead() && a->type() == "monster"); 
 	});
 
 	// boost damge. due to logic, will apply to NEXT turn.
@@ -680,13 +680,14 @@ void Charlie::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, str
 	int random = rand() % 16; // super rare
 	if (random) return;
 	hurt_scale(1); // break armor
-	last_action += "\t{{ S**TTY EFFECTS }} " + this->name() + " lost armor!";
+	last_action += "\n\t{{ S**TTY EFFECTS }} " + this->name() + " saw Rosas' VSCode \"howework folder\" and lost armor!\n";
 }
 
 void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	int random = rand() % 125;
 	if (!random) return;
 	cure_damage(random);
+	last_action += "\n\t{{ SPECIAL EFFECTS }} " + this->name() + " healed itself by " + + " HP!\n";
 }
 
 void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {

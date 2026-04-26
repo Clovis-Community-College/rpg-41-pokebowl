@@ -171,7 +171,7 @@ bool Actor::_subclass_good_to_attack(Actor *opponent) const {
 float Actor::_custom_scale() const { return 1.0;}
 
 void Actor::_attack(Actor *opponent) {
-	HP hp_delta = opponent->attack_damage();
+	HP hp_delta = attack_damage();
 	if (items.has_value()) {
 		std::vector<Item> equipped;
 		items->get_all_items(equipped);

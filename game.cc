@@ -218,8 +218,8 @@ void Game::spawn_monster(bool is_boss) {
 	auto prob = [&]() -> int {
 		double rand_01 = ((double)rand() / RAND_MAX);
 		double rand_norm =
-			0.375 + 6.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
-		return (int)round(std::clamp(rand_norm, 1.0, 6.0));
+			0.375 + 3.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+		return (int)round(std::clamp(rand_norm, 1.0, 3.0));
 	};
 
 	Monster *m = nullptr;
@@ -1147,7 +1147,7 @@ void Game::render() {
 					int no = to_string(hp).length();
 					mvprintw(hero_y, 4, "@ %s (HP: ",
 							 name.c_str());
-					if (prc > 0.7) attron(COLOR_PAIR(1));
+					if (prc > 0.8) attron(COLOR_PAIR(1));
 					else if (prc > 0.4) attron(COLOR_PAIR(4));
 					else if (prc > 0) attron(COLOR_PAIR(2));
 					mvprintw(hero_y, 4+temp.length(), "%d",
@@ -1177,8 +1177,8 @@ void Game::render() {
 					int no = to_string(hp).length();
 					mvprintw(monster_y, max_x - 40, "M %s (HP: ",
 							 name.c_str());
-					if (prc > 0.7) attron(COLOR_PAIR(1));
-					else if (prc > 0.4) attron(COLOR_PAIR(4));
+					if (prc > 0.5) attron(COLOR_PAIR(1));
+					else if (prc > 0.25) attron(COLOR_PAIR(4));
 					else if (prc > 0) attron(COLOR_PAIR(2));
 					mvprintw(monster_y, max_x - 40+temp.length(), "%d",
 							 hp);

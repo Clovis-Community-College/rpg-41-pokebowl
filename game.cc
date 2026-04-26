@@ -16,7 +16,7 @@ void Game::splash() {
 	string line;
 	string prompt = "Greetings, PokeKerney! Press [SPACE] to start.";
 	string credit0 = "Made with ", credit1 = "<3", credit2 = " by Tony, McKay, George, Jovanni, and Dillion.";
-	int y, x, x_prompt, x_credit0, x_credit1, x_credit2, y_credit;
+	int y, x, x_prompt, x_credit0, x_credit1, x_credit2, y_credit, y_prompt;
 	getmaxyx(stdscr, y, x);
 
 	y = (y - 10) / 2;
@@ -26,6 +26,7 @@ void Game::splash() {
 	x_credit2 = x_credit1 + credit1.length();
 	
 	y_credit = y*2 + 8;
+	y_prompt = 0;
 
 	// splash screen cuz why not
 	nodelay(stdscr, TRUE);
@@ -34,16 +35,18 @@ void Game::splash() {
 		std::istringstream iss(splash);
 
 		while (getline(iss, line)) {
-			int random = rand() % 5 + 1;
+			int random = rand() % 4 + 1;
 			attron(COLOR_PAIR(random) | A_BOLD);
 			mvprintw(y + lc++, (x - line.length())/2, line.c_str());
 			attroff(COLOR_PAIR(random) | A_BOLD);
 			line.clear();
 		}
 
-		attron(COLOR_PAIR(7));
-		mvprintw(y + (++lc), x_prompt, prompt.c_str());	
-		attroff(COLOR_PAIR(7));
+		int rnd2 = rand() % 13;
+		if (!rnd2 && !y_prompt) {
+			y_prompt = (!y_prompt) ? (y + ++lc) : 0;
+			mvprintw(y_prompt, x_prompt, prompt.c_str());	
+		}
 
 		attron(A_DIM);
 		mvprintw(y_credit, x_credit0, credit0.c_str());	
@@ -172,7 +175,7 @@ Game::Game() {
 		start_color();
 		init_pair(1, COLOR_GREEN, COLOR_BLACK);
 		init_pair(2, COLOR_RED, COLOR_BLACK);
-		init_pair(3, COLOR_WHITE, COLOR_BLUE);
+		init_pair(3, COLOR_BLUE, COLOR_BLACK);
 		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_WHITE, COLOR_BLACK);
 		init_pair(6, COLOR_WHITE, COLOR_BLUE);

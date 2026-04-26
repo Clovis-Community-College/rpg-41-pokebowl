@@ -302,7 +302,7 @@ void Hero::move(Direction d) {
 
 // H subs
 Aleph::Aleph(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750, 1)) {
+	: Hero(_name_, _pos_, 750, Traits(80, 0.5, 1, 750, 1)) {
 	// Snorlax-like
 	// very high HP, mid attk, slightly worse defense BUT very slow speed, go
 	// last
@@ -319,7 +319,7 @@ Gimel::Gimel(string _name_, XY _pos_)
 }
 
 Dalet::Dalet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 800, Traits(20, 0.75, 10, 800, 1)) {
+	: Hero(_name_, _pos_, 800, Traits(20, 0.65, 10, 800, 1)) {
 	// tbd: healer
 }
 
@@ -329,19 +329,19 @@ He::He(string _name_, XY _pos_)
 }
 
 Vav::Vav(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 250, Traits(170, 1.3, 12, 250, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(170, 1.25, 12, 250, 1)) {
 	// berserker
 	// with great attack comes great fragility
 }
 
 Zayin::Zayin(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 1000, Traits(20, 0.4, 3, 1000, 1)) {
+	: Hero(_name_, _pos_, 1000, Traits(20, 0.35, 3, 1000, 1)) {
 	// Shuckle
 	// movable wall basically
 }
 
 Chet::Chet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 250, Traits(180, 1.2, 16, 250, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(180, 1.16, 16, 250, 1)) {
 	// Assasin
 }
 

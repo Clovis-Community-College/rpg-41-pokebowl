@@ -73,36 +73,60 @@ Game::Game() {
 	int cnt = 0;
 
 	while (cnt < 6) {
-		int random = rand() % 8;
+		int random = rand() % 16;
 		Hero *h;
 		XY pos = {100, 100};
 		switch (random) {
 		case 0:
-			h = new Aleph("Aleph", pos);
+			h = new Aleph("Sleep Apnea-lax", pos);
 			break;
 		case 1:
-			h = new Bet("Bet", pos);
+			h = new Bet("Heradot", pos);
 			break;
 		case 2:
-			h = new Gimel("Gimel", pos);
+			h = new Gimel("Aloha-monola", pos);
 			break;
 		case 3:
-			h = new Dalet("Dalet", pos);
+			h = new Dalet("URanusaur", pos);
 			break;
 		case 4:
-			h = new He("He", pos);
+			h = new He("Pawn-mot", pos);
 			break;
 		case 5:
-			h = new Vav("Vav", pos);
+			h = new Vav("Garchonkk", pos);
 			break;
 		case 6:
-			h = new Zayin("Zayin", pos);
+			h = new Zayin("Shucked", pos);
 			break;
 		case 7:
-			h = new Chet("Chet", pos);
+			h = new Chet("Meh-ninja", pos);
 			break;
+                case 8:
+                        h = new Aleph("Snore-chella", pos);
+                        break;
+                case 9:
+                        h = new Bet("Here-a-loss", pos);
+                        break;
+                case 10:
+                        h = new Gimel("Alamos-la", pos);
+                        break;
+                case 11:
+                        h = new Dalet("Ve-no-sir", pos);
+                        break;
+                case 12:
+                        h = new He("Paw-mid", pos);
+                        break;
+                case 13:
+                        h = new Vav("Gaarrr-chump", pos);
+                        break;
+                case 14:
+                        h = new Zayin("Shuck-L", pos);
+                        break;
+                case 15:
+                        h = new Chet("Leaded-inja", pos);
+                        break;
 		default:
-			h = new Zayin("Zayin", pos);
+			h = new Zayin("Shucked", pos);
 			break;
 		}
 		if (!heroes.contains(random)) {
@@ -218,41 +242,65 @@ void Game::spawn_monster(bool is_boss) {
 	auto prob = [&]() -> int {
 		double rand_01 = ((double)rand() / RAND_MAX);
 		double rand_norm =
-			0.375 + 6.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
-		return (int)round(std::clamp(rand_norm, 1.0, 6.0));
+			0.375 + 3.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+		return (int)round(std::clamp(rand_norm, 1.0, 3.0));
 	};
 
 	Monster *m = nullptr;
 
-	for (int i = 0; i < prob(); i++) {
-		int type = rand() % 8;
+	for (int i = 1; i < prob(); i++) {
+		int type = rand() % 16;
 		switch (type) {
 		case 0:
-			m = new Alpha("Alpha", {x, y});
+			m = new Alpha("eRaticate", {x, y});
 			break;
 		case 1:
-			m = new Bravo("Bravo", {x, y});
+			m = new Bravo("Chrome-bat", {x, y});
 			break;
 		case 2:
-			m = new Charlie("Charlie", {x, y});
+			m = new Charlie("imMa-choke", {x, y});
 			break;
 		case 3:
-			m = new Delta("Delta", {x, y});
+			m = new Delta("Gen-grene", {x, y});
 			break;
 		case 4:
-			m = new Echo("Echo", {x, y});
+			m = new Echo("Am-pee-pom", {x, y});
 			break;
 		case 5:
-			m = new Echo("Echo", {x, y});
+			m = new Echo("Am-pee-pom", {x, y});
 			break;
 		case 6:
-			m = new Golf("Golf", {x, y});
+			m = new Golf("Bliss-you", {x, y});
 			break;
 		case 7:
-			m = new Hotel("Hotel", {x, y});
+			m = new Hotel("Pearl-sian", {x, y});
 			break;
+                case 8:
+                        m = new Alpha("Gas-ticate", {x, y});
+                        break;
+                case 9:
+                        m = new Bravo("Click-bat", {x, y});
+                        break;
+                case 10:
+                        m = new Charlie("Ma-woke", {x, y});
+                        break;
+                case 11:
+                        m = new Delta("Gen-alpha", {x, y});
+                        break;
+                case 12:
+                        m = new Echo("Eye-pom", {x, y});
+                        break;
+                case 13:
+                        m = new Echo("A-simp-om", {x, y});
+                        break;
+                case 14:
+                        m = new Golf("Glissey", {x, y});
+                        break;
+                case 15:
+                        m = new Hotel("Purr-sona", {x, y});
+                        break;
 		default:
-			m = new Alpha("Alpha", {x, y});
+			m = new Alpha("eRaticate", {x, y});
 			break;
 		}
 
@@ -549,6 +597,20 @@ void Game::handle_input(int ch) {
 			}
 		}
 	} else if (state == GameState::COMBAT) {
+		auto& bank = player_party.bank;
+		auto mit = find_if(bank.begin(), bank.end(), [](Actor* a){
+			Monster* m = dynamic_cast<Monster*>(a);
+			if (!m) return false;
+			return (m->is_boss());
+		});
+		
+		auto hdit = count_if(bank.begin(), bank.end(), [](Actor* a){
+			Hero* h = dynamic_cast<Hero*>(a);
+			if (!h) return false;
+			return (!h->is_dead());
+		});
+		bool hdie = !hdit;
+		bool boss_present = mit != bank.end();
 		if (player_party.status == init || player_party.status == ongoing) {
 
 			if (ch == 'b') {
@@ -674,29 +736,42 @@ void Game::handle_input(int ch) {
 				current_enemy = nullptr;
 				current_enemy_is_boss = false;
 			}
-		} else if (player_party.status == monster_wins) {
+		} else if (player_party.status == monster_wins && (boss_present || hdie)) {
 			if (ch == ' ') exit(0);
-		} else if ( player_party.status == cycle_ends) {
-			if (ch == ' ') {
-				state = GameState::MAP;
-				for (auto it = player_party.bank.begin();
-					 it != player_party.bank.end();) {
-					Actor *a = *it;
-					if (a && a->type() == "monster") {
-						player_party.turn_order.list_delete(a);
-						it = player_party.bank.erase(it);
-						delete a;
-					} else {
-						++it;
-					}
-				}
-				current_enemy = nullptr;
-				current_enemy_is_boss = false;
-				if (!player_party.history.empty()) {
-					h_main->pos(player_party.history[0]);
-				}
-			}
+		} else if (player_party.status == monster_wins) {
+	            if (ch == ' ') {
+	                state = GameState::MAP;
+	                for (auto it = player_party.bank.begin(); it != player_party.bank.end();) {
+	                    Actor* a = *it;
+	                    if (a && a->type() == "monster") {
+	                        player_party.turn_order.list_delete(a);
+	                        it = player_party.bank.erase(it);
+	                        delete a;
+	                    } else {
+	                        ++it;
+	                    }
+	                }
+	                current_enemy = nullptr;
+	                current_enemy_is_boss = false;
+	                if (!player_party.history.empty()) {
+	                    h_main->pos(player_party.history[0]);
+	                }
 		}
+	    } else if ( player_party.status == cycle_ends) {
+		
+			state = GameState::MAP;
+			if (current_enemy) {
+				auto &bank = player_party.bank;
+				bank.erase(
+					std::remove(bank.begin(), bank.end(), current_enemy),
+					bank.end());
+				roaming_monsters.push_back(current_enemy);
+				current_enemy = nullptr;
+			}
+			if (!player_party.history.empty()) {
+				h_main->pos(player_party.history[0]);
+			}
+	}
 	}
 }
 
@@ -1104,15 +1179,29 @@ void Game::render() {
 		mvprintw(2, max_x / 2 - 11, "=== BATTLE OVERVIEW ===");
 		int hero_y = 6;
 		for (size_t i = 0; i < player_party.bank.size(); ++i) {
+			string name = player_party.bank[i]->name();
 			if (player_party.bank[i] &&
 				player_party.bank[i]->type() == "hero") {
 				if (player_party.bank[i]->is_dead()) {
+					attron(A_DIM);
 					mvprintw(hero_y, 4, "X %s (DEAD)",
-							 player_party.bank[i]->name().c_str());
+					name.c_str());
+					attroff(A_DIM);
 				} else {
-					mvprintw(hero_y, 4, "@ %s (HP: %d)",
-							 player_party.bank[i]->name().c_str(),
-							 player_party.bank[i]->hp());
+					HP hp = player_party.bank[i]->hp();
+					HP hpm = player_party.bank[i]->hp_max();
+					float prc = (float) hp / (float) hpm;
+					string temp = "@ " + name + " (HP: ";
+					int no = to_string(hp).length();
+					mvprintw(hero_y, 4, "@ %s (HP: ",
+							 name.c_str());
+					if (prc > 0.8) attron(COLOR_PAIR(1));
+					else if (prc > 0.4) attron(COLOR_PAIR(4));
+					else if (prc > 0) attron(COLOR_PAIR(2));
+					mvprintw(hero_y, 4+temp.length(), "%d",
+							 hp);
+					attrset(A_NORMAL);
+					mvprintw(hero_y, 4+no+temp.length(), ")");
 				}
 				hero_y += 2;
 			}
@@ -1120,20 +1209,47 @@ void Game::render() {
 
 		int monster_y = 6;
 		for (size_t i = 0; i < player_party.bank.size(); ++i) {
+			string name = player_party.bank[i]->name();
 			if (player_party.bank[i] &&
 				player_party.bank[i]->type() == "monster") {
 				if (player_party.bank[i]->is_dead()) {
+					attron(A_DIM);
 					mvprintw(monster_y, max_x - 40, "X %s (DEAD)",
-							 player_party.bank[i]->name().c_str());
+					player_party.bank[i]->name().c_str());
+					attroff(A_DIM);
 				} else {
-					mvprintw(monster_y, max_x - 40, "M %s (HP: %d)",
-							 player_party.bank[i]->name().c_str(),
-							 player_party.bank[i]->hp());
+					HP hp = player_party.bank[i]->hp();
+					HP hpm = player_party.bank[i]->hp_max();
+					float prc = (float) hp / (float) hpm;
+					string temp = "M " + name + " (HP: ";
+					int no = to_string(hp).length();
+					mvprintw(monster_y, max_x - 40, "M %s (HP: ",
+							 name.c_str());
+					if (prc > 0.5) attron(COLOR_PAIR(1));
+					else if (prc > 0.25) attron(COLOR_PAIR(4));
+					else if (prc > 0) attron(COLOR_PAIR(2));
+					mvprintw(monster_y, max_x - 40+temp.length(), "%d",
+							 hp);
+					attrset(A_NORMAL);
+					mvprintw(monster_y, max_x - 40+no+temp.length(), ")");
 				}
 				monster_y += 2;
 			}
 		}
-		//		player_party.last_action.clear();
+		//		player_party.last_action.clear()
+		auto& bank = player_party.bank;
+		auto mit = find_if(bank.begin(), bank.end(), [](Actor* a){
+			Monster* m = dynamic_cast<Monster*>(a);
+			if (!m) return false;
+			return (m->is_boss());
+		});
+		auto hdit = count_if(bank.begin(), bank.end(), [](Actor* a){
+			Hero* h = dynamic_cast<Hero*>(a);
+			if (!h) return false;
+			return (!h->is_dead());
+		});
+		bool boss_present = mit != bank.end();
+		bool hdie = !hdit;
 		if (!player_party.last_action.empty()) {
 			mvprintw(max_y / 2, 4, "> %s", player_party.last_action.c_str());
 		}
@@ -1164,14 +1280,14 @@ void Game::render() {
 				}
 			}
 			mvprintw(max_y - 2, 4, "Press 'SPACE' to return to map.");
-		} else if (player_party.status == monster_wins) {
+		} else if (player_party.status == monster_wins && (boss_present || hdie)) {
 			player_party.last_action.clear();
 			int max_y, max_x;
 			getmaxyx(stdscr, max_y, max_x);
 			int start_y = max_y - 25;
 			int start_x = 4;
-			mvprintw(start_y - 1, start_x, "Monsters win. Press 'q' or 'SPACE' to quit game.");
-			mvprintw(start_y, start_x, "(boo u loser)");
+			mvprintw(start_y - 1, start_x, "All heroes ded. Press 'q' or 'SPACE' to quit game.");
+			mvprintw(start_y, start_x, "(boo u Kerny)");
 			mvprintw(start_y + 1,  start_x, "   ___                       ___   ");
 			mvprintw(start_y + 2,  start_x, "  /   \\                     /   \\  ");
 			mvprintw(start_y + 3,  start_x, " /     \\___________________/     \\ ");
@@ -1186,6 +1302,10 @@ void Game::render() {
 			player_party.last_action.clear();
 			mvprintw(max_y - 4, 4,
 					 "Turns expired. Press 'SPACE' to return to map.");
+		} else if (player_party.status == monster_wins) {
+			player_party.last_action.clear();
+			mvprintw(max_y - 4, 4,
+					 "Monsters win. Press 'SPACE' to return to map.");
 		}
 	}
 

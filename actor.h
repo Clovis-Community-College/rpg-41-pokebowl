@@ -90,6 +90,7 @@ private:
 protected:
 	constexpr static int32_t HP_MAX = INT32_MAX;
 	virtual float _custom_scale() const;
+	void kill();
 public:
 	// Inventory. NOW FREE TO GRAB AND STEAL /s
 	optional<Inventory> items{};

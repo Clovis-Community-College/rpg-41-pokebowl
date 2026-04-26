@@ -163,6 +163,7 @@ void Party::one_more_time() {
 	Actor *actor = actor_pair.first;
 
 	if (!actor) return;
+	else if (actor->is_dead()) return;
 
 	auto fightable = [&actor](Actor *opponent) {
 		if (!opponent)
@@ -190,23 +191,25 @@ void Party::one_more_time() {
 		turn_order.reset_current_to_start();
 
 		bool flip_up = false, flip_down = false;
+		int htally{}, mtally{};
 		while (!flip_down) {
 			actor_pair = turn_order.current();
 
 			// Check for TRUE loopback on 2 elements
-			flip_up = actor_pair.second;
-			flip_down = (flip_up && !actor_pair.second);
+			flip_up = flip_up || actor_pair.second;
+			flip_down = flip_down || (flip_up && !actor_pair.second);
 
 			Actor *a = actor_pair.first;
 			if (a && a->type() == "hero" && !a->is_dead()) {
-				status = hero_wins;
-				break;
+				htally++;
 			} else if (a && a->type() == "monster" &&
 					   !a->is_dead()) {
-				status = monster_wins;
-				break;
+				mtally++;
 			}
 		} // if hit Merchant, Drop, or other types, keep moving with current()
+		if (!htally) status = monster_wins;
+		else if (!mtally) status = hero_wins;
+		else throw std::runtime_error("the rapture has happened");
 		return;
 	}
 

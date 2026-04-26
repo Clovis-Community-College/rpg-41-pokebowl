@@ -117,6 +117,8 @@ void Actor::cure_damage(HP hp_delta, float external_heal_scale = 1) {
 	hp(hp_delta, external_heal_scale, op);
 }
 
+void Actor::kill() { hp(hp(), 0,[](float a,float b){return 0;}); }
+
 void Actor::move(Direction d) {}
 
 HP Actor::attack(Actor *opponent) {
@@ -230,7 +232,10 @@ ActorType Drop::type() const { return "drop"; }
 // prevention - in case actor subgroup can be refactored
 void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) { 
 	subclass_special(bank, hitlist, exclude, last_action);
-	int random = rand() % 10; // super rare
+
+	if (this->is_dead()) return;
+
+	int random = rand() % 8; // super rare
 	
 	if (random) return;
 	
@@ -261,7 +266,7 @@ void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last
 	}
 
 	last_action += "\n";
-
+	this->kill();
 	hitlist.shove(this, this, hp(), this->type(), this->name(), last_action);
 }
 
@@ -297,7 +302,7 @@ void Hero::move(Direction d) {
 
 // H subs
 Aleph::Aleph(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 750, Traits(80, 0.75, 1, 750, 1)) {
+	: Hero(_name_, _pos_, 750, Traits(80, 0.5, 1, 750, 1)) {
 	// Snorlax-like
 	// very high HP, mid attk, slightly worse defense BUT very slow speed, go
 	// last
@@ -314,7 +319,7 @@ Gimel::Gimel(string _name_, XY _pos_)
 }
 
 Dalet::Dalet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 800, Traits(20, 0.75, 10, 800, 1)) {
+	: Hero(_name_, _pos_, 800, Traits(20, 0.65, 10, 800, 1)) {
 	// tbd: healer
 }
 
@@ -324,19 +329,19 @@ He::He(string _name_, XY _pos_)
 }
 
 Vav::Vav(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 250, Traits(170, 1.3, 12, 250, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(170, 1.25, 12, 250, 1)) {
 	// berserker
 	// with great attack comes great fragility
 }
 
 Zayin::Zayin(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 1000, Traits(20, 0.4, 3, 1000, 1)) {
+	: Hero(_name_, _pos_, 1000, Traits(20, 0.35, 3, 1000, 1)) {
 	// Shuckle
 	// movable wall basically
 }
 
 Chet::Chet(string _name_, XY _pos_)
-	: Hero(_name_, _pos_, 250, Traits(180, 1.2, 16, 250, 1)) {
+	: Hero(_name_, _pos_, 250, Traits(180, 1.16, 16, 250, 1)) {
 	// Assasin
 }
 
@@ -364,7 +369,7 @@ void Aleph::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 
 void Bet::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {
 	if (_custom_scale() > 1.5) {
-		const string scale = std::format("${:.2f}", _custom_scale());
+		const string scale = std::format("{:.2f}x", _custom_scale());
 		last_action += "\n\t{{SPECIAL EFFECT}} " + this->name() + " just BOOSTED atck pwr by " + scale + "!\n\t\t\t\t";
 	}
 }
@@ -512,7 +517,7 @@ void Zayin::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	string scale;
 
 	if (random) {
-		scale = std::format("${:.2f}", opponent->hurt_scale());
+		scale = std::format("{:.2f}", opponent->hurt_scale());
 		last_action += "defense is only " + scale + "x as strong!";
 	}
 	else
@@ -605,7 +610,7 @@ Echo::Echo(string _name_, XY _pos_)
 }
 
 Foxtrot::Foxtrot(string _name_, XY _pos_)
-	: Monster(_name_, _pos_, 1500, Traits(150, 0.5, 14, 2500, 1)) {
+	: Monster(_name_, _pos_, 1500, Traits(120, 0.5, 14, 1500, 1)) {
 	// BOSS - mewtwo
 }
 
@@ -687,7 +692,7 @@ void Delta::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, strin
 	int random = rand() % 125;
 	if (!random) return;
 	cure_damage(random);
-	last_action += "\n\t{{ SPECIAL EFFECTS }} " + this->name() + " healed itself by " + + " HP!\n";
+	last_action += "\n\t{{ SPECIAL EFFECTS }} " + this->name() + " healed itself by " + to_string(random) + " HP!\n";
 }
 
 void Echo::subclass_special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last_action) {

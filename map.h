@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+using std::string;
+
 class Hero;
 
 class Map {
@@ -12,6 +14,7 @@ private:
     int width, height;
 	void loss(int ox, int oy);
 	void au(int ox, int oy, int bx, int by, char body, char visor, char border, char visor_border);
+	void ca(char terrain, char comp_terrain, char die_terrain, string excl, int die, int live, bool first_pass = false, int thicc = 0, int noise_ratio = 2);
 public:
     Map();
     void generate();

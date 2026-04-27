@@ -225,6 +225,7 @@ Game::Game() {
 		init_pair(9, COLOR_YELLOW, COLOR_BLACK); // sand
 		init_pair(10, COLOR_GREEN, COLOR_BLACK); // swamp
 		init_pair(11, COLOR_MAGENTA, COLOR_BLACK); // purple forest??
+		init_pair(12, COLOR_BLUE, COLOR_BLACK); // dimmer water
 	}
 }
 
@@ -813,14 +814,25 @@ void Game::render() {
 				int map_x = start_x + x;
 				int map_y = start_y + y;
 				char tile = world.get_tile(map_x, map_y);
+				int frog_super_gay = rand()%12 + 1;
 				if (tile == '~') {
-					attron(COLOR_PAIR(3));
+					int glitter = rand() % 200;
+					if (!glitter) attron(COLOR_PAIR(5));
+					else attron(COLOR_PAIR(3));
 					mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(3));
+					if (!glitter) attroff(COLOR_PAIR(5));
+					else attroff(COLOR_PAIR(3));
 				} else if (tile == '.') {
-					attron(COLOR_PAIR(1));
-					mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(1));
+					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
+					int final_color = (stepped == 'T') ? frog_super_gay : 1;
+					attron(COLOR_PAIR(final_color));
+					int glitter = rand() % 50'000;
+					if (glitter <= 60) mvaddch(y, x, 'v');
+					else if (glitter <= 80) mvaddch(y, x, 'w');
+					else if (glitter <= 100) mvaddch(y, x, 'V');
+					else if (glitter <= 120) mvaddch(y, x, 'W');
+					else mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(final_color));
 				} else if (tile == '^') {
 					attron(COLOR_PAIR(8));
 					mvaddch(y, x, tile);
@@ -837,6 +849,15 @@ void Game::render() {
 					attron(COLOR_PAIR(11) | A_BOLD);
 					mvaddch(y, x, tile);
 					attroff(COLOR_PAIR(11) | A_BOLD);
+				} else if (tile == ':') {
+					attron(COLOR_PAIR(12) | A_DIM);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(12) | A_DIM);
+				} else if (tile == '*') {
+					int frog_gay = rand() % 5 + 1;
+					attron(COLOR_PAIR(frog_gay));
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(frog_gay));
 				} else {
 					attron(COLOR_PAIR(4));
 					mvaddch(y, x, tile);

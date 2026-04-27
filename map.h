@@ -11,6 +11,7 @@ private:
     std::vector<std::string> grid;
     int width, height;
 	void loss(int ox, int oy);
+	void au(int ox, int oy, int bx, int by, char body, char visor, char border, char visor_border);
 public:
     Map();
     void generate();

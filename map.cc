@@ -59,7 +59,7 @@ void Map::loss(int ox, int oy) {
 	// monster spawn fest
 	for (int y = oy; y <= oy + by; y++) {
 		for (int x = ox; x <= ox + bx; x++) {
-			int rnd = rand() % 1500;
+			int rnd = rand() % 1000;
 			if (rnd)
 				continue;
 			grid[y][x] = (grid[y][x] == '.') ? 'm' : grid[y][x];

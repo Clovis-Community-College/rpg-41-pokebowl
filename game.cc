@@ -858,9 +858,9 @@ void Game::render() {
 					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
 					int frog_gay_mtn = (rand() % 10) ? 1 : 8;
 					int final_color = (stepped == 'T') ? frog_gay_mtn : 8;
-					attron(COLOR_PAIR(final_color) | A_DIM);
+					attron(COLOR_PAIR(final_color));
 					mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(final_color) | A_DIM);
+					attroff(COLOR_PAIR(final_color));
 				} else if (tile == ',') {
 					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
 					int frog_gay_sand = (rand() % 5) ? 9 : 14;

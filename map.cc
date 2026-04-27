@@ -31,6 +31,8 @@ void Map::ca(char terrain, char comp_terrain, char die_terrain, string excl, int
 			if (rmap[y+dy][x+dx] != terrain && rmap[y+dy][x+dx] != dt(x,y)) continue;
 			// dont count dead cells lol
 			if (rmap[y+dy][x+dx] == dt(x,y)) continue;
+			// dont count itself
+			if (dy == 0 && dx == 0) continue;
 			// randomize comp cell
 			if (rmap[y+dy][x+dx] == ct(x,y)) count += (!(rand() % 3));
 			else count++;
@@ -231,19 +233,19 @@ void Map::generate() {
 	// swamp
 	ca('%', '.', ' ', string("~,"), 3, 5, true, 25, 40);
 	ca('%', '.', ' ', string("~,"), 3, 5, true, 55, 6);
-	ca('%', '.', ' ', string("~,"), 3, 5, true, 65, 15);
-	ca('%', '.', ' ', string("~,"), 3, 5, true, 75, 40);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 65, 25);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 75, 80);
 	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
 	ca('%', '.', ' ', string("~"), 4, 4, false, 0);
 	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
 	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
 
 	// mountain
-	ca('^', '^', ' ', string("~,"), 3, 6, true, 30, 8);
-	ca('^', '^', ' ', string("~,"), 3, 6, true, 40, 14);
+	ca('^', ' ', ' ', string("~,"), 3, 6, true, 30, 14);
+	ca('^', ' ', ' ', string("~,"), 3, 6, true, 40, 25);
 	ca('^', '%', ' ', string("~,"), 3, 6);
 	ca('^', 'T', ' ', string("~,%"), 3, 6);
-	ca('^', '^', ' ', string("~,%"), 5, 6, false, 0);
+	ca('^', ' ', ' ', string("~,%"), 5, 6, false, 0);
 
 	// pool
 /*	ca('~', ' ', ' ', string("~,^"), 3, 5, true, 40, 25);

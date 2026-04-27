@@ -24,6 +24,14 @@ public:
 	int equip_cursor;
 	int equip_hero_idx;
 	Item selected_item;
+
+	constexpr static auto p = []() -> int {
+		srand(time(0));
+                double rand_01 = ((double)rand() / RAND_MAX);
+                double rand_norm =
+                        1.375 + 5.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+                return (int)round(std::clamp(rand_norm, 3.0, 6.0));
+        };
 	
 	Inventory merchant_inventory;
 	ShopSubState shop_sub;
@@ -42,6 +50,7 @@ public:
 	unordered_map<int, Hero *> heroes;
 	QuestSystem quests;
 	std::vector<Monster *> roaming_monsters;
+	std::vector<Monster *> drops;
 	Monster *current_enemy;
 	bool current_enemy_is_boss;
 
@@ -51,7 +60,9 @@ public:
 	bool inn_healed;
 	std::vector<Item> combat_loot;
 
-	void spawn_monster(bool is_boss = false);
+	void spawn_monster(bool is_boss = false,  
+		function<int(void)> prob = p,
+		int x = -1, int y = -1);
 
 	Game();
 	~Game();

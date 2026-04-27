@@ -10,7 +10,7 @@ class Map {
 private:
     std::vector<std::string> grid;
     int width, height;
-
+	void loss(int ox, int oy);
 public:
     Map();
     void generate();

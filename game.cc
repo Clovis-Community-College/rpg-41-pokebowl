@@ -146,6 +146,9 @@ Game::Game() {
 	world.generate();
 
 	int random;
+
+	// can only call spawn_monster() AFTER this loop!!!!!
+	// h_main deref hell!!!!!!!!
 	while (true) {
 		random = rand() % 8;
 		if (heroes.contains(random)) {
@@ -162,6 +165,20 @@ Game::Game() {
 	for (auto &[index, ptr] : heroes)
 		if (index != random)
 			player_party.add_member(heroes.at(index));
+
+	auto prob = [&]() -> int {
+		double rand_01 = ((double)rand() / RAND_MAX);
+		double rand_norm =
+		        1.375 + 5.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+		return (int)round(std::clamp(rand_norm, 3.0, 6.0));
+	};
+
+	for (int y = 0; y < world.get_height(); y++) {
+		for (int x = 0; x < world.get_width(); x++) {
+			char c = world.get_tile(x, y);
+			if (c == 'm') spawn_monster(false, prob, x, y);
+		}
+	}
 
 	spawn_monster(true); // Spawn boss at north
 	for (int i = 0; i < 15; i++) {
@@ -205,9 +222,9 @@ Game::Game() {
 		init_pair(6, COLOR_WHITE, COLOR_BLUE);
 		init_pair(7, COLOR_BLACK, COLOR_WHITE);
 		init_pair(8, COLOR_WHITE, COLOR_BLACK); //mountain
-		init_pair(9, COLOR_BLACK, COLOR_WHITE); // sand
+		init_pair(9, COLOR_YELLOW, COLOR_BLACK); // sand
 		init_pair(10, COLOR_GREEN, COLOR_BLACK); // swamp
-		init_pair(11, COLOR_MAGENTA, COLOR_MAGENTA); // purple forest??
+		init_pair(11, COLOR_MAGENTA, COLOR_BLACK); // purple forest??
 	}
 }
 
@@ -227,28 +244,25 @@ Game::~Game() {
 	roaming_monsters.clear();
 }
 
-void Game::spawn_monster(bool is_boss) {
+void Game::spawn_monster(bool is_boss, function<int(void)> prob, int x, int y) {
+//	assert(h_main != nullptr);
 	if (is_boss) {
-		roaming_monsters.push_back(new Foxtrot("Boss M.", {100, 10}));
+		roaming_monsters.push_back(new Foxtrot("MEH-two", {100, 10}));
 		return;
 	}
 
-	int x, y;
+	if (x >= 0 && y >= 0) goto seed_xy;
 	do {
-		x = rand() % world.get_width();
-		y = rand() % world.get_height();
+		int x_mod = world.get_width();
+		int y_mod = world.get_height();
+		x = rand() % x_mod;
+		y = rand() % y_mod;
 	} while (world.get_tile(x, y) != '.' ||
 			 (x >= 90 && x <= 110 && y >= 90 && y <= 110));
 
+seed_xy:
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)
 		return;
-
-	auto prob = [&]() -> int {
-		double rand_01 = ((double)rand() / RAND_MAX);
-		double rand_norm =
-			0.375 + 3.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
-		return (int)round(std::clamp(rand_norm, 1.0, 3.0));
-	};
 
 	Monster *m = nullptr;
 
@@ -346,7 +360,7 @@ void Game::handle_input(int ch) {
 		bool wants_to_move = false;
 
 		// swamp slowdown
-		int rnd_stuck = rand() % 2;
+		int rnd_stuck = rand() % 3;
 		char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
 		if (stepped == '%' && rnd_stuck) return;
 
@@ -400,7 +414,7 @@ void Game::handle_input(int ch) {
 					player_party.record_move(old_pos);
 					float rand_norm = static_cast<float>(rand()) /
 									  static_cast<float>(RAND_MAX);
-					if (rand_norm < 0.04 && roaming_monsters.size() < 25) {
+					if (rand_norm < 0.03 && roaming_monsters.size() < 25) {
 						spawn_monster(false);
 					}
 

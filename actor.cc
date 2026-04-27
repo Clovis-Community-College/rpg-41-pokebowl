@@ -235,7 +235,7 @@ void NonWall::special(Bank& bank, Hitlist& hitlist, Actor *exclude, string& last
 
 	if (this->is_dead()) return;
 
-	int random = rand() % 8; // super rare
+	int random = rand() % 15; // super rare
 	
 	if (random) return;
 	

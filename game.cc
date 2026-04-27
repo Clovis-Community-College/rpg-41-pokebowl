@@ -69,6 +69,11 @@ void Game::splash() {
 	clear();
 }
 
+int Game::grass_variant(int x, int y, int seed) {
+    long long int hash = 167641ll * (long long) (x^y) + 895151ll * (long long) ((y>>7)^(x<<3))^y + 185303ll * (long long) seed;
+	return hash % 5861777;
+}
+
 Game::Game() {
 	int cnt = 0;
 
@@ -146,6 +151,9 @@ Game::Game() {
 	world.generate();
 
 	int random;
+
+	// can only call spawn_monster() AFTER this loop!!!!!
+	// h_main deref hell!!!!!!!!
 	while (true) {
 		random = rand() % 8;
 		if (heroes.contains(random)) {
@@ -153,6 +161,8 @@ Game::Game() {
 			break;
 		}
 	}
+
+	seed = rand() % 78511;
 
 	// ONLY h_main GETS TO BE THE FIRST TO BE ADDED!!!!!!!!
 	// only the firts one gets to control the snake
@@ -162,6 +172,20 @@ Game::Game() {
 	for (auto &[index, ptr] : heroes)
 		if (index != random)
 			player_party.add_member(heroes.at(index));
+
+	auto prob = [&]() -> int {
+		double rand_01 = ((double)rand() / RAND_MAX);
+		double rand_norm =
+		        1.375 + 5.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+		return (int)round(std::clamp(rand_norm, 3.0, 6.0));
+	};
+
+	for (int y = 0; y < world.get_height(); y++) {
+		for (int x = 0; x < world.get_width(); x++) {
+			char c = world.get_tile(x, y);
+			if (c == 'm') spawn_monster(false, prob, x, y);
+		}
+	}
 
 	spawn_monster(true); // Spawn boss at north
 	for (int i = 0; i < 15; i++) {
@@ -202,8 +226,14 @@ Game::Game() {
 		init_pair(3, COLOR_BLUE, COLOR_BLACK);
 		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_WHITE, COLOR_BLACK);
-		init_pair(6, COLOR_WHITE, COLOR_BLUE);
-		init_pair(7, COLOR_BLACK, COLOR_WHITE);
+		init_pair(6, COLOR_BLUE, COLOR_BLACK);
+		init_pair(7, COLOR_WHITE, COLOR_BLACK);
+		init_pair(8, COLOR_WHITE, COLOR_BLACK); //mountain
+		init_pair(9, COLOR_YELLOW, COLOR_BLACK); // sand
+		init_pair(10, COLOR_GREEN, COLOR_BLACK); // swamp
+		init_pair(11, COLOR_MAGENTA, COLOR_BLACK); // purple forest??
+		init_pair(12, COLOR_BLUE, COLOR_BLACK); // dimmer water
+		init_pair(13, COLOR_WHITE, COLOR_RED);
 	}
 }
 
@@ -223,28 +253,25 @@ Game::~Game() {
 	roaming_monsters.clear();
 }
 
-void Game::spawn_monster(bool is_boss) {
+void Game::spawn_monster(bool is_boss, function<int(void)> prob, int x, int y) {
+//	assert(h_main != nullptr);
 	if (is_boss) {
-		roaming_monsters.push_back(new Foxtrot("Boss M.", {100, 10}));
+		roaming_monsters.push_back(new Foxtrot("MEH-two", {100, 10}));
 		return;
 	}
 
-	int x, y;
+	if (x >= 0 && y >= 0) goto seed_xy;
 	do {
-		x = rand() % world.get_width();
-		y = rand() % world.get_height();
+		int x_mod = world.get_width();
+		int y_mod = world.get_height();
+		x = rand() % x_mod;
+		y = rand() % y_mod;
 	} while (world.get_tile(x, y) != '.' ||
 			 (x >= 90 && x <= 110 && y >= 90 && y <= 110));
 
+seed_xy:
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)
 		return;
-
-	auto prob = [&]() -> int {
-		double rand_01 = ((double)rand() / RAND_MAX);
-		double rand_norm =
-			0.375 + 3.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
-		return (int)round(std::clamp(rand_norm, 1.0, 3.0));
-	};
 
 	Monster *m = nullptr;
 
@@ -341,6 +368,11 @@ void Game::handle_input(int ch) {
 		Direction dir = UP;
 		bool wants_to_move = false;
 
+		// swamp slowdown
+		int rnd_stuck = rand() % 3;
+		char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
+		if (stepped == '%' && rnd_stuck) return;
+
 		switch (ch) {
 		case KEY_UP:
 			target_y--;
@@ -391,7 +423,7 @@ void Game::handle_input(int ch) {
 					player_party.record_move(old_pos);
 					float rand_norm = static_cast<float>(rand()) /
 									  static_cast<float>(RAND_MAX);
-					if (rand_norm < 0.04 && roaming_monsters.size() < 25) {
+					if (rand_norm < 0.03 && roaming_monsters.size() < 25) {
 						spawn_monster(false);
 					}
 
@@ -790,14 +822,50 @@ void Game::render() {
 				int map_x = start_x + x;
 				int map_y = start_y + y;
 				char tile = world.get_tile(map_x, map_y);
+				int frog_super_gay = rand()%12 + 1;
 				if (tile == '~') {
-					attron(COLOR_PAIR(3));
+					int glitter = rand() % 200;
+					if (!glitter) attron(COLOR_PAIR(5));
+					else attron(COLOR_PAIR(3));
 					mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(3));
+					if (!glitter) attroff(COLOR_PAIR(5));
+					else attroff(COLOR_PAIR(3));
 				} else if (tile == '.') {
-					attron(COLOR_PAIR(1));
+					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
+					int final_color = (stepped == 'T') ? frog_super_gay : 1;
+					attron(COLOR_PAIR(final_color) | A_DIM);
+					int gv = grass_variant(map_x, map_y, seed);
+					if (gv < 1579) mvaddch(y, x, 'W');
+					else if (gv < 5101) mvaddch(y, x, 'V');
+					else if (gv < 9677) mvaddch(y, x, 'w');
+					else if (gv < 13913) mvaddch(y, x, 'v');
+					else mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(final_color) | A_DIM);
+				} else if (tile == '^') {
+					attron(COLOR_PAIR(8));
 					mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(1));
+					attroff(COLOR_PAIR(8));
+				} else if (tile == ',') {
+					attron(COLOR_PAIR(9));
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(9));
+				} else if (tile == '%') {
+					attron(COLOR_PAIR(10) | A_DIM);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(10) | A_DIM);
+				} else if (tile == 'T') {
+					attron(COLOR_PAIR(11) | A_BOLD);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(11) | A_BOLD);
+				} else if (tile == ':') {
+					attron(COLOR_PAIR(12) | A_DIM);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(12) | A_DIM);
+				} else if (tile == '*') {
+					int frog_gay = rand() % 5 + 1;
+					attron(COLOR_PAIR(frog_gay));
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(frog_gay));
 				} else {
 					attron(COLOR_PAIR(4));
 					mvaddch(y, x, tile);
@@ -812,9 +880,9 @@ void Game::render() {
 			int mx = m->pos().x - start_x;
 			int my = m->pos().y - start_y;
 			if (mx >= 0 && mx < max_x && my >= 0 && my < max_y) {
-				attron(COLOR_PAIR(2));
+				attron(COLOR_PAIR(13));
 				mvaddch(my, mx, m->is_boss() ? 'B' : 'M');
-				attroff(COLOR_PAIR(2));
+				attroff(COLOR_PAIR(13));
 			}
 		}
 
@@ -851,13 +919,13 @@ void Game::render() {
 				// aka, only a[0] gonan be the snake leader!!!
 				// nasty bug made by mckay™ (no hate)
 				if (player_party.bank[i]->is_dead()) {
-					attron(COLOR_PAIR(color) | A_DIM);
+					attron(COLOR_PAIR(color) | A_STANDOUT);
 					mvaddch(py, px, '.');
-					attroff(COLOR_PAIR(color) | A_DIM);
+					attroff(COLOR_PAIR(color) | A_STANDOUT);
 				} else {
-					attron(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
+					attron(COLOR_PAIR(color) | ((i == 0) ? A_STANDOUT : 0));
 					mvaddch(py, px, p_chars[i]);
-					attroff(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
+					attroff(COLOR_PAIR(color) | ((i == 0) ? A_STANDOUT : 0));
 				}
 			}
 		}

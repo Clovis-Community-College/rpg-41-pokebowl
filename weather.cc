@@ -82,7 +82,7 @@ void WeatherSystem::draw(int tempx, int tempy){
 				else if(weather == "Windy"){
 					if((x+y)  % 7 == 0){
 					attron(COLOR_PAIR(5)|A_DIM);
-					mvaddch(y, x, '/');
+					mvaddch(y, x, '~');
 					attroff(COLOR_PAIR(5)|A_DIM);
 								}
 				}

@@ -825,22 +825,28 @@ void Game::render() {
 				int frog_super_gay = rand()%12 + 1;
 				if (tile == '~') {
 					int glitter = rand() % 200;
+					string w = weather.getWeather();
 					if (!glitter) attron(COLOR_PAIR(5));
 					else attron(COLOR_PAIR(3));
+					if (w != "Clear") attron(A_DIM);
 					mvaddch(y, x, tile);
 					if (!glitter) attroff(COLOR_PAIR(5));
 					else attroff(COLOR_PAIR(3));
+					if (w != "Clear") attroff(A_DIM);
 				} else if (tile == '.') {
 					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
 					int final_color = (stepped == 'T') ? frog_super_gay : 1;
-					attron(COLOR_PAIR(final_color) | A_DIM);
+					string w = weather.getWeather();
+					if (w == "Clear") attron(COLOR_PAIR(final_color));
+					else attron(COLOR_PAIR(final_color) | A_DIM);
 					int gv = grass_variant(map_x, map_y, seed);
 					if (gv < 1579) mvaddch(y, x, 'W');
 					else if (gv < 5101) mvaddch(y, x, 'V');
 					else if (gv < 9677) mvaddch(y, x, 'w');
 					else if (gv < 13913) mvaddch(y, x, 'v');
 					else mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(final_color) | A_DIM);
+					if (w == "Clear") attron(COLOR_PAIR(final_color));
+					else attroff(COLOR_PAIR(final_color) | A_DIM);
 				} else if (tile == '^') {
 					attron(COLOR_PAIR(8));
 					mvaddch(y, x, tile);

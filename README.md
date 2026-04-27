@@ -15,6 +15,7 @@
 <a href="https://github.com/Clovis-Community-College/rpg-41-pokebowl/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Clovis-Community-College/rpg-41-pokebowl" />
 </a>
+
 </p>
 </div>
 
@@ -63,8 +64,8 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` **C)** README lists all contributors with who did each bullet point (group + individual); undone items noted — *Tony*
 
 #### Consistency of work
-- `✅` **A)** [Screenshot of game state, 1 week](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#game-state-at-week-1) — *Tony*
-- `🚧` **B)** [Screenshot of GitHub commit log showing consistent commits over time](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#commit-log) — *Tony*
+- `✅` **A)** [Screenshot of game state, 1 week](#game-state-at-week-1) — *Tony*
+- `✅` **B)** [Screenshot of GitHub commit log showing consistent commits over time](#commit-log) — *Tony*
  
 ### Individual
  
@@ -74,8 +75,8 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` `Hero` class with 4+ subclasses.
 - `✅` `Monster` class with 5+ subclasses  including a **Boss**
 - `✅` Player controls a party of 4–6 heroes, walks around, kills monsters, does quests
-- `✅` README: ![description of class hierarchy](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#actor-class) + ![diagram showing class relationships](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#class-diagram) + ![code snapshots](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#code-snapshots)
- 
+- `✅` README: ![description of class hierarchy + diagram showing class relationships + Actor-related code snapshots](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#class-hierachy-of-actorh)
+
 #### B — "BRIDGEngineer" (George)
 - `✅` `HasInitiative` class with `speed` member (1–40); Hero and Monster inherit from it
 - `✅` On combat start: roll d20 + speed, sort fastest-first into circular linked list
@@ -83,7 +84,7 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `✅` Snapshot command sends current turn order visualization to BRIDGES at any point in combat
 - `✅` Works for any combat
 - `✅` Each BRIDGES node labeled with actor name + initiative value
-- `✅` [Screenshot of BRIDGES combat visualization embedded in README](https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/main/README.md#bridges-combat)
+- `✅` [Screenshot of BRIDGES combat visualization embedded in README](#bridges-combat)
  
 #### C — "JJK Curse Lord" (McKay)
 - `✅` ncurses full-screen UI in raw mode, no Cin/Cout line scrolling
@@ -111,20 +112,34 @@ PokéPlayers, enjoy our one and only **custom-made theme song**!
 - `🚧` Quest system (quest 3 incomplete)
 - `✅` Hash table implemented and used as part of the system
 
-## Screenshots
+## Screenshots/snapshots
 
 ### Commit log
+> [!NOTE]
+> These are all **permalinks**.
 
-![w1 log](https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/Screenshot_20260412_000553_Termux.png)
-<em>Week 1 commit log</em>
+> [!NOTE]
+> - `Forzalab` == `ho_1041841` == Tony
+> - `ScytheSlayin` == `??` == Dillion
+> - `mediumsomething` == `laura_1002948` == George
+> - `robles_0965625` == Jovanni
+> - `MckaySea` == `McKay Seamons` == McKay
+
+##### Week 1
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week1.txt#L1-L93
+##### Week 2
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week2.txt#L1-L128
+##### Week 3
+https://github.com/Clovis-Community-College/rpg-41-pokebowl/blob/6262139c2c7df1b9115a83995b6a95eeb6f09a31/log/week3.txt#L1-L144
 
 ### Game state at week 1
 
 ![Game state](https://raw.githubusercontent.com/Forzalab/files/refs/heads/main/Screenshot_20260412_204949_Termux.png)
 
 ### BRIDGES combat
-
-<img width="683" height="582" alt="BRIDGEScombat" src="https://github.com/user-attachments/assets/8cd035cf-ad82-464e-a401-2c740f02f63c" />
+<div align="center">
+<img width="895" height="574" alt="BRIDGEScombat" src="https://github.com/user-attachments/assets/5c1d0bdd-428b-40c2-adb3-911f088ad473" />
+</div>
 
 ### Class hierachy of `actor.h`
 - `Actor` is an abstract base class for object with a position, and `Wall` + `NonWall` inherits from it.

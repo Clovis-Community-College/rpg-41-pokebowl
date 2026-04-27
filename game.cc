@@ -172,18 +172,18 @@ Game::Game() {
 	for (auto &[index, ptr] : heroes)
 		if (index != random)
 			player_party.add_member(heroes.at(index));
-
+/*
 	auto prob = [&]() -> int {
 		double rand_01 = ((double)rand() / RAND_MAX);
 		double rand_norm =
 		        1.375 + 5.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
 		return (int)round(std::clamp(rand_norm, 3.0, 6.0));
 	};
-
+*/
 	for (int y = 0; y < world.get_height(); y++) {
 		for (int x = 0; x < world.get_width(); x++) {
 			char c = world.get_tile(x, y);
-			if (c == 'm') spawn_monster(false, prob, x, y);
+			if (c == 'm') spawn_monster(false, p, x, y);
 		}
 	}
 

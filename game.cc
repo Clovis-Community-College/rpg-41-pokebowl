@@ -272,7 +272,7 @@ void Game::spawn_monster(bool is_boss, function<int(void)> prob, int x, int y) {
 		int y_mod = world.get_height();
 		x = rand() % x_mod;
 		y = rand() % y_mod;
-	} while ((world.get_tile(x, y) != '.' && (world.get_tile(x, y) != ','))
+	} while ((world.get_tile(x, y) != '.' )
 			 || (x >= 90 && x <= 110 && y >= 90 && y <= 110));
 
 seed_xy:

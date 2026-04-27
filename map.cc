@@ -1,17 +1,26 @@
-[B#include "map.h"
+#include "map.h"
 #include "actor.h"
 
 Map::Map() : width(200), height(200) {
 	grid.resize(height, std::string(width, '.'));
 }
 
-void Map::ca(char terrain, int die, int live, bool first_pass, int thicc) {
+void Map::ca(char terrain, char comp_terrain, char die_terrain, int die, int live, bool first_pass, int thicc) {
 	// copy vector
 	vector<string> rmap = grid;
 	vector<string> &wmap = grid;
 
-	auto is_border = [&](int x, int y, int thicc = 0) { return (x == thicc || x == width-thicc || y == thicc || y == width-thicc); };
-	auto outside_border = [&](int x, int y, int thicc = 0){ return (x < thicc || x > width-thicc || y < thicc || y > width-thicc); };
+	// default param
+	auto dt = [&](int x, int y){ 
+		return (die_terrain == ' ') ? rmap[y][x] : die_terrain;
+	};
+	auto ct = [&](int x, int y){ 
+		return (comp_terrain == ' ') ? rmap[y][x] : comp_terrain;
+	};
+
+
+	auto is_border = [&](int x, int y, int thicc = 0) { return (x == thicc || x == width-thicc-1 || y == thicc || y == width-thicc-1); };
+	auto outside_border = [&](int x, int y, int thicc = 0){ return (x < thicc || x > width-thicc-1 || y < thicc || y > width-thicc-1); };
 
 	auto count_living_neighbor = [&](int x, int y){
 		int count = 0;
@@ -19,38 +28,40 @@ void Map::ca(char terrain, int die, int live, bool first_pass, int thicc) {
 		for (int dx = -1; dx <= 1; dx++) {
 			if (outside_border(x+dx, y+dy)) continue;
 			// only consider rmap!!!!!
-			if (rmap[y+dy][x+dx] != terrain && rmap[y+dy][x+dx] != '.') continue;
+			if (rmap[y+dy][x+dx] != terrain && rmap[y+dy][x+dx] != dt(x,y)) continue;
 			// dont count dead cells lol
-			if (rmap[y+dy][x+dx] == '.') continue;
-			count++;
+			if (rmap[y+dy][x+dx] == dt(x,y)) continue;
+			// randomize comp cell
+			if (rmap[y+dy][x+dx] == ct(x,y)) count += (!(rand() % 3));
+			else count++;
 		}
 		}
 		return count;
 	};
 
 
-//	if (!first_pass) goto apply;
+	if (!first_pass) goto apply;
 
 	// create noisy data, overriding everything!!!
-	for (int y = 0; y < width; y++) {
-	for (int x = 0; x < height; x++) {
+	for (int y = 0; y < height; y++) {
+	for (int x = 0; x < width; x++) {
 		// limit noise to only border or thicc zone
 		if (!outside_border(x, y, thicc) && thicc) continue;
-		int rnd = rand() % 5;
+		int rnd = rand() % 2;
 		if (!rnd) {
 			rmap[y][x] = terrain;
 			wmap[y][x] = terrain;
 		}
 	}
 	}
-/*
+
 apply:
 	// apply automata
-	for (int y = 0; y < width; y++) {
-	for (int x = 0; x < height; x++) {
+	for (int y = 0; y < height; y++) {
+	for (int x = 0; x < width; x++) {
 		// rule: 			
 		// never writes on existing terrain
-		if (rmap[y][x] != '.' && rmap[y][x] != terrain) continue;
+		if (rmap[y][x] != dt(x,y) && rmap[y][x] != terrain) continue;
 
 		// if water, border of map is always made up of living cells. 
 		if (is_border(x, y) && terrain == '~') {
@@ -62,12 +73,13 @@ apply:
 		int living_nbr = count_living_neighbor(x, y);
 
 		// killing any cells with less than  living neighbours, 
-		if (living_nbr <= die) wmap[y][x] = '.';
+		if (living_nbr <= die && !outside_border(x,y)) wmap[y][x] = dt(x,y);
+
 		// resurrecting cells with more than  living neighbours.
-		else if (living_nbr >= live) wmap[y][x] = terrain;
+		else if (living_nbr >= live && !outside_border(x,y)) wmap[y][x] = terrain;
+		else if (!outside_border(x,y)) wmap[y][x] = ct(x,y);
 	}
 	}
-*/
 }
 
 void Map::loss(int ox, int oy) {
@@ -192,7 +204,18 @@ void Map::generate() {
 	  }
 	*/
 	
-	ca('~', 6, 7, true, 4);
+	// beach
+	ca('~', ',', '.', 1, 4, true, 10);
+	ca('~', ',', ' ', 4, 4, false, 17);
+	ca(',', '.', '.', 1, 3, true, 15);
+	ca(',', ' ', ' ', 6, 7, false, 30);
+	ca(',', ' ', ' ', 1, 3, false, 40);
+	ca(',', ' ', ' ', 5, 7, false, 40);
+	ca('~', ' ', ' ', 4, 6, true, 5);
+	ca('~', ' ', ' ', 1, 4, false, 30);
+	ca('~', ' ', ' ', 3, 6, false, 30);
+//	ca('.', ' ', ',', 3, 5, true, 30);
+	ca('.', ' ', ' ', 4, 5, false, 30);
 
 	for (int y = 90; y < 110; ++y) {
 		for (int x = 90; x < 110; ++x) {
@@ -220,9 +243,9 @@ void Map::generate() {
 		}
 	  }
 	*/
-	loss(105, 8);
+	loss(105, 16);
 	au(10, 135, 140, 60, '%', '~', '*', ':');
-	au(20, 15, 80, 40, ',', 'T', '%', '*');
+	au(20, 30, 80, 40, ',', 'T', '%', '*');
 
 	grid[95][95] = 'H';
 	grid[95][96] = 'H';

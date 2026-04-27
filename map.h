@@ -12,7 +12,7 @@ private:
     int width, height;
 	void loss(int ox, int oy);
 	void au(int ox, int oy, int bx, int by, char body, char visor, char border, char visor_border);
-	void ca(char terrain, int live, int die, bool first_pass = false, int thicc = 0);
+	void ca(char terrain, char comp_terrain, char die_terrain, int live, int die, bool first_pass = false, int thicc = 0);
 public:
     Map();
     void generate();

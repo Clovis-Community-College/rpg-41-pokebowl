@@ -256,7 +256,12 @@ Game::~Game() {
 void Game::spawn_monster(bool is_boss, function<int(void)> prob, int x, int y) {
 //	assert(h_main != nullptr);
 	if (is_boss) {
-		roaming_monsters.push_back(new Foxtrot("MEH-two", {100, 10}));
+		int x_boss = 63, y_boss = 40;
+		spawn_monster(false, [](){ return 4; }, x_boss-1, y_boss);
+		spawn_monster(false, [](){ return 4; }, x_boss+1, y_boss);
+		spawn_monster(false, [](){ return 4; }, x_boss, y_boss-1);
+		spawn_monster(false, [](){ return 4; }, x_boss, y_boss+1);
+		roaming_monsters.push_back(new Foxtrot("MEH-two", {x_boss, y_boss}));
 		return;
 	}
 
@@ -266,8 +271,8 @@ void Game::spawn_monster(bool is_boss, function<int(void)> prob, int x, int y) {
 		int y_mod = world.get_height();
 		x = rand() % x_mod;
 		y = rand() % y_mod;
-	} while (world.get_tile(x, y) != '.' ||
-			 (x >= 90 && x <= 110 && y >= 90 && y <= 110));
+	} while ((world.get_tile(x, y) != '.' && world.get_tile(x, y) != 'T')
+			 || (x >= 90 && x <= 110 && y >= 90 && y <= 110));
 
 seed_xy:
 	if (std::abs(x - h_main->pos().x) < 5 && std::abs(y - h_main->pos().y) < 5)

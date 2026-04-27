@@ -5,7 +5,7 @@ Map::Map() : width(200), height(200) {
 	grid.resize(height, std::string(width, '.'));
 }
 
-void Map::ca(char terrain, char comp_terrain, char die_terrain, int die, int live, bool first_pass, int thicc) {
+void Map::ca(char terrain, char comp_terrain, char die_terrain, string excl, int die, int live, bool first_pass, int thicc, int noise_ratio) {
 	// copy vector
 	vector<string> rmap = grid;
 	vector<string> &wmap = grid;
@@ -47,7 +47,13 @@ void Map::ca(char terrain, char comp_terrain, char die_terrain, int die, int liv
 	for (int x = 0; x < width; x++) {
 		// limit noise to only border or thicc zone
 		if (!outside_border(x, y, thicc) && thicc) continue;
-		int rnd = rand() % 2;
+
+		// exclude
+		bool to_excl = false;
+		for (char c : excl) if (c == rmap[y][x]) to_excl = true;
+		if (to_excl) continue;
+
+		int rnd = rand() % noise_ratio;
 		if (!rnd) {
 			rmap[y][x] = terrain;
 			wmap[y][x] = terrain;
@@ -62,6 +68,11 @@ apply:
 		// rule: 			
 		// never writes on existing terrain
 		if (rmap[y][x] != dt(x,y) && rmap[y][x] != terrain) continue;
+		
+		// exclude
+		bool to_excl = false;
+		for (char c : excl) if (c == rmap[y][x]) to_excl = true;
+		if (to_excl) continue;
 
 		// if water, border of map is always made up of living cells. 
 		if (is_border(x, y) && terrain == '~') {
@@ -83,7 +94,7 @@ apply:
 }
 
 void Map::loss(int ox, int oy) {
-	int bx = 80, by = 60;
+	int bx = 60, by = 60;
 	int pdist = 14, boxdist = 4, inmargin = 10;
 
 	// boudn check. bad => crash
@@ -205,18 +216,39 @@ void Map::generate() {
 	*/
 	
 	// beach
-	ca('~', ',', '.', 1, 4, true, 10);
-	ca('~', ',', ' ', 4, 4, false, 17);
-	ca(',', '.', '.', 1, 3, true, 15);
-	ca(',', ' ', ' ', 6, 7, false, 30);
-	ca(',', ' ', ' ', 1, 3, false, 40);
-	ca(',', ' ', ' ', 5, 7, false, 40);
-	ca('~', ' ', ' ', 4, 6, true, 5);
-	ca('~', ' ', ' ', 1, 4, false, 30);
-	ca('~', ' ', ' ', 3, 6, false, 30);
+	ca('~', ',', '.', string(""), 1, 4, true, 10);
+	ca('~', ',', ' ', string(""), 4, 4, false, 17);
+	ca(',', '.', '.', string(""), 1, 3, true, 15);
+	ca(',', ' ', ' ', string(""), 6, 7, false, 30);
+	ca(',', ' ', ' ', string(""), 1, 3, false, 40);
+	ca(',', ' ', ' ', string(""), 5, 7, false, 40);
+	ca('~', ' ', ' ', string(""), 4, 6, true, 5);
+	ca('~', ' ', ' ', string(""), 1, 4, false, 30);
+	ca('~', ' ', ' ', string(""), 3, 6, false, 30);
 //	ca('.', ' ', ',', 3, 5, true, 30);
-	ca('.', ' ', ' ', 4, 5, false, 30);
+	ca('.', ' ', ' ', string(""), 4, 5, false, 30);
 
+	// swamp
+	ca('%', '.', ' ', string("~,"), 0, 5, true, 35, 40);
+	ca('%', '.', ' ', string("~,"), 0, 5, true, 50, 10);
+	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
+	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
+
+	// mountain
+	ca('^', '^', ' ', string("~,"), 3, 6, true, 40, 10);
+	ca('^', '%', ' ', string("~,"), 3, 6);
+	ca('^', 'T', ' ', string("~,%"), 3, 6);
+	ca('^', '^', ' ', string("~,%"), 5, 6, false, 0);
+
+	// pool
+/*	ca('~', ' ', ' ', string("~,^"), 3, 5, true, 40, 25);
+	ca('~', ' ', ' ', string("~,^"), 3, 5, true, 60, 15);
+	ca('~', ' ', ' ', string("~,^"), 3, 5, true, 70, 50);
+	ca('~', ' ', ' ', string("~,^"), 3, 5, false);
+	ca('~', ' ', ' ', string("~,^"), 3, 5, false);
+	ca('~', ' ', ' ', string("~,^"), 3, 5, false);
+	ca('~', ' ', ' ', string("~,^"), 7, 7, false);
+*/
 	for (int y = 90; y < 110; ++y) {
 		for (int x = 90; x < 110; ++x) {
 			if (y == 90 || y == 109 || x == 90 || x == 109) {
@@ -228,24 +260,9 @@ void Map::generate() {
 		}
 	}
 
-	/* for (int y = 150; y < 180; ++y) {
-		for (int x = 60; x < 85; ++x) {
-		  grid[y][x] = '^';
-		}
-		for (int x = 90; x < 110; ++x) {
-		  grid[y][x] = '%';
-		}
-		for (int x = 110; x < 130; ++x) {
-		  grid[y][x] = ',';
-		}
-		for (int x = 130; x < 150; ++x) {
-		  grid[y][x] = 'T';
-		}
-	  }
-	*/
-	loss(105, 16);
+	loss(105, 15);
 	au(10, 135, 140, 60, '%', '~', '*', ':');
-	au(20, 30, 80, 40, ',', 'T', '%', '*');
+	au(20, 15, 80, 40, 'T', '*', ',', '*');
 
 	grid[95][95] = 'H';
 	grid[95][96] = 'H';

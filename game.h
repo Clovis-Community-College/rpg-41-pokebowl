@@ -31,7 +31,7 @@ public:
 		srand(time(0));
                 double rand_01 = ((double)rand() / RAND_MAX);
                 double rand_norm =
-                        1.375 + 5.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
+                        0.375 + 6.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));
                 return (int)round(std::clamp(rand_norm, 3.0, 6.0));
         };
 	

@@ -229,13 +229,18 @@ void Map::generate() {
 	ca('.', ' ', ' ', string(""), 4, 5, false, 30);
 
 	// swamp
-	ca('%', '.', ' ', string("~,"), 0, 5, true, 35, 40);
-	ca('%', '.', ' ', string("~,"), 0, 5, true, 50, 10);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 25, 40);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 55, 6);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 65, 15);
+	ca('%', '.', ' ', string("~,"), 3, 5, true, 75, 40);
+	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
+	ca('%', '.', ' ', string("~"), 4, 4, false, 0);
 	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
 	ca('%', '.', ' ', string("~"), 4, 7, false, 0);
 
 	// mountain
-	ca('^', '^', ' ', string("~,"), 3, 6, true, 40, 10);
+	ca('^', '^', ' ', string("~,"), 3, 6, true, 30, 8);
+	ca('^', '^', ' ', string("~,"), 3, 6, true, 40, 14);
 	ca('^', '%', ' ', string("~,"), 3, 6);
 	ca('^', 'T', ' ', string("~,%"), 3, 6);
 	ca('^', '^', ' ', string("~,%"), 5, 6, false, 0);

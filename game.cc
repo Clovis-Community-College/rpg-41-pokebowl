@@ -204,6 +204,10 @@ Game::Game() {
 		init_pair(5, COLOR_WHITE, COLOR_BLACK);
 		init_pair(6, COLOR_WHITE, COLOR_BLUE);
 		init_pair(7, COLOR_BLACK, COLOR_WHITE);
+		init_pair(8, COLOR_WHITE, COLOR_BLACK); //mountain
+		init_pair(9, COLOR_BLACK, COLOR_WHITE); // sand
+		init_pair(10, COLOR_GREEN, COLOR_BLACK); // swamp
+		init_pair(11, COLOR_MAGENTA, COLOR_MAGENTA); // purple forest??
 	}
 }
 
@@ -340,6 +344,11 @@ void Game::handle_input(int ch) {
 		int target_y = h_main->pos().y;
 		Direction dir = UP;
 		bool wants_to_move = false;
+
+		// swamp slowdown
+		int rnd_stuck = rand() % 2;
+		char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
+		if (stepped == '%' && rnd_stuck) return;
 
 		switch (ch) {
 		case KEY_UP:
@@ -798,6 +807,22 @@ void Game::render() {
 					attron(COLOR_PAIR(1));
 					mvaddch(y, x, tile);
 					attroff(COLOR_PAIR(1));
+				} else if (tile == '^') {
+					attron(COLOR_PAIR(8));
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(8));
+				} else if (tile == ',') {
+					attron(COLOR_PAIR(9));
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(9));
+				} else if (tile == '%') {
+					attron(COLOR_PAIR(10) | A_DIM);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(10) | A_DIM);
+				} else if (tile == 'T') {
+					attron(COLOR_PAIR(11) | A_BOLD);
+					mvaddch(y, x, tile);
+					attroff(COLOR_PAIR(11) | A_BOLD);
 				} else {
 					attron(COLOR_PAIR(4));
 					mvaddch(y, x, tile);

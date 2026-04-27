@@ -46,7 +46,7 @@ bool Map::is_passable(int x, int y, const Hero &hero) const {
     return true;
 
   // water
-  if (tile == '~')
+  if (tile == '~' || tile == '^')
     return false;
 
   // walls

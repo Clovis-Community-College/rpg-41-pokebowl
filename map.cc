@@ -19,8 +19,8 @@ void Map::ca(char terrain, char comp_terrain, char die_terrain, string excl, int
 	};
 
 
-	auto is_border = [&](int x, int y, int thicc = 0) { return (x == thicc || x == width-thicc-1 || y == thicc || y == width-thicc-1); };
-	auto outside_border = [&](int x, int y, int thicc = 0){ return (x < thicc || x > width-thicc-1 || y < thicc || y > width-thicc-1); };
+	auto is_border = [&](int x, int y, int thicc = 0) { return (x == thicc || x == width-thicc-1 || y == thicc || y == height-thicc-1); };
+	auto outside_border = [&](int x, int y, int thicc = 0){ return (x < thicc || x > width-thicc-1 || y < thicc || y > height-thicc-1); };
 
 	auto count_living_neighbor = [&](int x, int y){
 		int count = 0;

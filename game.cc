@@ -69,6 +69,11 @@ void Game::splash() {
 	clear();
 }
 
+int Game::grass_variant(int x, int y, int seed) {
+    long long int hash = 167641ll * (long long) (x^y) + 895151ll * (long long) ((y>>7)^(x<<3))^y + 185303ll * (long long) seed;
+	return hash % 5861777;
+}
+
 Game::Game() {
 	int cnt = 0;
 
@@ -157,6 +162,8 @@ Game::Game() {
 		}
 	}
 
+	seed = rand() % 78511;
+
 	// ONLY h_main GETS TO BE THE FIRST TO BE ADDED!!!!!!!!
 	// only the firts one gets to control the snake
 	// pls dont change or cthulu will arise
@@ -219,13 +226,14 @@ Game::Game() {
 		init_pair(3, COLOR_BLUE, COLOR_BLACK);
 		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_WHITE, COLOR_BLACK);
-		init_pair(6, COLOR_WHITE, COLOR_BLUE);
-		init_pair(7, COLOR_BLACK, COLOR_WHITE);
+		init_pair(6, COLOR_BLUE, COLOR_BLACK);
+		init_pair(7, COLOR_WHITE, COLOR_BLACK);
 		init_pair(8, COLOR_WHITE, COLOR_BLACK); //mountain
 		init_pair(9, COLOR_YELLOW, COLOR_BLACK); // sand
 		init_pair(10, COLOR_GREEN, COLOR_BLACK); // swamp
 		init_pair(11, COLOR_MAGENTA, COLOR_BLACK); // purple forest??
 		init_pair(12, COLOR_BLUE, COLOR_BLACK); // dimmer water
+		init_pair(13, COLOR_WHITE, COLOR_RED);
 	}
 }
 
@@ -825,14 +833,14 @@ void Game::render() {
 				} else if (tile == '.') {
 					char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
 					int final_color = (stepped == 'T') ? frog_super_gay : 1;
-					attron(COLOR_PAIR(final_color));
-					int glitter = rand() % 50'000;
-					if (glitter <= 60) mvaddch(y, x, 'v');
-					else if (glitter <= 80) mvaddch(y, x, 'w');
-					else if (glitter <= 100) mvaddch(y, x, 'V');
-					else if (glitter <= 120) mvaddch(y, x, 'W');
+					attron(COLOR_PAIR(final_color) | A_DIM);
+					int gv = grass_variant(map_x, map_y, seed);
+					if (gv < 1579) mvaddch(y, x, 'W');
+					else if (gv < 5101) mvaddch(y, x, 'V');
+					else if (gv < 9677) mvaddch(y, x, 'w');
+					else if (gv < 13913) mvaddch(y, x, 'v');
 					else mvaddch(y, x, tile);
-					attroff(COLOR_PAIR(final_color));
+					attroff(COLOR_PAIR(final_color) | A_DIM);
 				} else if (tile == '^') {
 					attron(COLOR_PAIR(8));
 					mvaddch(y, x, tile);
@@ -872,9 +880,9 @@ void Game::render() {
 			int mx = m->pos().x - start_x;
 			int my = m->pos().y - start_y;
 			if (mx >= 0 && mx < max_x && my >= 0 && my < max_y) {
-				attron(COLOR_PAIR(2));
+				attron(COLOR_PAIR(13));
 				mvaddch(my, mx, m->is_boss() ? 'B' : 'M');
-				attroff(COLOR_PAIR(2));
+				attroff(COLOR_PAIR(13));
 			}
 		}
 
@@ -911,13 +919,13 @@ void Game::render() {
 				// aka, only a[0] gonan be the snake leader!!!
 				// nasty bug made by mckay™ (no hate)
 				if (player_party.bank[i]->is_dead()) {
-					attron(COLOR_PAIR(color) | A_DIM);
+					attron(COLOR_PAIR(color) | A_STANDOUT);
 					mvaddch(py, px, '.');
-					attroff(COLOR_PAIR(color) | A_DIM);
+					attroff(COLOR_PAIR(color) | A_STANDOUT);
 				} else {
-					attron(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
+					attron(COLOR_PAIR(color) | ((i == 0) ? A_STANDOUT : 0));
 					mvaddch(py, px, p_chars[i]);
-					attroff(COLOR_PAIR(color) | ((i == 0) ? A_BLINK : 0));
+					attroff(COLOR_PAIR(color) | ((i == 0) ? A_STANDOUT : 0));
 				}
 			}
 		}

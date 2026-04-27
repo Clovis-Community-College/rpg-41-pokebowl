@@ -16,6 +16,8 @@ enum class EquipSubState { SELECT_HERO, VIEW_HERO };
 enum class ShopSubState { SELECT_MODE, BUY, SELL };
 
 class Game {
+	int seed;
+	int grass_variant(int x, int y, int seed);
 public:
 	GameState state;
 	InvSubState inv_sub;

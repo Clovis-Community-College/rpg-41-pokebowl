@@ -1,3 +1,5 @@
+
+
 #pragma once
 #include "quest.h"
 #include "actor.h"
@@ -28,7 +30,7 @@ public:
 	Item selected_item;
 
 	constexpr static auto p = []() -> int {
-		srand(time(0));
+//		srand(time(0));
                 double rand_01 = ((double)rand() / RAND_MAX);
                 double rand_norm =
                         0.375 + 6.0 / (1.0 + pow(2.7128, 5 * (0.4 - rand_01)));

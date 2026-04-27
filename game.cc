@@ -371,7 +371,8 @@ void Game::handle_input(int ch) {
 		// swamp slowdown
 		int rnd_stuck = rand() % 3;
 		char stepped = world.get_tile(h_main->pos().x, h_main->pos().y);
-		if (stepped == '%' && rnd_stuck) return;
+		bool key_dir = (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_LEFT || ch == KEY_RIGHT);
+		if (stepped == '%' && rnd_stuck && key_dir) return;
 
 		switch (ch) {
 		case KEY_UP:

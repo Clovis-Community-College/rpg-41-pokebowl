@@ -1,8 +1,73 @@
-#include "map.h"
+[B#include "map.h"
 #include "actor.h"
 
 Map::Map() : width(200), height(200) {
 	grid.resize(height, std::string(width, '.'));
+}
+
+void Map::ca(char terrain, int die, int live, bool first_pass, int thicc) {
+	// copy vector
+	vector<string> rmap = grid;
+	vector<string> &wmap = grid;
+
+	auto is_border = [&](int x, int y, int thicc = 0) { return (x == thicc || x == width-thicc || y == thicc || y == width-thicc); };
+	auto outside_border = [&](int x, int y, int thicc = 0){ return (x < thicc || x > width-thicc || y < thicc || y > width-thicc); };
+
+	auto count_living_neighbor = [&](int x, int y){
+		int count = 0;
+		for (int dy = -1; dy <= 1; dy++) {
+		for (int dx = -1; dx <= 1; dx++) {
+			if (outside_border(x+dx, y+dy)) continue;
+			// only consider rmap!!!!!
+			if (rmap[y+dy][x+dx] != terrain && rmap[y+dy][x+dx] != '.') continue;
+			// dont count dead cells lol
+			if (rmap[y+dy][x+dx] == '.') continue;
+			count++;
+		}
+		}
+		return count;
+	};
+
+
+//	if (!first_pass) goto apply;
+
+	// create noisy data, overriding everything!!!
+	for (int y = 0; y < width; y++) {
+	for (int x = 0; x < height; x++) {
+		// limit noise to only border or thicc zone
+		if (!outside_border(x, y, thicc) && thicc) continue;
+		int rnd = rand() % 5;
+		if (!rnd) {
+			rmap[y][x] = terrain;
+			wmap[y][x] = terrain;
+		}
+	}
+	}
+/*
+apply:
+	// apply automata
+	for (int y = 0; y < width; y++) {
+	for (int x = 0; x < height; x++) {
+		// rule: 			
+		// never writes on existing terrain
+		if (rmap[y][x] != '.' && rmap[y][x] != terrain) continue;
+
+		// if water, border of map is always made up of living cells. 
+		if (is_border(x, y) && terrain == '~') {
+			wmap[y][x] = terrain;
+			continue;
+		}
+		
+		// count LIVING neighbor of rmap
+		int living_nbr = count_living_neighbor(x, y);
+
+		// killing any cells with less than  living neighbours, 
+		if (living_nbr <= die) wmap[y][x] = '.';
+		// resurrecting cells with more than  living neighbours.
+		else if (living_nbr >= live) wmap[y][x] = terrain;
+	}
+	}
+*/
 }
 
 void Map::loss(int ox, int oy) {
@@ -126,6 +191,9 @@ void Map::generate() {
 		}
 	  }
 	*/
+	
+	ca('~', 6, 7, true, 4);
+
 	for (int y = 90; y < 110; ++y) {
 		for (int x = 90; x < 110; ++x) {
 			if (y == 90 || y == 109 || x == 90 || x == 109) {
